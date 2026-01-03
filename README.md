@@ -36,9 +36,7 @@ chat.ask("What's my name?")  # => "Your name is Alice."
 
 ## Rails Persistence
 
-For conversations that survive app restarts:
-
-**1. Add migration:**
+For conversations that survive app restarts, add a migration:
 
 ```ruby
 class AddResponseIdToMessages < ActiveRecord::Migration[7.0]
@@ -48,14 +46,7 @@ class AddResponseIdToMessages < ActiveRecord::Migration[7.0]
 end
 ```
 
-**2. Enable in initializer:**
-
-```ruby
-# config/initializers/ruby_llm.rb
-RubyLLM::Providers::OpenAIResponses.apply_active_record_extensions!
-```
-
-**3. Use normally:**
+Then use normally:
 
 ```ruby
 # Day 1
