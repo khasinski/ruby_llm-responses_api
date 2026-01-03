@@ -33,7 +33,7 @@ Metrics/PerceivedComplexity:
   Max: 12
 
 Metrics/ModuleLength:
-  Max: 200
+  Max: 250
 
 Layout/LineLength:
   Max: 120

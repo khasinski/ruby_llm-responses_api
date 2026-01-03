@@ -4,30 +4,188 @@ module RubyLLM
   module Providers
     class OpenAIResponses
       # Registers OpenAI Responses API models with RubyLLM
+      # Models updated January 2026 based on OpenAI documentation
       module ModelRegistry
         MODELS = [
-          # GPT-4o series
+          # ===================
+          # GPT-5.2 Series (Latest flagship - December 2025)
+          # ===================
           {
-            id: 'gpt-4o',
-            name: 'GPT-4o',
+            id: 'gpt-5.2',
+            name: 'GPT-5.2',
             provider: 'openai_responses',
-            family: 'gpt-4o',
+            family: 'gpt-5.2',
+            context_window: 400_000,
+            max_output_tokens: 128_000,
+            modalities: { input: %w[text image], output: ['text'] },
+            capabilities: %w[streaming function_calling structured_output vision reasoning web_search code_interpreter]
+          },
+
+          # ===================
+          # GPT-5.1 Series (November 2025)
+          # ===================
+          {
+            id: 'gpt-5.1',
+            name: 'GPT-5.1',
+            provider: 'openai_responses',
+            family: 'gpt-5.1',
+            context_window: 400_000,
+            max_output_tokens: 128_000,
+            modalities: { input: %w[text image], output: ['text'] },
+            capabilities: %w[streaming function_calling structured_output vision reasoning web_search code_interpreter]
+          },
+          {
+            id: 'gpt-5.1-codex-max',
+            name: 'GPT-5.1 Codex Max',
+            provider: 'openai_responses',
+            family: 'gpt-5.1',
+            context_window: 400_000,
+            max_output_tokens: 128_000,
+            modalities: { input: %w[text image], output: ['text'] },
+            capabilities: %w[streaming function_calling structured_output reasoning web_search]
+          },
+          {
+            id: 'gpt-5.1-codex',
+            name: 'GPT-5.1 Codex',
+            provider: 'openai_responses',
+            family: 'gpt-5.1',
+            context_window: 400_000,
+            max_output_tokens: 128_000,
+            modalities: { input: %w[text image], output: ['text'] },
+            capabilities: %w[streaming function_calling structured_output reasoning]
+          },
+          {
+            id: 'gpt-5.1-codex-mini',
+            name: 'GPT-5.1 Codex Mini',
+            provider: 'openai_responses',
+            family: 'gpt-5.1',
+            context_window: 400_000,
+            max_output_tokens: 128_000,
+            modalities: { input: %w[text image], output: ['text'] },
+            capabilities: %w[streaming function_calling structured_output reasoning]
+          },
+          {
+            id: 'gpt-5.1-chat',
+            name: 'GPT-5.1 Chat',
+            provider: 'openai_responses',
+            family: 'gpt-5.1',
             context_window: 128_000,
             max_output_tokens: 16_384,
             modalities: { input: %w[text image], output: ['text'] },
-            capabilities: %w[streaming function_calling structured_output vision web_search code_interpreter]
+            capabilities: %w[streaming function_calling structured_output vision]
+          },
+
+          # ===================
+          # GPT-5 Series (August 2025)
+          # ===================
+          {
+            id: 'gpt-5',
+            name: 'GPT-5',
+            provider: 'openai_responses',
+            family: 'gpt-5',
+            context_window: 400_000,
+            max_output_tokens: 128_000,
+            modalities: { input: %w[text image], output: ['text'] },
+            capabilities: %w[streaming function_calling structured_output vision reasoning web_search code_interpreter]
           },
           {
-            id: 'gpt-4o-mini',
-            name: 'GPT-4o Mini',
+            id: 'gpt-5-pro',
+            name: 'GPT-5 Pro',
             provider: 'openai_responses',
-            family: 'gpt-4o-mini',
-            context_window: 128_000,
-            max_output_tokens: 16_384,
+            family: 'gpt-5',
+            context_window: 400_000,
+            max_output_tokens: 128_000,
             modalities: { input: %w[text image], output: ['text'] },
-            capabilities: %w[streaming function_calling structured_output vision web_search code_interpreter]
+            capabilities: %w[streaming function_calling structured_output vision reasoning web_search code_interpreter]
           },
-          # GPT-4.1 series
+          {
+            id: 'gpt-5-mini',
+            name: 'GPT-5 Mini',
+            provider: 'openai_responses',
+            family: 'gpt-5',
+            context_window: 400_000,
+            max_output_tokens: 128_000,
+            modalities: { input: %w[text image], output: ['text'] },
+            capabilities: %w[streaming function_calling structured_output vision reasoning web_search code_interpreter]
+          },
+          {
+            id: 'gpt-5-nano',
+            name: 'GPT-5 Nano',
+            provider: 'openai_responses',
+            family: 'gpt-5',
+            context_window: 400_000,
+            max_output_tokens: 128_000,
+            modalities: { input: %w[text image], output: ['text'] },
+            capabilities: %w[streaming function_calling structured_output vision reasoning]
+          },
+
+          # ===================
+          # O-Series Reasoning Models
+          # ===================
+          {
+            id: 'o4-mini',
+            name: 'O4 Mini',
+            provider: 'openai_responses',
+            family: 'o4',
+            context_window: 200_000,
+            max_output_tokens: 100_000,
+            modalities: { input: %w[text image], output: ['text'] },
+            capabilities: %w[streaming function_calling structured_output vision reasoning web_search code_interpreter]
+          },
+          {
+            id: 'o3-pro',
+            name: 'O3 Pro',
+            provider: 'openai_responses',
+            family: 'o3',
+            context_window: 200_000,
+            max_output_tokens: 100_000,
+            modalities: { input: %w[text image], output: ['text'] },
+            capabilities: %w[streaming function_calling structured_output vision reasoning web_search code_interpreter]
+          },
+          {
+            id: 'o3',
+            name: 'O3',
+            provider: 'openai_responses',
+            family: 'o3',
+            context_window: 200_000,
+            max_output_tokens: 100_000,
+            modalities: { input: %w[text image], output: ['text'] },
+            capabilities: %w[streaming function_calling structured_output vision reasoning web_search code_interpreter]
+          },
+          {
+            id: 'o3-mini',
+            name: 'O3 Mini',
+            provider: 'openai_responses',
+            family: 'o3',
+            context_window: 200_000,
+            max_output_tokens: 100_000,
+            modalities: { input: ['text'], output: ['text'] },
+            capabilities: %w[streaming function_calling structured_output reasoning]
+          },
+          {
+            id: 'o1',
+            name: 'O1',
+            provider: 'openai_responses',
+            family: 'o1',
+            context_window: 200_000,
+            max_output_tokens: 100_000,
+            modalities: { input: %w[text image], output: ['text'] },
+            capabilities: %w[streaming function_calling structured_output vision reasoning]
+          },
+          {
+            id: 'o1-mini',
+            name: 'O1 Mini',
+            provider: 'openai_responses',
+            family: 'o1',
+            context_window: 128_000,
+            max_output_tokens: 65_536,
+            modalities: { input: ['text'], output: ['text'] },
+            capabilities: %w[streaming function_calling structured_output reasoning]
+          },
+
+          # ===================
+          # GPT-4.1 Series (Legacy - still supported)
+          # ===================
           {
             id: 'gpt-4.1',
             name: 'GPT-4.1',
@@ -58,56 +216,29 @@ module RubyLLM
             modalities: { input: %w[text image], output: ['text'] },
             capabilities: %w[streaming function_calling structured_output vision web_search code_interpreter]
           },
-          # O-series reasoning models
+
+          # ===================
+          # GPT-4o Series (Legacy - still widely used)
+          # ===================
           {
-            id: 'o1',
-            name: 'O1',
+            id: 'gpt-4o',
+            name: 'GPT-4o',
             provider: 'openai_responses',
-            family: 'o1',
-            context_window: 200_000,
-            max_output_tokens: 100_000,
-            modalities: { input: %w[text image], output: ['text'] },
-            capabilities: %w[streaming function_calling structured_output vision reasoning]
-          },
-          {
-            id: 'o1-mini',
-            name: 'O1 Mini',
-            provider: 'openai_responses',
-            family: 'o1',
+            family: 'gpt-4o',
             context_window: 128_000,
-            max_output_tokens: 65_536,
-            modalities: { input: ['text'], output: ['text'] },
-            capabilities: %w[streaming function_calling structured_output reasoning]
-          },
-          {
-            id: 'o3',
-            name: 'O3',
-            provider: 'openai_responses',
-            family: 'o3',
-            context_window: 200_000,
-            max_output_tokens: 100_000,
+            max_output_tokens: 16_384,
             modalities: { input: %w[text image], output: ['text'] },
-            capabilities: %w[streaming function_calling structured_output vision reasoning web_search code_interpreter]
+            capabilities: %w[streaming function_calling structured_output vision web_search code_interpreter]
           },
           {
-            id: 'o3-mini',
-            name: 'O3 Mini',
+            id: 'gpt-4o-mini',
+            name: 'GPT-4o Mini',
             provider: 'openai_responses',
-            family: 'o3',
-            context_window: 200_000,
-            max_output_tokens: 100_000,
-            modalities: { input: ['text'], output: ['text'] },
-            capabilities: %w[streaming function_calling structured_output reasoning]
-          },
-          {
-            id: 'o4-mini',
-            name: 'O4 Mini',
-            provider: 'openai_responses',
-            family: 'o4',
-            context_window: 200_000,
-            max_output_tokens: 100_000,
-            modalities: { input: ['text'], output: ['text'] },
-            capabilities: %w[streaming function_calling structured_output reasoning web_search code_interpreter]
+            family: 'gpt-4o',
+            context_window: 128_000,
+            max_output_tokens: 16_384,
+            modalities: { input: %w[text image], output: ['text'] },
+            capabilities: %w[streaming function_calling structured_output vision web_search code_interpreter]
           }
         ].freeze
 

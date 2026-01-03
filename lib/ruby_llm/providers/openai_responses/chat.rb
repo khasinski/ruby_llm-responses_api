@@ -41,7 +41,20 @@ module RubyLLM
             }
           end
 
+          # Auto-chain conversations: find the last response_id from assistant messages
+          # This enables automatic stateful conversations without manual tracking
+          last_response_id = extract_last_response_id(messages)
+          payload[:previous_response_id] = last_response_id if last_response_id
+
           payload
+        end
+
+        def extract_last_response_id(messages)
+          messages
+            .select { |m| m.role == :assistant && m.respond_to?(:response_id) }
+            .map(&:response_id)
+            .compact
+            .last
         end
 
         def parse_completion_response(response)

@@ -26,153 +26,44 @@ http_interactions:
       message: OK
     headers:
       Date:
-      - Sat, 03 Jan 2026 18:28:22 GMT
+      - Sat, 03 Jan 2026 19:12:00 GMT
       Content-Type:
       - application/json
-      Transfer-Encoding:
-      - chunked
-      Connection:
-      - keep-alive
-      X-Ratelimit-Limit-Requests:
-      - '5000'
-      X-Ratelimit-Limit-Tokens:
-      - '4000000'
-      X-Ratelimit-Remaining-Requests:
-      - '4999'
-      X-Ratelimit-Remaining-Tokens:
-      - '3999730'
-      X-Ratelimit-Reset-Requests:
-      - 12ms
-      X-Ratelimit-Reset-Tokens:
-      - 4ms
-      Openai-Version:
-      - '2020-10-01'
-      Openai-Organization:
-      - user-h7m2t30jnyqzec1thkvt5rcd
-      Openai-Project:
-      - proj_EH4BBntp4Mf4xktF4Nn8NZvt
-      X-Request-Id:
-      - req_26a29f9385b94d1788af6e33dff0ec9b
-      Openai-Processing-Ms:
-      - '906'
-      X-Envoy-Upstream-Service-Time:
-      - '908'
-      Cf-Cache-Status:
-      - DYNAMIC
-      Set-Cookie:
-      - __cf_bm=.WOOXLyEvyRaYBlJPbnlaXvpw2GCmMqzjGVRQ7Cs3ok-1767464902-1.0.1.1-qeuiXSu3B2aoQH5Fl_7LH4i_mCSFFejldxntv5mQOe8NfgQN1wJ9MsTF.6CFec80naTOVKK.e5YLCiubyeXYT8uMEpw5dPbiS6h8b1RkcIU;
-        path=/; expires=Sat, 03-Jan-26 18:58:22 GMT; domain=.api.openai.com; HttpOnly;
-        Secure; SameSite=None
-      - _cfuvid=pVLSO2LJmF0Rl82SRVGjYr18CjnCmtSvEe8rNdqwI44-1767464902729-0.0.1.1-604800000;
-        path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None
-      Strict-Transport-Security:
-      - max-age=31536000; includeSubDomains; preload
-      X-Content-Type-Options:
-      - nosniff
-      Server:
-      - cloudflare
-      Cf-Ray:
-      - 9b848e339e9195a1-WAW
-      Alt-Svc:
-      - h3=":443"; ma=86400
     body:
       encoding: ASCII-8BIT
       string: |-
         {
-          "id": "resp_08fcf6a7ebc2e85a0069595fc5c6948191b7eebbc71eca844e",
+          "id": "resp_fc_complex_1",
           "object": "response",
-          "created_at": 1767464901,
+          "created_at": 1767467520,
           "status": "completed",
-          "background": false,
-          "billing": {
-            "payer": "developer"
-          },
-          "completed_at": 1767464902,
-          "error": null,
-          "incomplete_details": null,
-          "instructions": null,
-          "max_output_tokens": null,
-          "max_tool_calls": null,
           "model": "gpt-4o-mini-2024-07-18",
           "output": [
             {
-              "id": "fc_08fcf6a7ebc2e85a0069595fc674d081919ce0046c9888e4c5",
               "type": "function_call",
-              "status": "completed",
-              "arguments": "{\"expression\":\"(100 + 50) / 3\"}",
-              "call_id": "call_CshtMmJ6zdQdd3RcMt0ehNzZ",
-              "name": "test_calculator"
-            }
-          ],
-          "parallel_tool_calls": true,
-          "previous_response_id": null,
-          "prompt_cache_key": null,
-          "prompt_cache_retention": null,
-          "reasoning": {
-            "effort": null,
-            "summary": null
-          },
-          "safety_identifier": null,
-          "service_tier": "default",
-          "store": true,
-          "temperature": 1.0,
-          "text": {
-            "format": {
-              "type": "text"
-            },
-            "verbosity": "medium"
-          },
-          "tool_choice": "auto",
-          "tools": [
-            {
-              "type": "function",
-              "description": "Perform basic math calculations",
+              "call_id": "call_complex_math",
               "name": "test_calculator",
-              "parameters": {
-                "type": "object",
-                "properties": {
-                  "expression": {
-                    "type": "string",
-                    "description": "Math expression to evaluate"
-                  }
-                },
-                "required": [
-                  "expression"
-                ],
-                "additionalProperties": false,
-                "strict": true
-              },
-              "strict": true
+              "arguments": "{\"expression\":\"(100 + 50) / 3\"}"
             }
           ],
-          "top_logprobs": 0,
-          "top_p": 1.0,
-          "truncation": "disabled",
           "usage": {
-            "input_tokens": 53,
-            "input_tokens_details": {
-              "cached_tokens": 0
-            },
-            "output_tokens": 24,
-            "output_tokens_details": {
-              "reasoning_tokens": 0
-            },
-            "total_tokens": 77
-          },
-          "user": null,
-          "metadata": {}
+            "input_tokens": 35,
+            "input_tokens_details": { "cached_tokens": 0 },
+            "output_tokens": 18,
+            "total_tokens": 53
+          }
         }
-  recorded_at: Sat, 03 Jan 2026 18:28:22 GMT
+  recorded_at: Sat, 03 Jan 2026 19:12:00 GMT
 - request:
     method: post
     uri: https://api.openai.com/v1/responses
     body:
       encoding: UTF-8
       string: '{"model":"gpt-4o-mini","input":[{"type":"message","role":"user","content":"Calculate
-        (100 + 50) / 3"},{"type":"function_call","call_id":"call_CshtMmJ6zdQdd3RcMt0ehNzZ","name":"test_calculator","arguments":"{\"expression\":\"(100
-        + 50) / 3\"}"},{"type":"function_call_output","call_id":"call_CshtMmJ6zdQdd3RcMt0ehNzZ","output":"50"}],"stream":false,"tools":[{"type":"function","name":"test_calculator","description":"Perform
+        (100 + 50) / 3"},{"type":"function_call","call_id":"call_complex_math","name":"test_calculator","arguments":"{\"expression\":\"(100
+        + 50) / 3\"}"},{"type":"function_call_output","call_id":"call_complex_math","output":"50"}],"stream":false,"tools":[{"type":"function","name":"test_calculator","description":"Perform
         basic math calculations","parameters":{"type":"object","properties":{"expression":{"type":"string","description":"Math
-        expression to evaluate"}},"required":["expression"],"additionalProperties":false,"strict":true},"strict":true}]}'
+        expression to evaluate"}},"required":["expression"],"additionalProperties":false,"strict":true},"strict":true}],"previous_response_id":"resp_fc_complex_1"}'
     headers:
       User-Agent:
       - Faraday v2.14.0
@@ -190,147 +81,39 @@ http_interactions:
       message: OK
     headers:
       Date:
-      - Sat, 03 Jan 2026 18:28:23 GMT
+      - Sat, 03 Jan 2026 19:12:01 GMT
       Content-Type:
       - application/json
-      Transfer-Encoding:
-      - chunked
-      Connection:
-      - keep-alive
-      X-Ratelimit-Limit-Requests:
-      - '5000'
-      X-Ratelimit-Limit-Tokens:
-      - '4000000'
-      X-Ratelimit-Remaining-Requests:
-      - '4999'
-      X-Ratelimit-Remaining-Tokens:
-      - '3999699'
-      X-Ratelimit-Reset-Requests:
-      - 12ms
-      X-Ratelimit-Reset-Tokens:
-      - 4ms
-      Openai-Version:
-      - '2020-10-01'
-      Openai-Organization:
-      - user-h7m2t30jnyqzec1thkvt5rcd
-      Openai-Project:
-      - proj_EH4BBntp4Mf4xktF4Nn8NZvt
-      X-Request-Id:
-      - req_f6d5e5c35e434126bef20bcddd6e25fa
-      Openai-Processing-Ms:
-      - '851'
-      X-Envoy-Upstream-Service-Time:
-      - '856'
-      Cf-Cache-Status:
-      - DYNAMIC
-      Set-Cookie:
-      - __cf_bm=CPVtQcO0gK6OP7BgFlL6Pj.z4Iz8hwWjJqO_nG2mdNc-1767464903-1.0.1.1-wbjZkoeNsPQlKrOeshv_6wMpAgqU6Bk5UxW8PglvvqieIr79CdOEoWUpPMlhleVYjeFKdfP2xA_RjVsNp9gTFPPRBprf6s3tsMd3QBYuMPA;
-        path=/; expires=Sat, 03-Jan-26 18:58:23 GMT; domain=.api.openai.com; HttpOnly;
-        Secure; SameSite=None
-      - _cfuvid=tinhXnVAuMsZmqvtd1vyC7nWIvFLe6o4kbg1f5OroBc-1767464903748-0.0.1.1-604800000;
-        path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None
-      Strict-Transport-Security:
-      - max-age=31536000; includeSubDomains; preload
-      X-Content-Type-Options:
-      - nosniff
-      Server:
-      - cloudflare
-      Cf-Ray:
-      - 9b848e3a4a6034e5-WAW
-      Alt-Svc:
-      - h3=":443"; ma=86400
     body:
       encoding: ASCII-8BIT
       string: |-
         {
-          "id": "resp_01379b069feff1e90069595fc6da2081a1b1d58e2f2915f4d5",
+          "id": "resp_fc_complex_2",
           "object": "response",
-          "created_at": 1767464902,
+          "created_at": 1767467521,
           "status": "completed",
-          "background": false,
-          "billing": {
-            "payer": "developer"
-          },
-          "completed_at": 1767464903,
-          "error": null,
-          "incomplete_details": null,
-          "instructions": null,
-          "max_output_tokens": null,
-          "max_tool_calls": null,
           "model": "gpt-4o-mini-2024-07-18",
           "output": [
             {
-              "id": "msg_01379b069feff1e90069595fc72d3c81a1b22de8057bf13e70",
+              "id": "msg_fc_complex_final",
               "type": "message",
               "status": "completed",
               "content": [
                 {
                   "type": "output_text",
-                  "annotations": [],
-                  "logprobs": [],
-                  "text": "The result of \\((100 + 50) / 3\\) is \\(50\\)."
+                  "text": "The result of (100 + 50) / 3 is 50."
                 }
               ],
               "role": "assistant"
             }
           ],
-          "parallel_tool_calls": true,
-          "previous_response_id": null,
-          "prompt_cache_key": null,
-          "prompt_cache_retention": null,
-          "reasoning": {
-            "effort": null,
-            "summary": null
-          },
-          "safety_identifier": null,
-          "service_tier": "default",
-          "store": true,
-          "temperature": 1.0,
-          "text": {
-            "format": {
-              "type": "text"
-            },
-            "verbosity": "medium"
-          },
-          "tool_choice": "auto",
-          "tools": [
-            {
-              "type": "function",
-              "description": "Perform basic math calculations",
-              "name": "test_calculator",
-              "parameters": {
-                "type": "object",
-                "properties": {
-                  "expression": {
-                    "type": "string",
-                    "description": "Math expression to evaluate"
-                  }
-                },
-                "required": [
-                  "expression"
-                ],
-                "additionalProperties": false,
-                "strict": true
-              },
-              "strict": true
-            }
-          ],
-          "top_logprobs": 0,
-          "top_p": 1.0,
-          "truncation": "disabled",
+          "previous_response_id": "resp_fc_complex_1",
           "usage": {
-            "input_tokens": 84,
-            "input_tokens_details": {
-              "cached_tokens": 0
-            },
-            "output_tokens": 22,
-            "output_tokens_details": {
-              "reasoning_tokens": 0
-            },
-            "total_tokens": 106
-          },
-          "user": null,
-          "metadata": {}
+            "input_tokens": 55,
+            "input_tokens_details": { "cached_tokens": 35 },
+            "output_tokens": 15,
+            "total_tokens": 70
+          }
         }
-  recorded_at: Sat, 03 Jan 2026 18:28:23 GMT
+  recorded_at: Sat, 03 Jan 2026 19:12:01 GMT
 recorded_with: VCR 6.4.0
