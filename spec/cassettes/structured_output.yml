@@ -24,7 +24,7 @@ http_interactions:
       message: OK
     headers:
       Date:
-      - Sat, 03 Jan 2026 18:28:38 GMT
+      - Sat, 03 Jan 2026 19:45:26 GMT
       Content-Type:
       - application/json
       Transfer-Encoding:
@@ -48,20 +48,20 @@ http_interactions:
       Openai-Organization:
       - user-h7m2t30jnyqzec1thkvt5rcd
       Openai-Project:
-      - proj_EH4BBntp4Mf4xktF4Nn8NZvt
+      - proj_yBBvayevSgRR3SVjSmBgm0so
       X-Request-Id:
-      - req_b09fd57ddb244a6d835db72d4f88679b
+      - req_7af6e6aaefbd40f385263cedcf81a4d2
       Openai-Processing-Ms:
-      - '559'
+      - '1888'
       X-Envoy-Upstream-Service-Time:
-      - '562'
+      - '1893'
       Cf-Cache-Status:
       - DYNAMIC
       Set-Cookie:
-      - __cf_bm=jDtOyj7g2EiG9YwNfkp1_R824_S0OguaoZEqx4nsEXA-1767464918-1.0.1.1-jMUrMYzYMeTsh013t2ndPwP9O2_ON.Ibufd_gqM8xhiyZRlAXYLoH1QBjyDrm3LzT9zVTHp7xBOve1h4rwRluOC4vtOapHluhkiHed.ji9g;
-        path=/; expires=Sat, 03-Jan-26 18:58:38 GMT; domain=.api.openai.com; HttpOnly;
+      - __cf_bm=h4AkJZ5cdzlrLAjC9EhiOJOQnzGNGnM4pxSiEZ9.UGU-1767469526-1.0.1.1-nXsOVu6RvhY3vXuYlKPoEtDA3wn54AMH0iAPeeRLjqlh8GFdO9eU9vSjjXKDjcs3q2rOawfXWymYo7mIAC9seQiePCRLLcYqhmTW8nkuuZI;
+        path=/; expires=Sat, 03-Jan-26 20:15:26 GMT; domain=.api.openai.com; HttpOnly;
         Secure; SameSite=None
-      - _cfuvid=z9xmIPgFSD0pKnUKSTDsvNtlaJNv_o1ja5KthSk5L2k-1767464918835-0.0.1.1-604800000;
+      - _cfuvid=FU.tIj.ixK1g_KuQ150uf_jCzVvXWmuSGhSiL.6z2aM-1767469526871-0.0.1.1-604800000;
         path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None
       Strict-Transport-Security:
       - max-age=31536000; includeSubDomains; preload
@@ -70,22 +70,22 @@ http_interactions:
       Server:
       - cloudflare
       Cf-Ray:
-      - 9b848e9a6f2d3bc1-WAW
+      - 9b84ff1029a10562-WAW
       Alt-Svc:
       - h3=":443"; ma=86400
     body:
       encoding: ASCII-8BIT
       string: |-
         {
-          "id": "resp_00665b140e33f83e0069595fd63ab881a1a7054f4d11e4a7bb",
+          "id": "resp_06f6b7a552a1380f00695971d4eb608195a2c8700c2c25f040",
           "object": "response",
-          "created_at": 1767464918,
+          "created_at": 1767469524,
           "status": "completed",
           "background": false,
           "billing": {
             "payer": "developer"
           },
-          "completed_at": 1767464918,
+          "completed_at": 1767469526,
           "error": null,
           "incomplete_details": null,
           "instructions": null,
@@ -94,7 +94,7 @@ http_interactions:
           "model": "gpt-4o-mini-2024-07-18",
           "output": [
             {
-              "id": "msg_00665b140e33f83e0069595fd66e5c81a1a875499dc7117cbf",
+              "id": "msg_06f6b7a552a1380f00695971d5fd488195b554f9bc45d0993f",
               "type": "message",
               "status": "completed",
               "content": [
@@ -102,7 +102,7 @@ http_interactions:
                   "type": "output_text",
                   "annotations": [],
                   "logprobs": [],
-                  "text": "{\"name\":\"Lila Jensen\",\"age\":28,\"city\":\"Seattle\"}"
+                  "text": "{\"name\":\"Lila Thornton\",\"age\":29,\"city\":\"Savannah\"}"
                 }
               ],
               "role": "assistant"
@@ -159,14 +159,14 @@ http_interactions:
             "input_tokens_details": {
               "cached_tokens": 0
             },
-            "output_tokens": 16,
+            "output_tokens": 17,
             "output_tokens_details": {
               "reasoning_tokens": 0
             },
-            "total_tokens": 71
+            "total_tokens": 72
           },
           "user": null,
           "metadata": {}
         }
-  recorded_at: Sat, 03 Jan 2026 18:28:38 GMT
+  recorded_at: Sat, 03 Jan 2026 19:45:26 GMT
 recorded_with: VCR 6.4.0

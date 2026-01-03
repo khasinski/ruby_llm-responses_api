@@ -62,7 +62,7 @@ http_interactions:
       message: OK
     headers:
       Date:
-      - Sat, 03 Jan 2026 18:27:38 GMT
+      - Sat, 03 Jan 2026 19:45:31 GMT
       Content-Type:
       - application/json
       Transfer-Encoding:
@@ -76,7 +76,7 @@ http_interactions:
       X-Ratelimit-Remaining-Requests:
       - '4999'
       X-Ratelimit-Remaining-Tokens:
-      - '3999465'
+      - '3999464'
       X-Ratelimit-Reset-Requests:
       - 12ms
       X-Ratelimit-Reset-Tokens:
@@ -86,20 +86,20 @@ http_interactions:
       Openai-Organization:
       - user-h7m2t30jnyqzec1thkvt5rcd
       Openai-Project:
-      - proj_EH4BBntp4Mf4xktF4Nn8NZvt
+      - proj_yBBvayevSgRR3SVjSmBgm0so
       X-Request-Id:
-      - req_7d4348d8d2ef4563b7a8c6aca15d6282
+      - req_40d7a491c0004a52936e50063ab819d4
       Openai-Processing-Ms:
-      - '758'
+      - '460'
       X-Envoy-Upstream-Service-Time:
-      - '760'
+      - '464'
       Cf-Cache-Status:
       - DYNAMIC
       Set-Cookie:
-      - __cf_bm=LdOZhzw.cUJQIFKkwr3oRRwtCjXVzevuD3WKfLtYmkI-1767464858-1.0.1.1-igi1K5kQBkQKu353prkKuURPBH49_ZaJ3lVMSPvlqn8925y9I7arCbXCtTKWXbZekeD3J9HbDCsCSj.Y1IQjvKJBKwB.WXl2oLU1yF6PHYY;
-        path=/; expires=Sat, 03-Jan-26 18:57:38 GMT; domain=.api.openai.com; HttpOnly;
+      - __cf_bm=s65_rCpGrU29Gm7C92qi2RGitCp5PU2TbD.KkseWt_E-1767469531-1.0.1.1-SDby85j7l3ASyxVIrCJhPXhw4wqlATUNmIKxdZ6Wi2TbV8Dj77Vx5ll8mIiUQiGZzOdMSX.NDwo1fkALA.TYIbO5r0zdCWDhjskePrSerxA;
+        path=/; expires=Sat, 03-Jan-26 20:15:31 GMT; domain=.api.openai.com; HttpOnly;
         Secure; SameSite=None
-      - _cfuvid=77WRQKDpeQHOmGdOjzJGR9CDQEymoB3ZUxA6uibE2eI-1767464858508-0.0.1.1-604800000;
+      - _cfuvid=acmhHsxSIiVSx9dUTkiR4XmT6SQRFcxVJADZtRDIbXI-1767469531121-0.0.1.1-604800000;
         path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None
       Strict-Transport-Security:
       - max-age=31536000; includeSubDomains; preload
@@ -108,22 +108,22 @@ http_interactions:
       Server:
       - cloudflare
       Cf-Ray:
-      - 9b848d201bc034ee-WAW
+      - 9b84ff359a009a50-WAW
       Alt-Svc:
       - h3=":443"; ma=86400
     body:
       encoding: ASCII-8BIT
       string: |-
         {
-          "id": "resp_03a5ca7e1e0b677d0069595f99b45481a2ae5f2c5958b735f0",
+          "id": "resp_081a7890e25302a100695971da98948196a551cf39847cb9b3",
           "object": "response",
-          "created_at": 1767464857,
+          "created_at": 1767469530,
           "status": "completed",
           "background": false,
           "billing": {
             "payer": "developer"
           },
-          "completed_at": 1767464858,
+          "completed_at": 1767469530,
           "error": null,
           "incomplete_details": null,
           "instructions": null,
@@ -132,7 +132,7 @@ http_interactions:
           "model": "gpt-4o-mini-2024-07-18",
           "output": [
             {
-              "id": "msg_03a5ca7e1e0b677d0069595f9a56d481a2bb9a362c94ede338",
+              "id": "msg_081a7890e25302a100695971dae7fc8196ad459b63b407a9c0",
               "type": "message",
               "status": "completed",
               "content": [
@@ -183,5 +183,5 @@ http_interactions:
           "user": null,
           "metadata": {}
         }
-  recorded_at: Sat, 03 Jan 2026 18:27:38 GMT
+  recorded_at: Sat, 03 Jan 2026 19:45:31 GMT
 recorded_with: VCR 6.4.0

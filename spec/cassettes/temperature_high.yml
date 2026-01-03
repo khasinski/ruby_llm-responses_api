@@ -24,7 +24,7 @@ http_interactions:
       message: OK
     headers:
       Date:
-      - Sat, 03 Jan 2026 18:29:44 GMT
+      - Sat, 03 Jan 2026 19:46:00 GMT
       Content-Type:
       - application/json
       Transfer-Encoding:
@@ -48,20 +48,20 @@ http_interactions:
       Openai-Organization:
       - user-h7m2t30jnyqzec1thkvt5rcd
       Openai-Project:
-      - proj_EH4BBntp4Mf4xktF4Nn8NZvt
+      - proj_yBBvayevSgRR3SVjSmBgm0so
       X-Request-Id:
-      - req_843a68c4975f407f967c4b1aa16010cd
+      - req_01c78b83a21a4af3b75d9dc9d30571fb
       Openai-Processing-Ms:
-      - '1204'
+      - '1257'
       X-Envoy-Upstream-Service-Time:
-      - '1208'
+      - '1261'
       Cf-Cache-Status:
       - DYNAMIC
       Set-Cookie:
-      - __cf_bm=s9vT3q8Z9gZpiTkhFVPfyIe6vC62JusLScvPPar4lj0-1767464984-1.0.1.1-KKtgct7f_Eknwv7Dpd1yLHHI9QFcGhRt7i.ees9fFqgD3s.D.Si0pIhNRrRrQMVlUnMUAUwPpQjXvnvNkTHU2NYPH7Tlq7c98oRdnQFWBes;
-        path=/; expires=Sat, 03-Jan-26 18:59:44 GMT; domain=.api.openai.com; HttpOnly;
+      - __cf_bm=MTdAYnT4wx0nXYpC86ZeSLe6eAf9jJSm8xMJUgXYySI-1767469560-1.0.1.1-.qo5b3mX2pKpvKjN75Fsn6P9sdBlmwjOCVrEI4aIsDv2CwoEL58OL2Wuiaok1ykhBmDgGYln.fmeFcJgOBdkYXPYfxu98ddfDx.4W_GLboI;
+        path=/; expires=Sat, 03-Jan-26 20:16:00 GMT; domain=.api.openai.com; HttpOnly;
         Secure; SameSite=None
-      - _cfuvid=V6hYVBlke3h1uvPLuuSTdKnFPUWCk62yAIFWTjO4FqU-1767464984247-0.0.1.1-604800000;
+      - _cfuvid=6gfJJdqNe6T3o9vhmeoCu1r8RxyuTKa3EX4VptZGGh8-1767469560072-0.0.1.1-604800000;
         path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None
       Strict-Transport-Security:
       - max-age=31536000; includeSubDomains; preload
@@ -70,22 +70,22 @@ http_interactions:
       Server:
       - cloudflare
       Cf-Ray:
-      - 9b84902f0c21704f-WAW
+      - 9b84ffe58f927ac9-WAW
       Alt-Svc:
       - h3=":443"; ma=86400
     body:
       encoding: ASCII-8BIT
       string: |-
         {
-          "id": "resp_0c10e3e0b0abaeec0069596016fc608190b1fe8d0fe595b505",
+          "id": "resp_06472d6e67d9ae0100695971f6c2388197a77c4bc07a2cd8f6",
           "object": "response",
-          "created_at": 1767464983,
+          "created_at": 1767469558,
           "status": "completed",
           "background": false,
           "billing": {
             "payer": "developer"
           },
-          "completed_at": 1767464984,
+          "completed_at": 1767469559,
           "error": null,
           "incomplete_details": null,
           "instructions": null,
@@ -94,7 +94,7 @@ http_interactions:
           "model": "gpt-4o-mini-2024-07-18",
           "output": [
             {
-              "id": "msg_0c10e3e0b0abaeec00695960174188819096f8828051133cde",
+              "id": "msg_06472d6e67d9ae0100695971f70a3c81979b81761e7fdc2066",
               "type": "message",
               "status": "completed",
               "content": [
@@ -102,7 +102,7 @@ http_interactions:
                   "type": "output_text",
                   "annotations": [],
                   "logprobs": [],
-                  "text": "As the stars winked out one by one, the last firefly perched on the edge of a forgotten teacup, determined to light up the world with memories of waltzing through twilight."
+                  "text": "As the clock struck midnight, the forgotten bookshop came alive with whispers of its long-lost characters dancing unbidden through its aisles, searching for the readers who once loved their tales."
                 }
               ],
               "role": "assistant"
@@ -136,14 +136,14 @@ http_interactions:
             "input_tokens_details": {
               "cached_tokens": 0
             },
-            "output_tokens": 41,
+            "output_tokens": 39,
             "output_tokens_details": {
               "reasoning_tokens": 0
             },
-            "total_tokens": 56
+            "total_tokens": 54
           },
           "user": null,
           "metadata": {}
         }
-  recorded_at: Sat, 03 Jan 2026 18:29:44 GMT
+  recorded_at: Sat, 03 Jan 2026 19:46:00 GMT
 recorded_with: VCR 6.4.0

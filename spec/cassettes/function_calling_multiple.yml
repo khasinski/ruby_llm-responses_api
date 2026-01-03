@@ -28,53 +28,184 @@ http_interactions:
       message: OK
     headers:
       Date:
-      - Sat, 03 Jan 2026 19:11:00 GMT
+      - Sat, 03 Jan 2026 19:45:55 GMT
       Content-Type:
       - application/json
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      X-Ratelimit-Limit-Requests:
+      - '5000'
+      X-Ratelimit-Limit-Tokens:
+      - '4000000'
+      X-Ratelimit-Remaining-Requests:
+      - '4999'
+      X-Ratelimit-Remaining-Tokens:
+      - '3999699'
+      X-Ratelimit-Reset-Requests:
+      - 12ms
+      X-Ratelimit-Reset-Tokens:
+      - 4ms
+      Openai-Version:
+      - '2020-10-01'
+      Openai-Organization:
+      - user-h7m2t30jnyqzec1thkvt5rcd
+      Openai-Project:
+      - proj_yBBvayevSgRR3SVjSmBgm0so
+      X-Request-Id:
+      - req_010419ede2304e6bbcdfabe3766c66c0
+      Openai-Processing-Ms:
+      - '1515'
+      X-Envoy-Upstream-Service-Time:
+      - '1519'
+      Cf-Cache-Status:
+      - DYNAMIC
+      Set-Cookie:
+      - __cf_bm=axkgcqOPY7Th0GGx4AgWmTYaYsph9AT9dPIjxZZtX2U-1767469555-1.0.1.1-WFS.3VLONBAJhC7FC4FeN.xwin4aOQzJO_D6U3n6YiYYUA7928xtltm3jMbF6VY9RdYEwLufNAGA7H446h9.VA2h7UVKzYIEHRPauikhVMs;
+        path=/; expires=Sat, 03-Jan-26 20:15:55 GMT; domain=.api.openai.com; HttpOnly;
+        Secure; SameSite=None
+      - _cfuvid=XZ0IpHcT2ep1C5kKFjXxsUGdQZf79iqe4WbWIlVUC48-1767469555980-0.0.1.1-604800000;
+        path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      X-Content-Type-Options:
+      - nosniff
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 9b84ffca6ed2b617-WAW
+      Alt-Svc:
+      - h3=":443"; ma=86400
     body:
       encoding: ASCII-8BIT
       string: |-
         {
-          "id": "resp_fc_multi_1",
+          "id": "resp_0a4196b7bcc23a9a00695971f2679c81959f5bff8a7b254dcc",
           "object": "response",
-          "created_at": 1767467460,
+          "created_at": 1767469554,
           "status": "completed",
+          "background": false,
+          "billing": {
+            "payer": "developer"
+          },
+          "completed_at": 1767469555,
+          "error": null,
+          "incomplete_details": null,
+          "instructions": null,
+          "max_output_tokens": null,
+          "max_tool_calls": null,
           "model": "gpt-4o-mini-2024-07-18",
           "output": [
             {
+              "id": "fc_0a4196b7bcc23a9a00695971f347648195bd604c6a0cb0a69a",
               "type": "function_call",
-              "call_id": "call_paris_weather",
-              "name": "test_weather",
-              "arguments": "{\"location\":\"Paris\"}"
+              "status": "completed",
+              "arguments": "{\"location\":\"Paris\"}",
+              "call_id": "call_tpQnWxcLwwtXGxKVBX7aNKHd",
+              "name": "test_weather"
             },
             {
+              "id": "fc_0a4196b7bcc23a9a00695971f387fc8195adb2dde6f92a655c",
               "type": "function_call",
-              "call_id": "call_math_15x7",
-              "name": "test_calculator",
-              "arguments": "{\"expression\":\"15 * 7\"}"
+              "status": "completed",
+              "arguments": "{\"expression\":\"15 * 7\"}",
+              "call_id": "call_u8GFjLeudyLAyqTcU07cf8Ib",
+              "name": "test_calculator"
             }
           ],
+          "parallel_tool_calls": true,
+          "previous_response_id": null,
+          "prompt_cache_key": null,
+          "prompt_cache_retention": null,
+          "reasoning": {
+            "effort": null,
+            "summary": null
+          },
+          "safety_identifier": null,
+          "service_tier": "default",
+          "store": true,
+          "temperature": 1.0,
+          "text": {
+            "format": {
+              "type": "text"
+            },
+            "verbosity": "medium"
+          },
+          "tool_choice": "auto",
+          "tools": [
+            {
+              "type": "function",
+              "description": "Get the current weather for a location",
+              "name": "test_weather",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "location": {
+                    "type": "string",
+                    "description": "The city name"
+                  }
+                },
+                "required": [
+                  "location"
+                ],
+                "additionalProperties": false,
+                "strict": true
+              },
+              "strict": true
+            },
+            {
+              "type": "function",
+              "description": "Perform basic math calculations",
+              "name": "test_calculator",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "expression": {
+                    "type": "string",
+                    "description": "Math expression to evaluate"
+                  }
+                },
+                "required": [
+                  "expression"
+                ],
+                "additionalProperties": false,
+                "strict": true
+              },
+              "strict": true
+            }
+          ],
+          "top_logprobs": 0,
+          "top_p": 1.0,
+          "truncation": "disabled",
           "usage": {
-            "input_tokens": 50,
-            "input_tokens_details": { "cached_tokens": 0 },
-            "output_tokens": 30,
-            "total_tokens": 80
-          }
+            "input_tokens": 42,
+            "input_tokens_details": {
+              "cached_tokens": 0
+            },
+            "output_tokens": 48,
+            "output_tokens_details": {
+              "reasoning_tokens": 0
+            },
+            "total_tokens": 90
+          },
+          "user": null,
+          "metadata": {}
         }
-  recorded_at: Sat, 03 Jan 2026 19:11:00 GMT
+  recorded_at: Sat, 03 Jan 2026 19:45:55 GMT
 - request:
     method: post
     uri: https://api.openai.com/v1/responses
     body:
       encoding: UTF-8
       string: '{"model":"gpt-4o-mini","input":[{"type":"message","role":"user","content":"What''s
-        the weather in Paris and what is 15 * 7?"},{"type":"function_call","call_id":"call_paris_weather","name":"test_weather","arguments":"{\"location\":\"Paris\"}"},{"type":"function_call","call_id":"call_math_15x7","name":"test_calculator","arguments":"{\"expression\":\"15
-        * 7\"}"},{"type":"function_call_output","call_id":"call_paris_weather","output":"The
-        weather in Paris is sunny, 72°F"},{"type":"function_call_output","call_id":"call_math_15x7","output":"105"}],"stream":false,"tools":[{"type":"function","name":"test_weather","description":"Get
+        the weather in Paris and what is 15 * 7?"},{"type":"function_call","call_id":"call_tpQnWxcLwwtXGxKVBX7aNKHd","name":"test_weather","arguments":"{\"location\":\"Paris\"}"},{"type":"function_call","call_id":"call_u8GFjLeudyLAyqTcU07cf8Ib","name":"test_calculator","arguments":"{\"expression\":\"15
+        * 7\"}"},{"type":"function_call_output","call_id":"call_tpQnWxcLwwtXGxKVBX7aNKHd","output":"The
+        weather in Paris is sunny, 72°F"},{"type":"function_call_output","call_id":"call_u8GFjLeudyLAyqTcU07cf8Ib","output":"105"}],"stream":false,"tools":[{"type":"function","name":"test_weather","description":"Get
         the current weather for a location","parameters":{"type":"object","properties":{"location":{"type":"string","description":"The
         city name"}},"required":["location"],"additionalProperties":false,"strict":true},"strict":true},{"type":"function","name":"test_calculator","description":"Perform
         basic math calculations","parameters":{"type":"object","properties":{"expression":{"type":"string","description":"Math
-        expression to evaluate"}},"required":["expression"],"additionalProperties":false,"strict":true},"strict":true}],"previous_response_id":"resp_fc_multi_1"}'
+        expression to evaluate"}},"required":["expression"],"additionalProperties":false,"strict":true},"strict":true}],"previous_response_id":"resp_0a4196b7bcc23a9a00695971f2679c81959f5bff8a7b254dcc"}'
     headers:
       User-Agent:
       - Faraday v2.14.0
@@ -92,39 +223,167 @@ http_interactions:
       message: OK
     headers:
       Date:
-      - Sat, 03 Jan 2026 19:11:01 GMT
+      - Sat, 03 Jan 2026 19:45:57 GMT
       Content-Type:
       - application/json
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      X-Ratelimit-Limit-Requests:
+      - '5000'
+      X-Ratelimit-Limit-Tokens:
+      - '4000000'
+      X-Ratelimit-Remaining-Requests:
+      - '4999'
+      X-Ratelimit-Remaining-Tokens:
+      - '3999593'
+      X-Ratelimit-Reset-Requests:
+      - 12ms
+      X-Ratelimit-Reset-Tokens:
+      - 6ms
+      Openai-Version:
+      - '2020-10-01'
+      Openai-Organization:
+      - user-h7m2t30jnyqzec1thkvt5rcd
+      Openai-Project:
+      - proj_yBBvayevSgRR3SVjSmBgm0so
+      X-Request-Id:
+      - req_d07224a6d7f04ea6a38835d8177ba93c
+      Openai-Processing-Ms:
+      - '1028'
+      X-Envoy-Upstream-Service-Time:
+      - '1031'
+      Cf-Cache-Status:
+      - DYNAMIC
+      Set-Cookie:
+      - __cf_bm=y52NnVBV5LiwjK9X0lpJ30HbONlPZizmSKm1M4ivLgo-1767469557-1.0.1.1-VQC.fksFiZyxzZcJFHHXEBBcZCStoHfxn26OQtGOimgb.QR6Qb3hDT7.mqTdXrYHYjrhW32fmprKC4Zqb6aoiyq23xJVGF9HRP8aWfZCMyQ;
+        path=/; expires=Sat, 03-Jan-26 20:15:57 GMT; domain=.api.openai.com; HttpOnly;
+        Secure; SameSite=None
+      - _cfuvid=MJfsri7c8ufXqezVD92NJbXlpWFYGI7vVe9Ykgn21Bc-1767469557220-0.0.1.1-604800000;
+        path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      X-Content-Type-Options:
+      - nosniff
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 9b84ffd52d78a0cf-WAW
+      Alt-Svc:
+      - h3=":443"; ma=86400
     body:
       encoding: ASCII-8BIT
       string: |-
         {
-          "id": "resp_fc_multi_2",
+          "id": "resp_0a4196b7bcc23a9a00695971f420948195ba6bd39fd6a5e320",
           "object": "response",
-          "created_at": 1767467461,
+          "created_at": 1767469556,
           "status": "completed",
+          "background": false,
+          "billing": {
+            "payer": "developer"
+          },
+          "completed_at": 1767469557,
+          "error": null,
+          "incomplete_details": null,
+          "instructions": null,
+          "max_output_tokens": null,
+          "max_tool_calls": null,
           "model": "gpt-4o-mini-2024-07-18",
           "output": [
             {
-              "id": "msg_fc_multi_final",
+              "id": "msg_0a4196b7bcc23a9a00695971f48a708195b03d984d0d2e7019",
               "type": "message",
               "status": "completed",
               "content": [
                 {
                   "type": "output_text",
-                  "text": "The weather in Paris is sunny with a temperature of 72°F. And 15 multiplied by 7 equals 105."
+                  "annotations": [],
+                  "logprobs": [],
+                  "text": "The weather in Paris is sunny with a temperature of 72\u00b0F. Additionally, \\( 15 \\times 7 = 105 \\)."
                 }
               ],
               "role": "assistant"
             }
           ],
-          "previous_response_id": "resp_fc_multi_1",
+          "parallel_tool_calls": true,
+          "previous_response_id": "resp_0a4196b7bcc23a9a00695971f2679c81959f5bff8a7b254dcc",
+          "prompt_cache_key": null,
+          "prompt_cache_retention": null,
+          "reasoning": {
+            "effort": null,
+            "summary": null
+          },
+          "safety_identifier": null,
+          "service_tier": "default",
+          "store": true,
+          "temperature": 1.0,
+          "text": {
+            "format": {
+              "type": "text"
+            },
+            "verbosity": "medium"
+          },
+          "tool_choice": "auto",
+          "tools": [
+            {
+              "type": "function",
+              "description": "Get the current weather for a location",
+              "name": "test_weather",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "location": {
+                    "type": "string",
+                    "description": "The city name"
+                  }
+                },
+                "required": [
+                  "location"
+                ],
+                "additionalProperties": false,
+                "strict": true
+              },
+              "strict": true
+            },
+            {
+              "type": "function",
+              "description": "Perform basic math calculations",
+              "name": "test_calculator",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "expression": {
+                    "type": "string",
+                    "description": "Math expression to evaluate"
+                  }
+                },
+                "required": [
+                  "expression"
+                ],
+                "additionalProperties": false,
+                "strict": true
+              },
+              "strict": true
+            }
+          ],
+          "top_logprobs": 0,
+          "top_p": 1.0,
+          "truncation": "disabled",
           "usage": {
-            "input_tokens": 80,
-            "input_tokens_details": { "cached_tokens": 50 },
-            "output_tokens": 25,
-            "total_tokens": 105
-          }
+            "input_tokens": 190,
+            "input_tokens_details": {
+              "cached_tokens": 0
+            },
+            "output_tokens": 30,
+            "output_tokens_details": {
+              "reasoning_tokens": 0
+            },
+            "total_tokens": 220
+          },
+          "user": null,
+          "metadata": {}
         }
-  recorded_at: Sat, 03 Jan 2026 19:11:01 GMT
+  recorded_at: Sat, 03 Jan 2026 19:45:57 GMT
 recorded_with: VCR 6.4.0

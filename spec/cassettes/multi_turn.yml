@@ -5,7 +5,8 @@ http_interactions:
     uri: https://api.openai.com/v1/responses
     body:
       encoding: UTF-8
-      string: '{"model":"gpt-4o-mini","input":[{"type":"message","role":"user","content":"My favorite color is blue. Remember that."}],"stream":false}'
+      string: '{"model":"gpt-4o-mini","input":[{"type":"message","role":"user","content":"My
+        favorite color is blue. Remember that."}],"stream":false}'
     headers:
       User-Agent:
       - Faraday v2.14.0
@@ -23,64 +24,138 @@ http_interactions:
       message: OK
     headers:
       Date:
-      - Sat, 03 Jan 2026 19:00:00 GMT
+      - Sat, 03 Jan 2026 19:46:06 GMT
       Content-Type:
       - application/json
       Transfer-Encoding:
       - chunked
       Connection:
       - keep-alive
+      X-Ratelimit-Limit-Requests:
+      - '5000'
+      X-Ratelimit-Limit-Tokens:
+      - '4000000'
+      X-Ratelimit-Remaining-Requests:
+      - '4999'
+      X-Ratelimit-Remaining-Tokens:
+      - '3999965'
+      X-Ratelimit-Reset-Requests:
+      - 12ms
+      X-Ratelimit-Reset-Tokens:
+      - 0s
+      Openai-Version:
+      - '2020-10-01'
+      Openai-Organization:
+      - user-h7m2t30jnyqzec1thkvt5rcd
+      Openai-Project:
+      - proj_yBBvayevSgRR3SVjSmBgm0so
       X-Request-Id:
-      - req_multi_turn_1
+      - req_4d927ff3f8164426ba9b794f8005cc1f
       Openai-Processing-Ms:
-      - '500'
+      - '824'
+      X-Envoy-Upstream-Service-Time:
+      - '827'
+      Cf-Cache-Status:
+      - DYNAMIC
+      Set-Cookie:
+      - __cf_bm=p3LxL9yhgvPOTevL7onKAPP4rgpX7Xv2Rza7JJMeIlY-1767469566-1.0.1.1-FADViL38DbQlK4Ie2XIsS_0VxX8iKPOfYaedoZXzEh9hKDATCNue2Fw2WOhXRPaj3op42Z86BUagyfKF0j.0VNqYpNBdQgxaYP5ODL9YPM4;
+        path=/; expires=Sat, 03-Jan-26 20:16:06 GMT; domain=.api.openai.com; HttpOnly;
+        Secure; SameSite=None
+      - _cfuvid=b8d7AKIHymV3SoEQboDo1i5rlv6wIO1kUVIXs4pQvEQ-1767469566815-0.0.1.1-604800000;
+        path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      X-Content-Type-Options:
+      - nosniff
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 9b8500126931bf6a-WAW
+      Alt-Svc:
+      - h3=":443"; ma=86400
     body:
       encoding: ASCII-8BIT
       string: |-
         {
-          "id": "resp_multi_turn_first",
+          "id": "resp_0b5342d15fb328ca00695971fdea088197971b4b26166a9cd6",
           "object": "response",
-          "created_at": 1767466800,
+          "created_at": 1767469565,
           "status": "completed",
+          "background": false,
+          "billing": {
+            "payer": "developer"
+          },
+          "completed_at": 1767469566,
+          "error": null,
+          "incomplete_details": null,
+          "instructions": null,
+          "max_output_tokens": null,
+          "max_tool_calls": null,
           "model": "gpt-4o-mini-2024-07-18",
           "output": [
             {
-              "id": "msg_multi_turn_first",
+              "id": "msg_0b5342d15fb328ca00695971fe3b7481979f8736a0eac14cae",
               "type": "message",
               "status": "completed",
               "content": [
                 {
                   "type": "output_text",
                   "annotations": [],
-                  "text": "I will remember that your favorite color is blue!"
+                  "logprobs": [],
+                  "text": "Got it! Your favorite color is blue. If you have any other preferences or questions, feel free to share!"
                 }
               ],
               "role": "assistant"
             }
           ],
+          "parallel_tool_calls": true,
           "previous_response_id": null,
+          "prompt_cache_key": null,
+          "prompt_cache_retention": null,
+          "reasoning": {
+            "effort": null,
+            "summary": null
+          },
+          "safety_identifier": null,
+          "service_tier": "default",
+          "store": true,
+          "temperature": 1.0,
+          "text": {
+            "format": {
+              "type": "text"
+            },
+            "verbosity": "medium"
+          },
+          "tool_choice": "auto",
+          "tools": [],
+          "top_logprobs": 0,
+          "top_p": 1.0,
+          "truncation": "disabled",
           "usage": {
-            "input_tokens": 15,
+            "input_tokens": 16,
             "input_tokens_details": {
               "cached_tokens": 0
             },
-            "output_tokens": 12,
+            "output_tokens": 24,
             "output_tokens_details": {
               "reasoning_tokens": 0
             },
-            "total_tokens": 27
-          }
+            "total_tokens": 40
+          },
+          "user": null,
+          "metadata": {}
         }
-  recorded_at: Sat, 03 Jan 2026 19:00:00 GMT
+  recorded_at: Sat, 03 Jan 2026 19:46:06 GMT
 - request:
     method: post
     uri: https://api.openai.com/v1/responses
     body:
       encoding: UTF-8
       string: '{"model":"gpt-4o-mini","input":[{"type":"message","role":"user","content":"My
-        favorite color is blue. Remember that."},{"type":"message","role":"assistant","content":"I
-        will remember that your favorite color is blue!"},{"type":"message","role":"user","content":"What
-        is my favorite color?"}],"stream":false,"previous_response_id":"resp_multi_turn_first"}'
+        favorite color is blue. Remember that."},{"type":"message","role":"assistant","content":"Got
+        it! Your favorite color is blue. If you have any other preferences or questions,
+        feel free to share!"},{"type":"message","role":"user","content":"What is my
+        favorite color?"}],"stream":false,"previous_response_id":"resp_0b5342d15fb328ca00695971fdea088197971b4b26166a9cd6"}'
     headers:
       User-Agent:
       - Faraday v2.14.0
@@ -98,53 +173,126 @@ http_interactions:
       message: OK
     headers:
       Date:
-      - Sat, 03 Jan 2026 19:00:01 GMT
+      - Sat, 03 Jan 2026 19:46:07 GMT
       Content-Type:
       - application/json
       Transfer-Encoding:
       - chunked
       Connection:
       - keep-alive
+      X-Ratelimit-Limit-Requests:
+      - '5000'
+      X-Ratelimit-Limit-Tokens:
+      - '4000000'
+      X-Ratelimit-Remaining-Requests:
+      - '4999'
+      X-Ratelimit-Remaining-Tokens:
+      - '3999888'
+      X-Ratelimit-Reset-Requests:
+      - 12ms
+      X-Ratelimit-Reset-Tokens:
+      - 1ms
+      Openai-Version:
+      - '2020-10-01'
+      Openai-Organization:
+      - user-h7m2t30jnyqzec1thkvt5rcd
+      Openai-Project:
+      - proj_yBBvayevSgRR3SVjSmBgm0so
       X-Request-Id:
-      - req_multi_turn_2
+      - req_59fc2a85fa1848a793636a1ef6108892
       Openai-Processing-Ms:
-      - '450'
+      - '759'
+      X-Envoy-Upstream-Service-Time:
+      - '763'
+      Cf-Cache-Status:
+      - DYNAMIC
+      Set-Cookie:
+      - __cf_bm=vAkjrZoIi8p1TdGdODpKU7HQ5YM6LtAdlxd8SXz.l9Q-1767469567-1.0.1.1-dW1jzUM_Dpx9FbEAAECbF6bVUh1D7kkAllUNubnraZqsGtG9w00iD_fifx4V2TCyT.DkKuR0YEJGSkDYhJk9fp0JYkBMZ0ksMd.aSB.JEY0;
+        path=/; expires=Sat, 03-Jan-26 20:16:07 GMT; domain=.api.openai.com; HttpOnly;
+        Secure; SameSite=None
+      - _cfuvid=zznL7Yv_31t.phkpNauWVeRxt4LWrK.LedM2NHsosrA-1767469567784-0.0.1.1-604800000;
+        path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      X-Content-Type-Options:
+      - nosniff
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 9b850018db248174-WAW
+      Alt-Svc:
+      - h3=":443"; ma=86400
     body:
       encoding: ASCII-8BIT
       string: |-
         {
-          "id": "resp_multi_turn_second",
+          "id": "resp_0b5342d15fb328ca00695971fef4cc8197a501ffc96d320953",
           "object": "response",
-          "created_at": 1767466801,
+          "created_at": 1767469567,
           "status": "completed",
+          "background": false,
+          "billing": {
+            "payer": "developer"
+          },
+          "completed_at": 1767469567,
+          "error": null,
+          "incomplete_details": null,
+          "instructions": null,
+          "max_output_tokens": null,
+          "max_tool_calls": null,
           "model": "gpt-4o-mini-2024-07-18",
           "output": [
             {
-              "id": "msg_multi_turn_second",
+              "id": "msg_0b5342d15fb328ca00695971ff8c448197a4a8c234bc910930",
               "type": "message",
               "status": "completed",
               "content": [
                 {
                   "type": "output_text",
                   "annotations": [],
+                  "logprobs": [],
                   "text": "Your favorite color is blue!"
                 }
               ],
               "role": "assistant"
             }
           ],
-          "previous_response_id": "resp_multi_turn_first",
-          "usage": {
-            "input_tokens": 35,
-            "input_tokens_details": {
-              "cached_tokens": 15
+          "parallel_tool_calls": true,
+          "previous_response_id": "resp_0b5342d15fb328ca00695971fdea088197971b4b26166a9cd6",
+          "prompt_cache_key": null,
+          "prompt_cache_retention": null,
+          "reasoning": {
+            "effort": null,
+            "summary": null
+          },
+          "safety_identifier": null,
+          "service_tier": "default",
+          "store": true,
+          "temperature": 1.0,
+          "text": {
+            "format": {
+              "type": "text"
             },
-            "output_tokens": 8,
+            "verbosity": "medium"
+          },
+          "tool_choice": "auto",
+          "tools": [],
+          "top_logprobs": 0,
+          "top_p": 1.0,
+          "truncation": "disabled",
+          "usage": {
+            "input_tokens": 93,
+            "input_tokens_details": {
+              "cached_tokens": 0
+            },
+            "output_tokens": 7,
             "output_tokens_details": {
               "reasoning_tokens": 0
             },
-            "total_tokens": 43
-          }
+            "total_tokens": 100
+          },
+          "user": null,
+          "metadata": {}
         }
-  recorded_at: Sat, 03 Jan 2026 19:00:01 GMT
+  recorded_at: Sat, 03 Jan 2026 19:46:07 GMT
 recorded_with: VCR 6.4.0

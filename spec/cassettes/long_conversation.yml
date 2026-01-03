@@ -5,7 +5,8 @@ http_interactions:
     uri: https://api.openai.com/v1/responses
     body:
       encoding: UTF-8
-      string: '{"model":"gpt-4o-mini","input":[{"type":"message","role":"user","content":"My name is Alice."}],"stream":false}'
+      string: '{"model":"gpt-4o-mini","input":[{"type":"message","role":"user","content":"My
+        name is Alice."}],"stream":false}'
     headers:
       User-Agent:
       - Faraday v2.14.0
@@ -23,199 +24,128 @@ http_interactions:
       message: OK
     headers:
       Date:
-      - Sat, 03 Jan 2026 19:05:00 GMT
+      - Sat, 03 Jan 2026 19:46:01 GMT
       Content-Type:
       - application/json
       Transfer-Encoding:
       - chunked
       Connection:
       - keep-alive
+      X-Ratelimit-Limit-Requests:
+      - '5000'
+      X-Ratelimit-Limit-Tokens:
+      - '4000000'
+      X-Ratelimit-Remaining-Requests:
+      - '4999'
+      X-Ratelimit-Remaining-Tokens:
+      - '3999969'
+      X-Ratelimit-Reset-Requests:
+      - 12ms
+      X-Ratelimit-Reset-Tokens:
+      - 0s
+      Openai-Version:
+      - '2020-10-01'
+      Openai-Organization:
+      - user-h7m2t30jnyqzec1thkvt5rcd
+      Openai-Project:
+      - proj_yBBvayevSgRR3SVjSmBgm0so
       X-Request-Id:
-      - req_long_conv_1
+      - req_a4df5e4b7c704ce799c5887b3fccc8ef
       Openai-Processing-Ms:
-      - '500'
+      - '744'
+      X-Envoy-Upstream-Service-Time:
+      - '746'
+      Cf-Cache-Status:
+      - DYNAMIC
+      Set-Cookie:
+      - __cf_bm=gGbcg7WChZdWMwB4h2Ax7H0T0GDggd8_NkRbFyHIWps-1767469561-1.0.1.1-Kvy9IOndYYBMyv160tV2w6xA_7cchzWytNJHP.LY69.Ut8HIqKurU8fGygrEmbF7kT6uzRgrR_gX8QOJQNYxDd9mSjGiXkvbSe8aPScQKdw;
+        path=/; expires=Sat, 03-Jan-26 20:16:01 GMT; domain=.api.openai.com; HttpOnly;
+        Secure; SameSite=None
+      - _cfuvid=F_d96jYdbEyh_E4Ht9oqUhapLGyyMnLYQc4jqs_Ck2k-1767469561074-0.0.1.1-604800000;
+        path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      X-Content-Type-Options:
+      - nosniff
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 9b84ffeedae6bfb9-WAW
+      Alt-Svc:
+      - h3=":443"; ma=86400
     body:
       encoding: ASCII-8BIT
       string: |-
         {
-          "id": "resp_long_conv_1",
+          "id": "resp_0602612c3380dc5b00695971f844e88197a54e1718d368e273",
           "object": "response",
-          "created_at": 1767467100,
+          "created_at": 1767469560,
           "status": "completed",
+          "background": false,
+          "billing": {
+            "payer": "developer"
+          },
+          "completed_at": 1767469560,
+          "error": null,
+          "incomplete_details": null,
+          "instructions": null,
+          "max_output_tokens": null,
+          "max_tool_calls": null,
           "model": "gpt-4o-mini-2024-07-18",
           "output": [
             {
-              "id": "msg_long_conv_1",
+              "id": "msg_0602612c3380dc5b00695971f89d3c8197ab95b02a3adbcfcf",
               "type": "message",
               "status": "completed",
               "content": [
                 {
                   "type": "output_text",
                   "annotations": [],
-                  "text": "Nice to meet you, Alice!"
+                  "logprobs": [],
+                  "text": "Nice to meet you, Alice! How can I assist you today?"
                 }
               ],
               "role": "assistant"
             }
           ],
+          "parallel_tool_calls": true,
           "previous_response_id": null,
+          "prompt_cache_key": null,
+          "prompt_cache_retention": null,
+          "reasoning": {
+            "effort": null,
+            "summary": null
+          },
+          "safety_identifier": null,
+          "service_tier": "default",
+          "store": true,
+          "temperature": 1.0,
+          "text": {
+            "format": {
+              "type": "text"
+            },
+            "verbosity": "medium"
+          },
+          "tool_choice": "auto",
+          "tools": [],
+          "top_logprobs": 0,
+          "top_p": 1.0,
+          "truncation": "disabled",
           "usage": {
-            "input_tokens": 10,
+            "input_tokens": 12,
             "input_tokens_details": {
               "cached_tokens": 0
             },
-            "output_tokens": 8,
+            "output_tokens": 15,
             "output_tokens_details": {
               "reasoning_tokens": 0
             },
-            "total_tokens": 18
-          }
+            "total_tokens": 27
+          },
+          "user": null,
+          "metadata": {}
         }
-  recorded_at: Sat, 03 Jan 2026 19:05:00 GMT
-- request:
-    method: post
-    uri: https://api.openai.com/v1/responses
-    body:
-      encoding: UTF-8
-      string: '{"model":"gpt-4o-mini","input":[{"type":"message","role":"user","content":"My name is Alice."},{"type":"message","role":"assistant","content":"Nice to meet you, Alice!"},{"type":"message","role":"user","content":"I live in Seattle."}],"stream":false,"previous_response_id":"resp_long_conv_1"}'
-    headers:
-      User-Agent:
-      - Faraday v2.14.0
-      Authorization:
-      - Bearer <OPENAI_API_KEY>
-      Content-Type:
-      - application/json
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-      Accept:
-      - "*/*"
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Date:
-      - Sat, 03 Jan 2026 19:05:01 GMT
-      Content-Type:
-      - application/json
-      Transfer-Encoding:
-      - chunked
-      Connection:
-      - keep-alive
-      X-Request-Id:
-      - req_long_conv_2
-      Openai-Processing-Ms:
-      - '480'
-    body:
-      encoding: ASCII-8BIT
-      string: |-
-        {
-          "id": "resp_long_conv_2",
-          "object": "response",
-          "created_at": 1767467101,
-          "status": "completed",
-          "model": "gpt-4o-mini-2024-07-18",
-          "output": [
-            {
-              "id": "msg_long_conv_2",
-              "type": "message",
-              "status": "completed",
-              "content": [
-                {
-                  "type": "output_text",
-                  "annotations": [],
-                  "text": "Seattle is a beautiful city! Great choice."
-                }
-              ],
-              "role": "assistant"
-            }
-          ],
-          "previous_response_id": "resp_long_conv_1",
-          "usage": {
-            "input_tokens": 25,
-            "input_tokens_details": {
-              "cached_tokens": 10
-            },
-            "output_tokens": 10,
-            "output_tokens_details": {
-              "reasoning_tokens": 0
-            },
-            "total_tokens": 35
-          }
-        }
-  recorded_at: Sat, 03 Jan 2026 19:05:01 GMT
-- request:
-    method: post
-    uri: https://api.openai.com/v1/responses
-    body:
-      encoding: UTF-8
-      string: '{"model":"gpt-4o-mini","input":[{"type":"message","role":"user","content":"My name is Alice."},{"type":"message","role":"assistant","content":"Nice to meet you, Alice!"},{"type":"message","role":"user","content":"I live in Seattle."},{"type":"message","role":"assistant","content":"Seattle is a beautiful city! Great choice."},{"type":"message","role":"user","content":"I work as an engineer."}],"stream":false,"previous_response_id":"resp_long_conv_2"}'
-    headers:
-      User-Agent:
-      - Faraday v2.14.0
-      Authorization:
-      - Bearer <OPENAI_API_KEY>
-      Content-Type:
-      - application/json
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-      Accept:
-      - "*/*"
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Date:
-      - Sat, 03 Jan 2026 19:05:02 GMT
-      Content-Type:
-      - application/json
-      Transfer-Encoding:
-      - chunked
-      Connection:
-      - keep-alive
-      X-Request-Id:
-      - req_long_conv_3
-      Openai-Processing-Ms:
-      - '510'
-    body:
-      encoding: ASCII-8BIT
-      string: |-
-        {
-          "id": "resp_long_conv_3",
-          "object": "response",
-          "created_at": 1767467102,
-          "status": "completed",
-          "model": "gpt-4o-mini-2024-07-18",
-          "output": [
-            {
-              "id": "msg_long_conv_3",
-              "type": "message",
-              "status": "completed",
-              "content": [
-                {
-                  "type": "output_text",
-                  "annotations": [],
-                  "text": "That is a great profession! Seattle has a thriving tech industry."
-                }
-              ],
-              "role": "assistant"
-            }
-          ],
-          "previous_response_id": "resp_long_conv_2",
-          "usage": {
-            "input_tokens": 40,
-            "input_tokens_details": {
-              "cached_tokens": 25
-            },
-            "output_tokens": 14,
-            "output_tokens_details": {
-              "reasoning_tokens": 0
-            },
-            "total_tokens": 54
-          }
-        }
-  recorded_at: Sat, 03 Jan 2026 19:05:02 GMT
+  recorded_at: Sat, 03 Jan 2026 19:46:01 GMT
 - request:
     method: post
     uri: https://api.openai.com/v1/responses
@@ -223,11 +153,8 @@ http_interactions:
       encoding: UTF-8
       string: '{"model":"gpt-4o-mini","input":[{"type":"message","role":"user","content":"My
         name is Alice."},{"type":"message","role":"assistant","content":"Nice to meet
-        you, Alice!"},{"type":"message","role":"user","content":"I live in Seattle."},{"type":"message","role":"assistant","content":"Seattle
-        is a beautiful city! Great choice."},{"type":"message","role":"user","content":"I
-        work as an engineer."},{"type":"message","role":"assistant","content":"That
-        is a great profession! Seattle has a thriving tech industry."},{"type":"message","role":"user","content":"What
-        do you know about me? List the facts."}],"stream":false,"previous_response_id":"resp_long_conv_3"}'
+        you, Alice! How can I assist you today?"},{"type":"message","role":"user","content":"I
+        live in Seattle."}],"stream":false,"previous_response_id":"resp_0602612c3380dc5b00695971f844e88197a54e1718d368e273"}'
     headers:
       User-Agent:
       - Faraday v2.14.0
@@ -245,53 +172,429 @@ http_interactions:
       message: OK
     headers:
       Date:
-      - Sat, 03 Jan 2026 19:05:03 GMT
+      - Sat, 03 Jan 2026 19:46:02 GMT
       Content-Type:
       - application/json
       Transfer-Encoding:
       - chunked
       Connection:
       - keep-alive
+      X-Ratelimit-Limit-Requests:
+      - '5000'
+      X-Ratelimit-Limit-Tokens:
+      - '4000000'
+      X-Ratelimit-Remaining-Requests:
+      - '4999'
+      X-Ratelimit-Remaining-Tokens:
+      - '3999915'
+      X-Ratelimit-Reset-Requests:
+      - 12ms
+      X-Ratelimit-Reset-Tokens:
+      - 1ms
+      Openai-Version:
+      - '2020-10-01'
+      Openai-Organization:
+      - user-h7m2t30jnyqzec1thkvt5rcd
+      Openai-Project:
+      - proj_yBBvayevSgRR3SVjSmBgm0so
       X-Request-Id:
-      - req_long_conv_4
+      - req_e3d836d4ecf64bbab848d3e5eb15bcb7
       Openai-Processing-Ms:
-      - '600'
+      - '1207'
+      X-Envoy-Upstream-Service-Time:
+      - '1212'
+      Cf-Cache-Status:
+      - DYNAMIC
+      Set-Cookie:
+      - __cf_bm=JOA2okDf2iM8EkNNmh0Zls0N39u9A9qxb1TL17pQa_I-1767469562-1.0.1.1-Md99i8Zu8YKH83fgy7Xfk2eJXngJV6bIB2X2tHZveM7Ro.DIZ._MRyE0M6h1H4avhhgmb7_Jp4exIWwpOF7GhBh7sZodFC9uQst_IXxJ8Dw;
+        path=/; expires=Sat, 03-Jan-26 20:16:02 GMT; domain=.api.openai.com; HttpOnly;
+        Secure; SameSite=None
+      - _cfuvid=0vRy.G4CpL3m_9UsBWPQmq47pYguZjoU2sHEt_cDMZU-1767469562490-0.0.1.1-604800000;
+        path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      X-Content-Type-Options:
+      - nosniff
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 9b84fff4f8bc5020-WAW
+      Alt-Svc:
+      - h3=":443"; ma=86400
     body:
       encoding: ASCII-8BIT
       string: |-
         {
-          "id": "resp_long_conv_4",
+          "id": "resp_0602612c3380dc5b00695971f937e08197bbe2073cf06e46fb",
           "object": "response",
-          "created_at": 1767467103,
+          "created_at": 1767469561,
           "status": "completed",
+          "background": false,
+          "billing": {
+            "payer": "developer"
+          },
+          "completed_at": 1767469562,
+          "error": null,
+          "incomplete_details": null,
+          "instructions": null,
+          "max_output_tokens": null,
+          "max_tool_calls": null,
           "model": "gpt-4o-mini-2024-07-18",
           "output": [
             {
-              "id": "msg_long_conv_4",
+              "id": "msg_0602612c3380dc5b00695971f9afc08197ab8837cfa98d0992",
               "type": "message",
               "status": "completed",
               "content": [
                 {
                   "type": "output_text",
                   "annotations": [],
-                  "text": "Here's what I know about you:\n\n1. Your name is Alice\n2. You live in Seattle\n3. You work as an engineer"
+                  "logprobs": [],
+                  "text": "Seattle is a great city! Do you have any favorite spots or activities there?"
                 }
               ],
               "role": "assistant"
             }
           ],
-          "previous_response_id": "resp_long_conv_3",
-          "usage": {
-            "input_tokens": 60,
-            "input_tokens_details": {
-              "cached_tokens": 40
+          "parallel_tool_calls": true,
+          "previous_response_id": "resp_0602612c3380dc5b00695971f844e88197a54e1718d368e273",
+          "prompt_cache_key": null,
+          "prompt_cache_retention": null,
+          "reasoning": {
+            "effort": null,
+            "summary": null
+          },
+          "safety_identifier": null,
+          "service_tier": "default",
+          "store": true,
+          "temperature": 1.0,
+          "text": {
+            "format": {
+              "type": "text"
             },
-            "output_tokens": 30,
+            "verbosity": "medium"
+          },
+          "tool_choice": "auto",
+          "tools": [],
+          "top_logprobs": 0,
+          "top_p": 1.0,
+          "truncation": "disabled",
+          "usage": {
+            "input_tokens": 66,
+            "input_tokens_details": {
+              "cached_tokens": 0
+            },
+            "output_tokens": 17,
             "output_tokens_details": {
               "reasoning_tokens": 0
             },
-            "total_tokens": 90
-          }
+            "total_tokens": 83
+          },
+          "user": null,
+          "metadata": {}
         }
-  recorded_at: Sat, 03 Jan 2026 19:05:03 GMT
+  recorded_at: Sat, 03 Jan 2026 19:46:02 GMT
+- request:
+    method: post
+    uri: https://api.openai.com/v1/responses
+    body:
+      encoding: UTF-8
+      string: '{"model":"gpt-4o-mini","input":[{"type":"message","role":"user","content":"My
+        name is Alice."},{"type":"message","role":"assistant","content":"Nice to meet
+        you, Alice! How can I assist you today?"},{"type":"message","role":"user","content":"I
+        live in Seattle."},{"type":"message","role":"assistant","content":"Seattle
+        is a great city! Do you have any favorite spots or activities there?"},{"type":"message","role":"user","content":"I
+        work as an engineer."}],"stream":false,"previous_response_id":"resp_0602612c3380dc5b00695971f937e08197bbe2073cf06e46fb"}'
+    headers:
+      User-Agent:
+      - Faraday v2.14.0
+      Authorization:
+      - Bearer <OPENAI_API_KEY>
+      Content-Type:
+      - application/json
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Sat, 03 Jan 2026 19:46:03 GMT
+      Content-Type:
+      - application/json
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      X-Ratelimit-Limit-Requests:
+      - '5000'
+      X-Ratelimit-Limit-Tokens:
+      - '4000000'
+      X-Ratelimit-Remaining-Requests:
+      - '4999'
+      X-Ratelimit-Remaining-Tokens:
+      - '3999829'
+      X-Ratelimit-Reset-Requests:
+      - 12ms
+      X-Ratelimit-Reset-Tokens:
+      - 2ms
+      Openai-Version:
+      - '2020-10-01'
+      Openai-Organization:
+      - user-h7m2t30jnyqzec1thkvt5rcd
+      Openai-Project:
+      - proj_yBBvayevSgRR3SVjSmBgm0so
+      X-Request-Id:
+      - req_12916fe716b54e118f87c7304a274118
+      Openai-Processing-Ms:
+      - '1047'
+      X-Envoy-Upstream-Service-Time:
+      - '1050'
+      Cf-Cache-Status:
+      - DYNAMIC
+      Set-Cookie:
+      - __cf_bm=rT9E2QHimlnzU2Uz3DdcBtUsPWfe4CB2GWeCM.92aAU-1767469563-1.0.1.1-lHElZTFBz7l_o8rt4L0j0OP8_LhF6mlnCcN2k4c96T5Qh42s3zBJ._3GiABQ2Zu3sE3bCUprph.AjOQUXVzjfdzMdToSwm1pDC0p0yL78xk;
+        path=/; expires=Sat, 03-Jan-26 20:16:03 GMT; domain=.api.openai.com; HttpOnly;
+        Secure; SameSite=None
+      - _cfuvid=0QKFFRyzdREbRmG8UgYlcmSvRxPyfes8Mn_WJefWB08-1767469563767-0.0.1.1-604800000;
+        path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      X-Content-Type-Options:
+      - nosniff
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 9b84fffdcb54ee3b-WAW
+      Alt-Svc:
+      - h3=":443"; ma=86400
+    body:
+      encoding: ASCII-8BIT
+      string: |-
+        {
+          "id": "resp_0602612c3380dc5b00695971faa7ac8197b3033287bb1adda4",
+          "object": "response",
+          "created_at": 1767469562,
+          "status": "completed",
+          "background": false,
+          "billing": {
+            "payer": "developer"
+          },
+          "completed_at": 1767469563,
+          "error": null,
+          "incomplete_details": null,
+          "instructions": null,
+          "max_output_tokens": null,
+          "max_tool_calls": null,
+          "model": "gpt-4o-mini-2024-07-18",
+          "output": [
+            {
+              "id": "msg_0602612c3380dc5b00695971fb1128819782db94e066569a55",
+              "type": "message",
+              "status": "completed",
+              "content": [
+                {
+                  "type": "output_text",
+                  "annotations": [],
+                  "logprobs": [],
+                  "text": "That's great, Alice! Engineering is such an important field. What kind of engineering do you specialize in?"
+                }
+              ],
+              "role": "assistant"
+            }
+          ],
+          "parallel_tool_calls": true,
+          "previous_response_id": "resp_0602612c3380dc5b00695971f937e08197bbe2073cf06e46fb",
+          "prompt_cache_key": null,
+          "prompt_cache_retention": null,
+          "reasoning": {
+            "effort": null,
+            "summary": null
+          },
+          "safety_identifier": null,
+          "service_tier": "default",
+          "store": true,
+          "temperature": 1.0,
+          "text": {
+            "format": {
+              "type": "text"
+            },
+            "verbosity": "medium"
+          },
+          "tool_choice": "auto",
+          "tools": [],
+          "top_logprobs": 0,
+          "top_p": 1.0,
+          "truncation": "disabled",
+          "usage": {
+            "input_tokens": 152,
+            "input_tokens_details": {
+              "cached_tokens": 0
+            },
+            "output_tokens": 22,
+            "output_tokens_details": {
+              "reasoning_tokens": 0
+            },
+            "total_tokens": 174
+          },
+          "user": null,
+          "metadata": {}
+        }
+  recorded_at: Sat, 03 Jan 2026 19:46:03 GMT
+- request:
+    method: post
+    uri: https://api.openai.com/v1/responses
+    body:
+      encoding: UTF-8
+      string: '{"model":"gpt-4o-mini","input":[{"type":"message","role":"user","content":"My
+        name is Alice."},{"type":"message","role":"assistant","content":"Nice to meet
+        you, Alice! How can I assist you today?"},{"type":"message","role":"user","content":"I
+        live in Seattle."},{"type":"message","role":"assistant","content":"Seattle
+        is a great city! Do you have any favorite spots or activities there?"},{"type":"message","role":"user","content":"I
+        work as an engineer."},{"type":"message","role":"assistant","content":"That''s
+        great, Alice! Engineering is such an important field. What kind of engineering
+        do you specialize in?"},{"type":"message","role":"user","content":"What do
+        you know about me? List the facts."}],"stream":false,"previous_response_id":"resp_0602612c3380dc5b00695971faa7ac8197b3033287bb1adda4"}'
+    headers:
+      User-Agent:
+      - Faraday v2.14.0
+      Authorization:
+      - Bearer <OPENAI_API_KEY>
+      Content-Type:
+      - application/json
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Sat, 03 Jan 2026 19:46:05 GMT
+      Content-Type:
+      - application/json
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      X-Ratelimit-Limit-Requests:
+      - '5000'
+      X-Ratelimit-Limit-Tokens:
+      - '4000000'
+      X-Ratelimit-Remaining-Requests:
+      - '4999'
+      X-Ratelimit-Remaining-Tokens:
+      - '3999698'
+      X-Ratelimit-Reset-Requests:
+      - 12ms
+      X-Ratelimit-Reset-Tokens:
+      - 4ms
+      Openai-Version:
+      - '2020-10-01'
+      Openai-Organization:
+      - user-h7m2t30jnyqzec1thkvt5rcd
+      Openai-Project:
+      - proj_yBBvayevSgRR3SVjSmBgm0so
+      X-Request-Id:
+      - req_68755dc1f621495c8b68b27769a4d614
+      Openai-Processing-Ms:
+      - '1796'
+      X-Envoy-Upstream-Service-Time:
+      - '1814'
+      Cf-Cache-Status:
+      - DYNAMIC
+      Set-Cookie:
+      - __cf_bm=0bi6O0tBIrSiUOJwPPOgDH4kgFvPTzWTztlyey.aO80-1767469565-1.0.1.1-Wu.63Ak9h2ZGs3y8bj2ypdO4YNGs63FK9DwiXJ3KlFJSpxKg46ExdflwlGNLVdvjjN10kH3qT4xMFMw_KfeoE3CX3Z4nI67q_bMwiYn0x1w;
+        path=/; expires=Sat, 03-Jan-26 20:16:05 GMT; domain=.api.openai.com; HttpOnly;
+        Secure; SameSite=None
+      - _cfuvid=QsSadeBv3DuekWmRBfHOGNGMiljwbJRXY2RdmTgiY58-1767469565766-0.0.1.1-604800000;
+        path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      X-Content-Type-Options:
+      - nosniff
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 9b850005cbbdee40-WAW
+      Alt-Svc:
+      - h3=":443"; ma=86400
+    body:
+      encoding: ASCII-8BIT
+      string: |-
+        {
+          "id": "resp_0602612c3380dc5b00695971fbe4b4819794c49f0c2ff5da46",
+          "object": "response",
+          "created_at": 1767469564,
+          "status": "completed",
+          "background": false,
+          "billing": {
+            "payer": "developer"
+          },
+          "completed_at": 1767469565,
+          "error": null,
+          "incomplete_details": null,
+          "instructions": null,
+          "max_output_tokens": null,
+          "max_tool_calls": null,
+          "model": "gpt-4o-mini-2024-07-18",
+          "output": [
+            {
+              "id": "msg_0602612c3380dc5b00695971fc44448197adc10599b2554d77",
+              "type": "message",
+              "status": "completed",
+              "content": [
+                {
+                  "type": "output_text",
+                  "annotations": [],
+                  "logprobs": [],
+                  "text": "Based on what you've shared, here are the facts:\n\n1. Your name is Alice.\n2. You live in Seattle.\n3. You work as an engineer.\n\nIf there's more you'd like to add or discuss, feel free to share!"
+                }
+              ],
+              "role": "assistant"
+            }
+          ],
+          "parallel_tool_calls": true,
+          "previous_response_id": "resp_0602612c3380dc5b00695971faa7ac8197b3033287bb1adda4",
+          "prompt_cache_key": null,
+          "prompt_cache_retention": null,
+          "reasoning": {
+            "effort": null,
+            "summary": null
+          },
+          "safety_identifier": null,
+          "service_tier": "default",
+          "store": true,
+          "temperature": 1.0,
+          "text": {
+            "format": {
+              "type": "text"
+            },
+            "verbosity": "medium"
+          },
+          "tool_choice": "auto",
+          "tools": [],
+          "top_logprobs": 0,
+          "top_p": 1.0,
+          "truncation": "disabled",
+          "usage": {
+            "input_tokens": 283,
+            "input_tokens_details": {
+              "cached_tokens": 0
+            },
+            "output_tokens": 49,
+            "output_tokens_details": {
+              "reasoning_tokens": 0
+            },
+            "total_tokens": 332
+          },
+          "user": null,
+          "metadata": {}
+        }
+  recorded_at: Sat, 03 Jan 2026 19:46:05 GMT
 recorded_with: VCR 6.4.0

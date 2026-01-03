@@ -24,7 +24,7 @@ http_interactions:
       message: OK
     headers:
       Date:
-      - Sat, 03 Jan 2026 18:29:38 GMT
+      - Sat, 03 Jan 2026 19:45:43 GMT
       Content-Type:
       - application/json
       Transfer-Encoding:
@@ -48,20 +48,20 @@ http_interactions:
       Openai-Organization:
       - user-h7m2t30jnyqzec1thkvt5rcd
       Openai-Project:
-      - proj_EH4BBntp4Mf4xktF4Nn8NZvt
+      - proj_yBBvayevSgRR3SVjSmBgm0so
       X-Request-Id:
-      - req_23b6cecd8f264d2ca7e6b9be4a78520c
+      - req_2f35c8ca24a54e47bcb2168869609959
       Openai-Processing-Ms:
-      - '955'
+      - '1005'
       X-Envoy-Upstream-Service-Time:
-      - '957'
+      - '1009'
       Cf-Cache-Status:
       - DYNAMIC
       Set-Cookie:
-      - __cf_bm=N24eMuD5okolZ0HaxobVJlAZaS_YKZBD7NQ.jaT6YT4-1767464978-1.0.1.1-CpfHg1xzCGM5j36kDqmOFydQaCdPOldprmVhZq4b0C2ZNNry5AEFH._sF_zSk.6Miwpu.MS1nr98Zbulr8UKJ76f2Af4cYHHy3NdlR7RbYs;
-        path=/; expires=Sat, 03-Jan-26 18:59:38 GMT; domain=.api.openai.com; HttpOnly;
+      - __cf_bm=wZpmtmI3ZKpuM8FE_K8P8ig5RTYI3SJkmT_Szfya3zI-1767469543-1.0.1.1-JhTCOZ5ysi9BUtcsNQJ05WMiWpBlZLOaHnSQuDmlcBJC7aiqAT65NeWNipbJZNNNB1vol1.7_oaNStj736FzaqK5WFGejPTV.xaXrLKUbBM;
+        path=/; expires=Sat, 03-Jan-26 20:15:43 GMT; domain=.api.openai.com; HttpOnly;
         Secure; SameSite=None
-      - _cfuvid=MP3J4efIlvitJB2.YnIR7_l8ZAfJdieRKPlQkLNVqNk-1767464978226-0.0.1.1-604800000;
+      - _cfuvid=RqzgSVl.VSeCCHM4g13F.kserqz9REO6K.stGwUVj_E-1767469543450-0.0.1.1-604800000;
         path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None
       Strict-Transport-Security:
       - max-age=31536000; includeSubDomains; preload
@@ -70,22 +70,22 @@ http_interactions:
       Server:
       - cloudflare
       Cf-Ray:
-      - 9b84900afe9ac3cc-WAW
+      - 9b84ff7f5f695906-WAW
       Alt-Svc:
       - h3=":443"; ma=86400
     body:
       encoding: ASCII-8BIT
       string: |-
         {
-          "id": "resp_05a0f60a63176005006959601133f0819794467c09d719f71a",
+          "id": "resp_09cc73049d5214da00695971e6618081939164c2167f4ee092",
           "object": "response",
-          "created_at": 1767464977,
+          "created_at": 1767469542,
           "status": "completed",
           "background": false,
           "billing": {
             "payer": "developer"
           },
-          "completed_at": 1767464978,
+          "completed_at": 1767469543,
           "error": null,
           "incomplete_details": null,
           "instructions": null,
@@ -94,7 +94,7 @@ http_interactions:
           "model": "gpt-4o-mini-2024-07-18",
           "output": [
             {
-              "id": "msg_05a0f60a6317600500695960118ea48197a8c3d0920a1a2503",
+              "id": "msg_09cc73049d5214da00695971e6a6748193805092fe4014a230",
               "type": "message",
               "status": "completed",
               "content": [
@@ -102,7 +102,7 @@ http_interactions:
                   "type": "output_text",
                   "annotations": [],
                   "logprobs": [],
-                  "text": "The quotes contain the text: **hello world**."
+                  "text": "Inside the quotes, there is the text: **\"hello world\"**. It consists of the words \"hello\" and \"world,\" separated by a space."
                 }
               ],
               "role": "assistant"
@@ -136,14 +136,14 @@ http_interactions:
             "input_tokens_details": {
               "cached_tokens": 0
             },
-            "output_tokens": 12,
+            "output_tokens": 34,
             "output_tokens_details": {
               "reasoning_tokens": 0
             },
-            "total_tokens": 29
+            "total_tokens": 51
           },
           "user": null,
           "metadata": {}
         }
-  recorded_at: Sat, 03 Jan 2026 18:29:38 GMT
+  recorded_at: Sat, 03 Jan 2026 19:45:43 GMT
 recorded_with: VCR 6.4.0

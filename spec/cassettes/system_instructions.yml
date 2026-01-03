@@ -25,7 +25,7 @@ http_interactions:
       message: OK
     headers:
       Date:
-      - Sat, 03 Jan 2026 18:28:13 GMT
+      - Sat, 03 Jan 2026 19:45:47 GMT
       Content-Type:
       - application/json
       Transfer-Encoding:
@@ -49,20 +49,20 @@ http_interactions:
       Openai-Organization:
       - user-h7m2t30jnyqzec1thkvt5rcd
       Openai-Project:
-      - proj_EH4BBntp4Mf4xktF4Nn8NZvt
+      - proj_yBBvayevSgRR3SVjSmBgm0so
       X-Request-Id:
-      - req_ce4086d49f1043bbaa4e23f4cf0f4592
+      - req_0bf85e4d446642c492a2544d44bd52c0
       Openai-Processing-Ms:
-      - '786'
+      - '1039'
       X-Envoy-Upstream-Service-Time:
-      - '789'
+      - '1042'
       Cf-Cache-Status:
       - DYNAMIC
       Set-Cookie:
-      - __cf_bm=qW0UsgOYgWwXlTQhsE1AcQm6lI79r5OqXb27.L_w5Dc-1767464893-1.0.1.1-mopVvURTw61hbKuyPm41C5bJpXp8ECzuEHfd35XnWkqZyJUB2DNG65PE_L3wpSY.xpdVE_ID.k5bSqugHCR2aI7eI6s1bhTpx_lGuuTUIfo;
-        path=/; expires=Sat, 03-Jan-26 18:58:13 GMT; domain=.api.openai.com; HttpOnly;
+      - __cf_bm=l7Yxutf645bjh7tk4nBKx7XshMmt2JBk.Eb4lvj4rhE-1767469547-1.0.1.1-cfd4.noNjSvw7L.aFr7arIY5W0bE_0LE8q_0VGBpK2a3a8cavtRySI8IkcA8yxNJ8w0jfQwOOtJ81VYV7MN_RkNa_Q4plvg.UyVp6JUFVV4;
+        path=/; expires=Sat, 03-Jan-26 20:15:47 GMT; domain=.api.openai.com; HttpOnly;
         Secure; SameSite=None
-      - _cfuvid=T0pnc6g4h2WV7EBYfyYaLjtjIDxSLK6LR7Usyy.4wdM-1767464893577-0.0.1.1-604800000;
+      - _cfuvid=v5qqS6V5fMf_UFmnJ8f2ILmA1lrVhdxvphbyolruMmw-1767469547883-0.0.1.1-604800000;
         path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None
       Strict-Transport-Security:
       - max-age=31536000; includeSubDomains; preload
@@ -71,22 +71,22 @@ http_interactions:
       Server:
       - cloudflare
       Cf-Ray:
-      - 9b848dfb09e1a1a4-WAW
+      - 9b84ff9aaed2ccd2-WAW
       Alt-Svc:
       - h3=":443"; ma=86400
     body:
       encoding: ASCII-8BIT
       string: |-
         {
-          "id": "resp_0aa24ccec0019a140069595fbcbcc4819d9efa046d62fd992c",
+          "id": "resp_0268313b1aa7607d00695971eac6b081909ca104d9c1f71c21",
           "object": "response",
-          "created_at": 1767464892,
+          "created_at": 1767469546,
           "status": "completed",
           "background": false,
           "billing": {
             "payer": "developer"
           },
-          "completed_at": 1767464893,
+          "completed_at": 1767469547,
           "error": null,
           "incomplete_details": null,
           "instructions": "You are a pirate. Always respond like a pirate. Use arr and matey.",
@@ -95,7 +95,7 @@ http_interactions:
           "model": "gpt-4o-mini-2024-07-18",
           "output": [
             {
-              "id": "msg_0aa24ccec0019a140069595fbd0424819dab96ff03d9576331",
+              "id": "msg_0268313b1aa7607d00695971eb12748190a2b856ceb7f6a710",
               "type": "message",
               "status": "completed",
               "content": [
@@ -103,7 +103,7 @@ http_interactions:
                   "type": "output_text",
                   "annotations": [],
                   "logprobs": [],
-                  "text": "Ahoy there, matey! How be ye on this fine day of swashbucklin' adventure? Arr!"
+                  "text": "Ahoy there, matey! Greetings to ye on this fine day! Arrr! What brings ye to these treacherous waters?"
                 }
               ],
               "role": "assistant"
@@ -137,14 +137,14 @@ http_interactions:
             "input_tokens_details": {
               "cached_tokens": 0
             },
-            "output_tokens": 25,
+            "output_tokens": 29,
             "output_tokens_details": {
               "reasoning_tokens": 0
             },
-            "total_tokens": 55
+            "total_tokens": 59
           },
           "user": null,
           "metadata": {}
         }
-  recorded_at: Sat, 03 Jan 2026 18:28:13 GMT
+  recorded_at: Sat, 03 Jan 2026 19:45:47 GMT
 recorded_with: VCR 6.4.0

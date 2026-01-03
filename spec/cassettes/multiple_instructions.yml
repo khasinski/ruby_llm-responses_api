@@ -24,7 +24,7 @@ http_interactions:
       message: OK
     headers:
       Date:
-      - Sat, 03 Jan 2026 18:28:15 GMT
+      - Sat, 03 Jan 2026 19:45:49 GMT
       Content-Type:
       - application/json
       Transfer-Encoding:
@@ -48,20 +48,20 @@ http_interactions:
       Openai-Organization:
       - user-h7m2t30jnyqzec1thkvt5rcd
       Openai-Project:
-      - proj_EH4BBntp4Mf4xktF4Nn8NZvt
+      - proj_yBBvayevSgRR3SVjSmBgm0so
       X-Request-Id:
-      - req_f980877cdf459f6ca53ed3c037214440
+      - req_d657e70359414ab786e8c06efe37194e
       Openai-Processing-Ms:
-      - '1319'
+      - '1683'
       X-Envoy-Upstream-Service-Time:
-      - '1322'
+      - '1686'
       Cf-Cache-Status:
       - DYNAMIC
       Set-Cookie:
-      - __cf_bm=EcOiT7xcCduy5SJJpn9KuyDINv3wpRw9S3wc57foD5k-1767464895-1.0.1.1-fMEMkoqkVUiS0I1_GbMYE_SMEYfA88PQx.kSR5NTv9r5XCB1YqM5QX55pCXwSRSOPHpWSoLMRqGgVr9sIQ5sNeo4CsW_qHwJNGxQslhZqtw;
-        path=/; expires=Sat, 03-Jan-26 18:58:15 GMT; domain=.api.openai.com; HttpOnly;
+      - __cf_bm=w4ATpzNqyWqFIAxUnxQFy2tX0VVjyhnBBZqeFZNw1a0-1767469549-1.0.1.1-5VwnIWKs6tHpRHXT9XzEoItia8KZT4_2Svde4xCe.2evHniuisoiIhvkhjmoEdh55qn_VFtWP9dhQKNKS8Or3GvbigM1u3oSuzX_RQ8movY;
+        path=/; expires=Sat, 03-Jan-26 20:15:49 GMT; domain=.api.openai.com; HttpOnly;
         Secure; SameSite=None
-      - _cfuvid=KsCxqvi0bH1A5m1P43yXVM2FQ8u2L9XnmviGI1yPTi4-1767464895118-0.0.1.1-604800000;
+      - _cfuvid=tAL4_PX1rCSPM2yoIK8H3ilIsHQy51E9g_f7EFB.QX0-1767469549785-0.0.1.1-604800000;
         path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None
       Strict-Transport-Security:
       - max-age=31536000; includeSubDomains; preload
@@ -70,22 +70,22 @@ http_interactions:
       Server:
       - cloudflare
       Cf-Ray:
-      - 9b848e012ec5bf18-WAW
+      - 9b84ffa29e3a1bf9-WAW
       Alt-Svc:
       - h3=":443"; ma=86400
     body:
       encoding: ASCII-8BIT
       string: |-
         {
-          "id": "resp_05b35749fabd5b5e0069595fbdbc688190a3f34bc887621f5c",
+          "id": "resp_0f2693b66ef9a35000695971ec090c8197992539d07fc030fb",
           "object": "response",
-          "created_at": 1767464893,
+          "created_at": 1767469548,
           "status": "completed",
           "background": false,
           "billing": {
             "payer": "developer"
           },
-          "completed_at": 1767464894,
+          "completed_at": 1767469549,
           "error": null,
           "incomplete_details": null,
           "instructions": "You are helpful.\n\nAlways be concise.",
@@ -94,7 +94,7 @@ http_interactions:
           "model": "gpt-4o-mini-2024-07-18",
           "output": [
             {
-              "id": "msg_05b35749fabd5b5e0069595fbdfaac81909606d8f22c8c9881",
+              "id": "msg_0f2693b66ef9a35000695971ec5b00819780b7f36de45a5b68",
               "type": "message",
               "status": "completed",
               "content": [
@@ -102,7 +102,7 @@ http_interactions:
                   "type": "output_text",
                   "annotations": [],
                   "logprobs": [],
-                  "text": "Ruby is an open-source, dynamic programming language known for its simplicity and productivity. It emphasizes human-readable syntax and is often used for web development, particularly with the Ruby on Rails framework. Ruby supports multiple programming paradigms, including object-oriented, functional, and imperative programming."
+                  "text": "Ruby is a dynamic, open-source programming language known for its simplicity and productivity. It emphasizes readable and elegant syntax, making it easy for developers to write and understand code. Ruby is often used for web development, particularly with the Ruby on Rails framework, which simplifies building full-featured web applications. Its object-oriented nature promotes good programming practices, and it has a vibrant community and numerous libraries (gems) for various functionalities."
                 }
               ],
               "role": "assistant"
@@ -136,14 +136,14 @@ http_interactions:
             "input_tokens_details": {
               "cached_tokens": 0
             },
-            "output_tokens": 55,
+            "output_tokens": 86,
             "output_tokens_details": {
               "reasoning_tokens": 0
             },
-            "total_tokens": 78
+            "total_tokens": 109
           },
           "user": null,
           "metadata": {}
         }
-  recorded_at: Sat, 03 Jan 2026 18:28:15 GMT
+  recorded_at: Sat, 03 Jan 2026 19:45:49 GMT
 recorded_with: VCR 6.4.0

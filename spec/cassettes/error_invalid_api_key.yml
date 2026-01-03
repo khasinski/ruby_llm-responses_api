@@ -23,7 +23,7 @@ http_interactions:
       message: Unauthorized
     headers:
       Date:
-      - Sat, 03 Jan 2026 18:29:55 GMT
+      - Sat, 03 Jan 2026 19:45:21 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -35,18 +35,18 @@ http_interactions:
       Openai-Version:
       - '2020-10-01'
       X-Request-Id:
-      - req_6dda82513ffc4e12bb72f13a9a7bae18
+      - req_6da9ec3bedd8442a923940a0dd8c92e2
       Openai-Processing-Ms:
-      - '38'
+      - '21'
       X-Envoy-Upstream-Service-Time:
-      - '40'
+      - '24'
       Cf-Cache-Status:
       - DYNAMIC
       Set-Cookie:
-      - __cf_bm=lTkkz4ia.S1KDDw1TAIWAjBtD35fGdaQB0HavflOkDQ-1767464995-1.0.1.1-z8AGzWYqo6zUX0LDDwgZ8CyaUdbfFR7ZcwzLT2SHmutiK_E89azuFjxZFYdHbn7nKZWJ.4adkC9WNH2HbAdbPfuTkHnDFGevEc6Kv8ReJn0;
-        path=/; expires=Sat, 03-Jan-26 18:59:55 GMT; domain=.api.openai.com; HttpOnly;
+      - __cf_bm=aae8dfkidUvbAgtNm5M0ETJZ63bZXSlRe835A6OnWFI-1767469521-1.0.1.1-.efBWbbw91CIAKDuUB9NwTVK6NmO9l5NVovqGemvJkulLh_mgf6lq4tOB.VDd21scoMoi060RLxg2PmG9R2Da8.p0u2GKwOgGlZNtmDua2U;
+        path=/; expires=Sat, 03-Jan-26 20:15:21 GMT; domain=.api.openai.com; HttpOnly;
         Secure; SameSite=None
-      - _cfuvid=e5LjOLJ_nyZBwMZxKl0nd.mUvuCyYUXrgK6OyvI7hwo-1767464995139-0.0.1.1-604800000;
+      - _cfuvid=OUz0yFSGEjjaVbrabdKfUzyux2PWXnyDLNwmFkohiHg-1767469521876-0.0.1.1-604800000;
         path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None
       Strict-Transport-Security:
       - max-age=31536000; includeSubDomains; preload
@@ -55,7 +55,7 @@ http_interactions:
       Server:
       - cloudflare
       Cf-Ray:
-      - 9b84907a2a866338-WAW
+      - 9b84fefeac73ef91-WAW
       Alt-Svc:
       - h3=":443"; ma=86400
     body:
@@ -69,5 +69,5 @@ http_interactions:
             "code": "invalid_api_key"
           }
         }
-  recorded_at: Sat, 03 Jan 2026 18:29:55 GMT
+  recorded_at: Sat, 03 Jan 2026 19:45:21 GMT
 recorded_with: VCR 6.4.0

@@ -26,44 +26,153 @@ http_interactions:
       message: OK
     headers:
       Date:
-      - Sat, 03 Jan 2026 19:10:00 GMT
+      - Sat, 03 Jan 2026 19:45:53 GMT
       Content-Type:
       - application/json
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      X-Ratelimit-Limit-Requests:
+      - '5000'
+      X-Ratelimit-Limit-Tokens:
+      - '4000000'
+      X-Ratelimit-Remaining-Requests:
+      - '4999'
+      X-Ratelimit-Remaining-Tokens:
+      - '3999733'
+      X-Ratelimit-Reset-Requests:
+      - 12ms
+      X-Ratelimit-Reset-Tokens:
+      - 4ms
+      Openai-Version:
+      - '2020-10-01'
+      Openai-Organization:
+      - user-h7m2t30jnyqzec1thkvt5rcd
+      Openai-Project:
+      - proj_yBBvayevSgRR3SVjSmBgm0so
+      X-Request-Id:
+      - req_a633cbf4c09e4fc8ba1904b187d1365e
+      Openai-Processing-Ms:
+      - '1118'
+      X-Envoy-Upstream-Service-Time:
+      - '1121'
+      Cf-Cache-Status:
+      - DYNAMIC
+      Set-Cookie:
+      - __cf_bm=.GJhYW75wtlictk8_QpJPhublqbpmhZaBYt2x9aWopk-1767469553-1.0.1.1-vkHJ4SQz7VEcwCVQtIOUhRYtuZzaVPUQRA7lkqunYy7bxBT5Hqy6Q1JguIYCJ9AGs_AEC1UtyV7EianZd3MYf6zIAqCUsKDvzjd.25ciPD0;
+        path=/; expires=Sat, 03-Jan-26 20:15:53 GMT; domain=.api.openai.com; HttpOnly;
+        Secure; SameSite=None
+      - _cfuvid=ADpNdK.FZhJ6Ott7642mXRwUEjvckOtcsl2D8WkT2Tc-1767469553358-0.0.1.1-604800000;
+        path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      X-Content-Type-Options:
+      - nosniff
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 9b84ffbc7e87265d-WAW
+      Alt-Svc:
+      - h3=":443"; ma=86400
     body:
       encoding: ASCII-8BIT
       string: |-
         {
-          "id": "resp_fc_single_1",
+          "id": "resp_0c9f3733c894356600695971f02d408190aad1bba6b11bc7e1",
           "object": "response",
-          "created_at": 1767467400,
+          "created_at": 1767469552,
           "status": "completed",
+          "background": false,
+          "billing": {
+            "payer": "developer"
+          },
+          "completed_at": 1767469553,
+          "error": null,
+          "incomplete_details": null,
+          "instructions": null,
+          "max_output_tokens": null,
+          "max_tool_calls": null,
           "model": "gpt-4o-mini-2024-07-18",
           "output": [
             {
+              "id": "fc_0c9f3733c894356600695971f12af48190b3e38b3dca2a3556",
               "type": "function_call",
-              "call_id": "call_tokyo_weather",
-              "name": "test_weather",
-              "arguments": "{\"location\":\"Tokyo\"}"
+              "status": "completed",
+              "arguments": "{\"location\":\"Tokyo\"}",
+              "call_id": "call_le1SJB9zjg45SgYNgGeeLuLW",
+              "name": "test_weather"
             }
           ],
+          "parallel_tool_calls": true,
+          "previous_response_id": null,
+          "prompt_cache_key": null,
+          "prompt_cache_retention": null,
+          "reasoning": {
+            "effort": null,
+            "summary": null
+          },
+          "safety_identifier": null,
+          "service_tier": "default",
+          "store": true,
+          "temperature": 1.0,
+          "text": {
+            "format": {
+              "type": "text"
+            },
+            "verbosity": "medium"
+          },
+          "tool_choice": "auto",
+          "tools": [
+            {
+              "type": "function",
+              "description": "Get the current weather for a location",
+              "name": "test_weather",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "location": {
+                    "type": "string",
+                    "description": "The city name"
+                  }
+                },
+                "required": [
+                  "location"
+                ],
+                "additionalProperties": false,
+                "strict": true
+              },
+              "strict": true
+            }
+          ],
+          "top_logprobs": 0,
+          "top_p": 1.0,
+          "truncation": "disabled",
           "usage": {
-            "input_tokens": 30,
-            "input_tokens_details": { "cached_tokens": 0 },
+            "input_tokens": 50,
+            "input_tokens_details": {
+              "cached_tokens": 0
+            },
             "output_tokens": 15,
-            "total_tokens": 45
-          }
+            "output_tokens_details": {
+              "reasoning_tokens": 0
+            },
+            "total_tokens": 65
+          },
+          "user": null,
+          "metadata": {}
         }
-  recorded_at: Sat, 03 Jan 2026 19:10:00 GMT
+  recorded_at: Sat, 03 Jan 2026 19:45:53 GMT
 - request:
     method: post
     uri: https://api.openai.com/v1/responses
     body:
       encoding: UTF-8
       string: '{"model":"gpt-4o-mini","input":[{"type":"message","role":"user","content":"What''s
-        the weather in Tokyo?"},{"type":"function_call","call_id":"call_tokyo_weather","name":"test_weather","arguments":"{\"location\":\"Tokyo\"}"},{"type":"function_call_output","call_id":"call_tokyo_weather","output":"The
+        the weather in Tokyo?"},{"type":"function_call","call_id":"call_le1SJB9zjg45SgYNgGeeLuLW","name":"test_weather","arguments":"{\"location\":\"Tokyo\"}"},{"type":"function_call_output","call_id":"call_le1SJB9zjg45SgYNgGeeLuLW","output":"The
         weather in Tokyo is sunny, 72°F"}],"stream":false,"tools":[{"type":"function","name":"test_weather","description":"Get
         the current weather for a location","parameters":{"type":"object","properties":{"location":{"type":"string","description":"The
-        city name"}},"required":["location"],"additionalProperties":false,"strict":true},"strict":true}],"previous_response_id":"resp_fc_single_1"}'
+        city name"}},"required":["location"],"additionalProperties":false,"strict":true},"strict":true}],"previous_response_id":"resp_0c9f3733c894356600695971f02d408190aad1bba6b11bc7e1"}'
     headers:
       User-Agent:
       - Faraday v2.14.0
@@ -81,39 +190,147 @@ http_interactions:
       message: OK
     headers:
       Date:
-      - Sat, 03 Jan 2026 19:10:01 GMT
+      - Sat, 03 Jan 2026 19:45:54 GMT
       Content-Type:
       - application/json
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      X-Ratelimit-Limit-Requests:
+      - '5000'
+      X-Ratelimit-Limit-Tokens:
+      - '4000000'
+      X-Ratelimit-Remaining-Requests:
+      - '4999'
+      X-Ratelimit-Remaining-Tokens:
+      - '3999676'
+      X-Ratelimit-Reset-Requests:
+      - 12ms
+      X-Ratelimit-Reset-Tokens:
+      - 4ms
+      Openai-Version:
+      - '2020-10-01'
+      Openai-Organization:
+      - user-h7m2t30jnyqzec1thkvt5rcd
+      Openai-Project:
+      - proj_yBBvayevSgRR3SVjSmBgm0so
+      X-Request-Id:
+      - req_5cb6cba909c0420f8cf8c660d3ac53df
+      Openai-Processing-Ms:
+      - '600'
+      X-Envoy-Upstream-Service-Time:
+      - '604'
+      Cf-Cache-Status:
+      - DYNAMIC
+      Set-Cookie:
+      - __cf_bm=WnocDJlTvQTJUNChR.ALsahJeCKzgl0CsgzmdwT_C34-1767469554-1.0.1.1-Utjx_rYgzpCLaztNdbfQF2BC.sKSH1V6jQ7FztEJ8YRlFOXWeHkdI7kSudWYwMPufDTSM7sadktbuR9Y65H9rf_hzdhYfwxdKR4EuK6yAZo;
+        path=/; expires=Sat, 03-Jan-26 20:15:54 GMT; domain=.api.openai.com; HttpOnly;
+        Secure; SameSite=None
+      - _cfuvid=eg0yK6kKxXx4uEn8P1aj07dzKfgpNhq8oALUrrnOi8c-1767469554261-0.0.1.1-604800000;
+        path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      X-Content-Type-Options:
+      - nosniff
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 9b84ffc4ba593540-WAW
+      Alt-Svc:
+      - h3=":443"; ma=86400
     body:
       encoding: ASCII-8BIT
       string: |-
         {
-          "id": "resp_fc_single_2",
+          "id": "resp_0c9f3733c894356600695971f199b88190aa2e88f7594926ac",
           "object": "response",
-          "created_at": 1767467401,
+          "created_at": 1767469553,
           "status": "completed",
+          "background": false,
+          "billing": {
+            "payer": "developer"
+          },
+          "completed_at": 1767469554,
+          "error": null,
+          "incomplete_details": null,
+          "instructions": null,
+          "max_output_tokens": null,
+          "max_tool_calls": null,
           "model": "gpt-4o-mini-2024-07-18",
           "output": [
             {
-              "id": "msg_fc_single_final",
+              "id": "msg_0c9f3733c894356600695971f1e3bc8190998f87d3295e89b7",
               "type": "message",
               "status": "completed",
               "content": [
                 {
                   "type": "output_text",
-                  "text": "The weather in Tokyo is sunny with a temperature of 72°F."
+                  "annotations": [],
+                  "logprobs": [],
+                  "text": "The weather in Tokyo is sunny with a temperature of 72\u00b0F."
                 }
               ],
               "role": "assistant"
             }
           ],
-          "previous_response_id": "resp_fc_single_1",
+          "parallel_tool_calls": true,
+          "previous_response_id": "resp_0c9f3733c894356600695971f02d408190aad1bba6b11bc7e1",
+          "prompt_cache_key": null,
+          "prompt_cache_retention": null,
+          "reasoning": {
+            "effort": null,
+            "summary": null
+          },
+          "safety_identifier": null,
+          "service_tier": "default",
+          "store": true,
+          "temperature": 1.0,
+          "text": {
+            "format": {
+              "type": "text"
+            },
+            "verbosity": "medium"
+          },
+          "tool_choice": "auto",
+          "tools": [
+            {
+              "type": "function",
+              "description": "Get the current weather for a location",
+              "name": "test_weather",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "location": {
+                    "type": "string",
+                    "description": "The city name"
+                  }
+                },
+                "required": [
+                  "location"
+                ],
+                "additionalProperties": false,
+                "strict": true
+              },
+              "strict": true
+            }
+          ],
+          "top_logprobs": 0,
+          "top_p": 1.0,
+          "truncation": "disabled",
           "usage": {
-            "input_tokens": 50,
-            "input_tokens_details": { "cached_tokens": 30 },
-            "output_tokens": 15,
-            "total_tokens": 65
-          }
+            "input_tokens": 107,
+            "input_tokens_details": {
+              "cached_tokens": 0
+            },
+            "output_tokens": 16,
+            "output_tokens_details": {
+              "reasoning_tokens": 0
+            },
+            "total_tokens": 123
+          },
+          "user": null,
+          "metadata": {}
         }
-  recorded_at: Sat, 03 Jan 2026 19:10:01 GMT
+  recorded_at: Sat, 03 Jan 2026 19:45:54 GMT
 recorded_with: VCR 6.4.0

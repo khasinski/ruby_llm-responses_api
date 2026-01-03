@@ -24,7 +24,7 @@ http_interactions:
       message: OK
     headers:
       Date:
-      - Sat, 03 Jan 2026 18:28:36 GMT
+      - Sat, 03 Jan 2026 19:45:28 GMT
       Content-Type:
       - application/json
       Transfer-Encoding:
@@ -48,20 +48,20 @@ http_interactions:
       Openai-Organization:
       - user-h7m2t30jnyqzec1thkvt5rcd
       Openai-Project:
-      - proj_EH4BBntp4Mf4xktF4Nn8NZvt
+      - proj_yBBvayevSgRR3SVjSmBgm0so
       X-Request-Id:
-      - req_b554acfd150247098fc65af0e83a95c9
+      - req_9c302a0fcd6e458a8a7b6937e7f9ebde
       Openai-Processing-Ms:
-      - '1331'
+      - '1055'
       X-Envoy-Upstream-Service-Time:
-      - '1333'
+      - '1058'
       Cf-Cache-Status:
       - DYNAMIC
       Set-Cookie:
-      - __cf_bm=EecVDrxZWmZhl1uMCbo88U2dBf5ww3UppV2KygnxduE-1767464916-1.0.1.1-TyyO_QE9w4T3J.8aoJ4l3Rkj1jfTG3.SdNALGWRzhbQ_qVg1qEvtHVfkrt1Wg4cwNpCnqi9ZkxPptuh5Pd.s5Ptm5ORVKa1Tr78LG0Dp1Do;
-        path=/; expires=Sat, 03-Jan-26 18:58:36 GMT; domain=.api.openai.com; HttpOnly;
+      - __cf_bm=lwtxggwtvuvLL4YhpgS87uqF0TnHtQTrAfjv.cc.CAI-1767469528-1.0.1.1-LzrS9rOxiYvn7V10EdkJAIFHrEFWoD5JsHse15Vxsqwsy6RkPLoci6DI3_X.iVZ3aKVkiG0m_pp86NYIz7L5rIH53rWoxRMzsnjny2NyVTM;
+        path=/; expires=Sat, 03-Jan-26 20:15:28 GMT; domain=.api.openai.com; HttpOnly;
         Secure; SameSite=None
-      - _cfuvid=MLLN0u1YgFQWZmAkoXfTKWb66n6kOcourZrvuHqw6Fw-1767464916557-0.0.1.1-604800000;
+      - _cfuvid=GBDOD8hhfcHpQp5CfnmOuPa7LKsXU_F.8c0bPsO_ERg-1767469528123-0.0.1.1-604800000;
         path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None
       Strict-Transport-Security:
       - max-age=31536000; includeSubDomains; preload
@@ -70,22 +70,22 @@ http_interactions:
       Server:
       - cloudflare
       Cf-Ray:
-      - 9b848e876c118a94-WAW
+      - 9b84ff1f3e49ee4b-WAW
       Alt-Svc:
       - h3=":443"; ma=86400
     body:
       encoding: ASCII-8BIT
       string: |-
         {
-          "id": "resp_043bec31f1ad4afb0069595fd32e18819cbf4e1a44cd24758f",
+          "id": "resp_09490cfea459ca3e00695971d701288196920ed6c8c8b7bd29",
           "object": "response",
-          "created_at": 1767464915,
+          "created_at": 1767469527,
           "status": "completed",
           "background": false,
           "billing": {
             "payer": "developer"
           },
-          "completed_at": 1767464916,
+          "completed_at": 1767469527,
           "error": null,
           "incomplete_details": null,
           "instructions": null,
@@ -94,7 +94,7 @@ http_interactions:
           "model": "gpt-4o-mini-2024-07-18",
           "output": [
             {
-              "id": "msg_043bec31f1ad4afb0069595fd440d0819cab9d8607ef56110c",
+              "id": "msg_09490cfea459ca3e00695971d7b9d081969fc30969f0b1a6c4",
               "type": "message",
               "status": "completed",
               "content": [
@@ -102,7 +102,7 @@ http_interactions:
                   "type": "output_text",
                   "annotations": [],
                   "logprobs": [],
-                  "text": "The image shows the Google logo in vibrant colors."
+                  "text": "The image shows the Google logo, featuring colorful letters on a blue background."
                 }
               ],
               "role": "assistant"
@@ -136,14 +136,14 @@ http_interactions:
             "input_tokens_details": {
               "cached_tokens": 0
             },
-            "output_tokens": 11,
+            "output_tokens": 16,
             "output_tokens_details": {
               "reasoning_tokens": 0
             },
-            "total_tokens": 14197
+            "total_tokens": 14202
           },
           "user": null,
           "metadata": {}
         }
-  recorded_at: Sat, 03 Jan 2026 18:28:36 GMT
+  recorded_at: Sat, 03 Jan 2026 19:45:28 GMT
 recorded_with: VCR 6.4.0

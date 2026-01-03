@@ -24,7 +24,7 @@ http_interactions:
       message: OK
     headers:
       Date:
-      - Sat, 03 Jan 2026 18:29:25 GMT
+      - Sat, 03 Jan 2026 19:45:30 GMT
       Content-Type:
       - application/json
       Transfer-Encoding:
@@ -48,20 +48,20 @@ http_interactions:
       Openai-Organization:
       - user-h7m2t30jnyqzec1thkvt5rcd
       Openai-Project:
-      - proj_EH4BBntp4Mf4xktF4Nn8NZvt
+      - proj_yBBvayevSgRR3SVjSmBgm0so
       X-Request-Id:
-      - req_0bba758d5a5c47caaa713bcd802f704c
+      - req_6edaafc53fed48bf86d1ae02f73d1a2c
       Openai-Processing-Ms:
-      - '3323'
+      - '2084'
       X-Envoy-Upstream-Service-Time:
-      - '3327'
+      - '2089'
       Cf-Cache-Status:
       - DYNAMIC
       Set-Cookie:
-      - __cf_bm=LuTGSVHaNZLfTBhkX851OZQ3L0FmwwPc6BzxWRiOUXk-1767464965-1.0.1.1-QkT3XyHCjB7b9iO17clGIKhiRD1WKFzcHQW.5AlI.iyTKTknmrTmEsh4pYyf7zQOjiWwKP7XyhUVBRRwVIU4OcbcIsX.vwrDdAFxY1T9quE;
-        path=/; expires=Sat, 03-Jan-26 18:59:25 GMT; domain=.api.openai.com; HttpOnly;
+      - __cf_bm=ZZBAo666YjQpFEuPWCSyYhtmw22t6at6IzGO1w.5yXM-1767469530-1.0.1.1-3DxiBWqSVGdRR.HXSxQSaZdz81K2i5YecqgwVP4lWD0X9BhTGqXBA6IGLs4XJmL4jAMyDu6M1Sc.nzWllOJmiNhwn_h2WZeo6PpSY2cQMBU;
+        path=/; expires=Sat, 03-Jan-26 20:15:30 GMT; domain=.api.openai.com; HttpOnly;
         Secure; SameSite=None
-      - _cfuvid=okcMfhKF3irRflGbudhUnM4lFQz499U.8eC8CmJUWAM-1767464965467-0.0.1.1-604800000;
+      - _cfuvid=ZBBOiEx2OB9ZfAMzYVfvfxZ673ng5InM82SIEbpEaaA-1767469530432-0.0.1.1-604800000;
         path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None
       Strict-Transport-Security:
       - max-age=31536000; includeSubDomains; preload
@@ -70,22 +70,22 @@ http_interactions:
       Server:
       - cloudflare
       Cf-Ray:
-      - 9b848fac2a1ac3ad-WAW
+      - 9b84ff271842ee3f-WAW
       Alt-Svc:
       - h3=":443"; ma=86400
     body:
       encoding: ASCII-8BIT
       string: |-
         {
-          "id": "resp_0953c02f6ce6a89200695960020eac81948e3521500d9a673f",
+          "id": "resp_0a178156a846c7a600695971d8461481948661368ebcff72fa",
           "object": "response",
-          "created_at": 1767464962,
+          "created_at": 1767469528,
           "status": "completed",
           "background": false,
           "billing": {
             "payer": "developer"
           },
-          "completed_at": 1767464965,
+          "completed_at": 1767469530,
           "error": null,
           "incomplete_details": null,
           "instructions": null,
@@ -94,7 +94,7 @@ http_interactions:
           "model": "gpt-4o-mini-2024-07-18",
           "output": [
             {
-              "id": "msg_0953c02f6ce6a892006959600440588194a553d79443823943",
+              "id": "msg_0a178156a846c7a600695971d909a88194b1db3b07e8c64db3",
               "type": "message",
               "status": "completed",
               "content": [
@@ -102,7 +102,7 @@ http_interactions:
                   "type": "output_text",
                   "annotations": [],
                   "logprobs": [],
-                  "text": "The first image features the colorful logo of Google, with letters styled in blue, red, yellow, and green against a blue background. The second image showcases the Python programming language logo, featuring a stylized snake in blue and yellow alongside the word \"python\" in gray, with a trademark symbol."
+                  "text": "The first image shows the Google logo, featuring colorful letters in blue, red, yellow, and green on a blue background. The second image displays the Python programming language logo, which includes an illustration of two intertwined snakes in blue and yellow with the word \"python\" in gray to the right."
                 }
               ],
               "role": "assistant"
@@ -136,14 +136,14 @@ http_interactions:
             "input_tokens_details": {
               "cached_tokens": 0
             },
-            "output_tokens": 61,
+            "output_tokens": 60,
             "output_tokens_details": {
               "reasoning_tokens": 0
             },
-            "total_tokens": 28410
+            "total_tokens": 28409
           },
           "user": null,
           "metadata": {}
         }
-  recorded_at: Sat, 03 Jan 2026 18:29:25 GMT
+  recorded_at: Sat, 03 Jan 2026 19:45:30 GMT
 recorded_with: VCR 6.4.0
