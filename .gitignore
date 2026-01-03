@@ -1,0 +1,43 @@
+*.gem
+*.rbc
+/.config
+/coverage/
+/InstalledFiles
+/pkg/
+/spec/reports/
+/spec/examples.txt
+/test/tmp/
+/test/version_tmp/
+/tmp/
+
+# Documentation cache and generated files:
+/.yardoc/
+/_yardoc/
+/doc/
+/rdoc/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# IDE/Editor specific
+.idea/
+*.swp
+*.swo
+*~
+.vscode/
+.sublime-*
+
+# Bundler
+/.bundle/
+/vendor/bundle
+/Gemfile.lock
+
+# RubyLLM source (development only)
+/ruby_llm_source/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
