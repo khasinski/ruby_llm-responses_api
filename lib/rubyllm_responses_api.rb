@@ -19,6 +19,7 @@ require_relative 'ruby_llm/providers/openai_responses/state'
 require_relative 'ruby_llm/providers/openai_responses/background'
 require_relative 'ruby_llm/providers/openai_responses/message_extension'
 require_relative 'ruby_llm/providers/openai_responses/model_registry'
+require_relative 'ruby_llm/providers/openai_responses/active_record_extension'
 
 # Include all modules in the provider class
 require_relative 'ruby_llm/providers/openai_responses'
