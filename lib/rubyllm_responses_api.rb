@@ -18,12 +18,16 @@ require_relative 'ruby_llm/providers/openai_responses/built_in_tools'
 require_relative 'ruby_llm/providers/openai_responses/state'
 require_relative 'ruby_llm/providers/openai_responses/background'
 require_relative 'ruby_llm/providers/openai_responses/message_extension'
+require_relative 'ruby_llm/providers/openai_responses/model_registry'
 
 # Include all modules in the provider class
 require_relative 'ruby_llm/providers/openai_responses'
 
 # Register the provider
 RubyLLM::Provider.register :openai_responses, RubyLLM::Providers::OpenAIResponses
+
+# Register models for this provider
+RubyLLM::Providers::OpenAIResponses::ModelRegistry.register_all!
 
 # Extend RubyLLM module with ResponsesAPI namespace
 module RubyLLM

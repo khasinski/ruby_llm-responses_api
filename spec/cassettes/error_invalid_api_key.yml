@@ -1,0 +1,73 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://api.openai.com/v1/responses
+    body:
+      encoding: UTF-8
+      string: '{"model":"gpt-4o-mini","input":[{"type":"message","role":"user","content":"Hello"}],"stream":false}'
+    headers:
+      User-Agent:
+      - Faraday v2.14.0
+      Authorization:
+      - Bearer <OPENAI_API_KEY>
+      Content-Type:
+      - application/json
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 401
+      message: Unauthorized
+    headers:
+      Date:
+      - Sat, 03 Jan 2026 18:29:55 GMT
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '240'
+      Connection:
+      - keep-alive
+      Www-Authenticate:
+      - Bearer realm="OpenAI API"
+      Openai-Version:
+      - '2020-10-01'
+      X-Request-Id:
+      - req_6dda82513ffc4e12bb72f13a9a7bae18
+      Openai-Processing-Ms:
+      - '38'
+      X-Envoy-Upstream-Service-Time:
+      - '40'
+      Cf-Cache-Status:
+      - DYNAMIC
+      Set-Cookie:
+      - __cf_bm=lTkkz4ia.S1KDDw1TAIWAjBtD35fGdaQB0HavflOkDQ-1767464995-1.0.1.1-z8AGzWYqo6zUX0LDDwgZ8CyaUdbfFR7ZcwzLT2SHmutiK_E89azuFjxZFYdHbn7nKZWJ.4adkC9WNH2HbAdbPfuTkHnDFGevEc6Kv8ReJn0;
+        path=/; expires=Sat, 03-Jan-26 18:59:55 GMT; domain=.api.openai.com; HttpOnly;
+        Secure; SameSite=None
+      - _cfuvid=e5LjOLJ_nyZBwMZxKl0nd.mUvuCyYUXrgK6OyvI7hwo-1767464995139-0.0.1.1-604800000;
+        path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      X-Content-Type-Options:
+      - nosniff
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 9b84907a2a866338-WAW
+      Alt-Svc:
+      - h3=":443"; ma=86400
+    body:
+      encoding: UTF-8
+      string: |-
+        {
+          "error": {
+            "message": "Incorrect API key provided: <OPENAI_API_KEY>. You can find your API key at https://platform.openai.com/account/api-keys.",
+            "type": "invalid_request_error",
+            "param": null,
+            "code": "invalid_api_key"
+          }
+        }
+  recorded_at: Sat, 03 Jan 2026 18:29:55 GMT
+recorded_with: VCR 6.4.0

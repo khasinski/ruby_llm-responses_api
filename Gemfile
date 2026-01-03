@@ -2,7 +2,7 @@
 
 source 'https://rubygems.org'
 
-gemspec
+gemspec name: 'ruby_llm-responses_api'
 
 gem 'ruby_llm', path: './ruby_llm_source'
 

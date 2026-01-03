@@ -1,0 +1,185 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://api.openai.com/v1/responses
+    body:
+      encoding: UTF-8
+      string: '{"model":"gpt-4o-mini","input":[{"type":"message","role":"user","content":"What
+        is the current population of Tokyo? Just give a rough number."}],"stream":false,"tools":[{"type":"web_search_preview"}]}'
+    headers:
+      User-Agent:
+      - Faraday v2.14.0
+      Authorization:
+      - Bearer <OPENAI_API_KEY>
+      Content-Type:
+      - application/json
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Sat, 03 Jan 2026 18:28:34 GMT
+      Content-Type:
+      - application/json
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      X-Ratelimit-Limit-Requests:
+      - '5000'
+      X-Ratelimit-Limit-Tokens:
+      - '4000000'
+      X-Ratelimit-Remaining-Requests:
+      - '4999'
+      X-Ratelimit-Remaining-Tokens:
+      - '3999666'
+      X-Ratelimit-Reset-Requests:
+      - 12ms
+      X-Ratelimit-Reset-Tokens:
+      - 5ms
+      Openai-Version:
+      - '2020-10-01'
+      Openai-Organization:
+      - user-h7m2t30jnyqzec1thkvt5rcd
+      Openai-Project:
+      - proj_EH4BBntp4Mf4xktF4Nn8NZvt
+      X-Request-Id:
+      - req_502ace12dfdc4b39baad43fe2f38a540
+      Openai-Processing-Ms:
+      - '2335'
+      X-Envoy-Upstream-Service-Time:
+      - '2337'
+      Cf-Cache-Status:
+      - DYNAMIC
+      Set-Cookie:
+      - __cf_bm=8wDKllL14BgBO3CgmbKDUS9whTWfgc_qOqgpxS7lwv0-1767464914-1.0.1.1-Mb0B8suKuDdOQu6iYjX3lr60W0PXyW36rwP10PlyDlOeCAuHSeYSxl30FqR2cxzS7_.hgQ2FbYgZ16iHpRCxRHP0N4oj440cY7Oow7egob8;
+        path=/; expires=Sat, 03-Jan-26 18:58:34 GMT; domain=.api.openai.com; HttpOnly;
+        Secure; SameSite=None
+      - _cfuvid=CgKVpmLuua5arQCgx.MPnw5LQKxTubgzel3rUTvaXmM-1767464914770-0.0.1.1-604800000;
+        path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      X-Content-Type-Options:
+      - nosniff
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 9b848e75cbc388e8-WAW
+      Alt-Svc:
+      - h3=":443"; ma=86400
+    body:
+      encoding: ASCII-8BIT
+      string: |-
+        {
+          "id": "resp_0a6d1ae7d8dd114f0069595fd05fa48196863eae70b948db1f",
+          "object": "response",
+          "created_at": 1767464912,
+          "status": "completed",
+          "background": false,
+          "billing": {
+            "payer": "developer"
+          },
+          "completed_at": 1767464914,
+          "error": null,
+          "incomplete_details": null,
+          "instructions": null,
+          "max_output_tokens": null,
+          "max_tool_calls": null,
+          "model": "gpt-4o-mini-2024-07-18",
+          "output": [
+            {
+              "id": "ws_0a6d1ae7d8dd114f0069595fd1109881968626c4a083e0c5cb",
+              "type": "web_search_call",
+              "status": "completed",
+              "action": {
+                "type": "search",
+                "query": "current population of Tokyo 2023"
+              }
+            },
+            {
+              "id": "msg_0a6d1ae7d8dd114f0069595fd1b80881968276c985f058287d",
+              "type": "message",
+              "status": "completed",
+              "content": [
+                {
+                  "type": "output_text",
+                  "annotations": [
+                    {
+                      "type": "url_citation",
+                      "end_index": 174,
+                      "start_index": 83,
+                      "title": "Demographics of Tokyo",
+                      "url": "https://en.wikipedia.org/wiki/Demographics_of_Tokyo?utm_source=openai"
+                    },
+                    {
+                      "type": "url_citation",
+                      "end_index": 442,
+                      "start_index": 322,
+                      "title": "Tokyo, Japan Metro Area Population | Historical Data | Chart | 1950-2025 | MacroTrends",
+                      "url": "https://www.macrotrends.net/datasets/global-metrics/cities/21671/tokyo/population?utm_source=openai"
+                    }
+                  ],
+                  "logprobs": [],
+                  "text": "As of 2025, Tokyo's population is estimated to be approximately 14 million people. ([en.wikipedia.org](https://en.wikipedia.org/wiki/Demographics_of_Tokyo?utm_source=openai)) However, when considering the broader Tokyo metropolitan area, which includes surrounding cities and suburbs, the population is around 37 million. ([macrotrends.net](https://www.macrotrends.net/datasets/global-metrics/cities/21671/tokyo/population?utm_source=openai)) "
+                }
+              ],
+              "role": "assistant"
+            }
+          ],
+          "parallel_tool_calls": true,
+          "previous_response_id": null,
+          "prompt_cache_key": null,
+          "prompt_cache_retention": null,
+          "reasoning": {
+            "effort": null,
+            "summary": null
+          },
+          "safety_identifier": null,
+          "service_tier": "default",
+          "store": true,
+          "temperature": 1.0,
+          "text": {
+            "format": {
+              "type": "text"
+            },
+            "verbosity": "medium"
+          },
+          "tool_choice": "auto",
+          "tools": [
+            {
+              "type": "web_search_preview",
+              "search_context_size": "medium",
+              "user_location": {
+                "type": "approximate",
+                "city": null,
+                "country": "US",
+                "region": null,
+                "timezone": null
+              }
+            }
+          ],
+          "top_logprobs": 0,
+          "top_p": 1.0,
+          "truncation": "disabled",
+          "usage": {
+            "input_tokens": 315,
+            "input_tokens_details": {
+              "cached_tokens": 0
+            },
+            "output_tokens": 122,
+            "output_tokens_details": {
+              "reasoning_tokens": 0
+            },
+            "total_tokens": 437
+          },
+          "user": null,
+          "metadata": {}
+        }
+  recorded_at: Sat, 03 Jan 2026 18:28:34 GMT
+recorded_with: VCR 6.4.0

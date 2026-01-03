@@ -70,9 +70,7 @@ module RubyLLM
 
           return response_data if Background.complete?(response_data)
 
-          if timeout && (Time.now - start_time) > timeout
-            raise Error, "Polling timeout after #{timeout} seconds"
-          end
+          raise Error, "Polling timeout after #{timeout} seconds" if timeout && (Time.now - start_time) > timeout
 
           sleep interval
         end

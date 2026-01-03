@@ -151,7 +151,7 @@ module RubyLLM
               standard: {
                 input_per_million: pricing[:input],
                 output_per_million: pricing[:output],
-                cached_input_per_million: pricing[:cached_input] || pricing[:input] / 2
+                cached_input_per_million: pricing[:cached_input] || (pricing[:input] / 2)
               }
             }
           }
@@ -168,7 +168,7 @@ module RubyLLM
         end
 
         def capabilities_for(model_id)
-          caps = ['streaming', 'function_calling', 'structured_output']
+          caps = %w[streaming function_calling structured_output]
           caps << 'vision' if supports_vision?(model_id)
           caps << 'web_search' if supports_web_search?(model_id)
           caps << 'code_interpreter' if supports_code_interpreter?(model_id)

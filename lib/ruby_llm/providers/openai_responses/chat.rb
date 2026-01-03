@@ -12,7 +12,7 @@ module RubyLLM
 
         module_function
 
-        def render_payload(messages, tools:, temperature:, model:, stream: false, schema: nil) # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/MethodLength,Metrics/ParameterLists,Metrics/PerceivedComplexity
+        def render_payload(messages, tools:, temperature:, model:, stream: false, schema: nil) # rubocop:disable Metrics/ParameterLists
           # Extract system messages for instructions
           system_messages = messages.select { |m| m.role == :system }
           non_system_messages = messages.reject { |m| m.role == :system }
@@ -28,9 +28,7 @@ module RubyLLM
           payload[:instructions] = instructions unless instructions.empty?
           payload[:temperature] = temperature unless temperature.nil?
 
-          if tools.any?
-            payload[:tools] = tools.map { |_, tool| tool_for(tool) }
-          end
+          payload[:tools] = tools.map { |_, tool| tool_for(tool) } if tools.any?
 
           if schema
             payload[:text] = {
@@ -46,13 +44,11 @@ module RubyLLM
           payload
         end
 
-        def parse_completion_response(response) # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/MethodLength,Metrics/PerceivedComplexity
+        def parse_completion_response(response)
           data = response.body
           return if data.nil? || data.empty?
 
-          if data.is_a?(String)
-            data = JSON.parse(data)
-          end
+          data = JSON.parse(data) if data.is_a?(String)
 
           raise RubyLLM::Error.new(response, data.dig('error', 'message')) if data.dig('error', 'message')
 
@@ -82,27 +78,51 @@ module RubyLLM
         end
 
         def format_input(messages) # rubocop:disable Metrics/MethodLength
-          messages.map do |msg|
-            item = {
-              type: 'message',
-              role: format_role(msg.role)
-            }
+          result = []
 
+          messages.each do |msg|
             if msg.tool_call_id
-              # Tool result message
-              item[:type] = 'function_call_output'
-              item[:call_id] = msg.tool_call_id
-              item[:output] = extract_text_content(msg.content)
-              item.delete(:role)
-            else
-              item[:content] = format_content(msg.content, msg.tool_calls)
-            end
+              # Tool result message - function_call_output type
+              result << {
+                type: 'function_call_output',
+                call_id: msg.tool_call_id,
+                output: extract_text_content(msg.content)
+              }
+            elsif msg.tool_calls&.any?
+              # Assistant message with tool calls
+              # First add any text content as a message
+              text = extract_text_content(msg.content)
+              if text && !text.empty?
+                result << {
+                  type: 'message',
+                  role: 'assistant',
+                  content: text
+                }
+              end
 
-            item
+              # Then add each function call as a separate item
+              msg.tool_calls.each_value do |tc|
+                result << {
+                  type: 'function_call',
+                  call_id: tc.id,
+                  name: tc.name,
+                  arguments: tc.arguments.is_a?(String) ? tc.arguments : JSON.generate(tc.arguments)
+                }
+              end
+            else
+              # Regular message
+              result << {
+                type: 'message',
+                role: format_role(msg.role),
+                content: format_message_content(msg.content, nil)
+              }
+            end
           end
+
+          result
         end
 
-        def format_content(content, tool_calls = nil)
+        def format_message_content(content, tool_calls = nil)
           parts = []
 
           # Add text content
@@ -118,7 +138,7 @@ module RubyLLM
 
           # Add tool calls if present (for assistant messages)
           if tool_calls&.any?
-            tool_calls.each do |_, tc|
+            tool_calls.each_value do |tc|
               parts << {
                 type: 'function_call',
                 call_id: tc.id,

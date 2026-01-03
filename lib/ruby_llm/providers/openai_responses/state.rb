@@ -14,9 +14,7 @@ module RubyLLM
         # @return [Hash] Updated payload with state parameters
         def apply_state_params(payload, params)
           # Handle previous_response_id for conversation chaining
-          if params[:previous_response_id]
-            payload[:previous_response_id] = params[:previous_response_id]
-          end
+          payload[:previous_response_id] = params[:previous_response_id] if params[:previous_response_id]
 
           # Handle store option (defaults to true in Responses API)
           payload[:store] = params[:store] if params.key?(:store)

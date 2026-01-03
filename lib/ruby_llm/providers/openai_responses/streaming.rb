@@ -12,7 +12,7 @@ module RubyLLM
           'responses'
         end
 
-        def build_chunk(data) # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/MethodLength,Metrics/PerceivedComplexity
+        def build_chunk(data) # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/MethodLength
           event_type = data['type']
 
           case event_type
@@ -28,6 +28,7 @@ module RubyLLM
             # Function call arguments streaming
             Chunk.new(
               role: :assistant,
+              content: nil,
               tool_calls: build_streaming_tool_call(data),
               model_id: data.dig('response', 'model')
             )
@@ -55,6 +56,7 @@ module RubyLLM
             if item['type'] == 'function_call'
               Chunk.new(
                 role: :assistant,
+                content: nil,
                 tool_calls: {
                   item['call_id'] => ToolCall.new(
                     id: item['call_id'],
@@ -65,7 +67,7 @@ module RubyLLM
               )
             else
               # Other item types - return empty chunk
-              Chunk.new(role: :assistant)
+              Chunk.new(role: :assistant, content: nil)
             end
 
           when 'response.content_part.added', 'response.content_part.done',
@@ -73,16 +75,16 @@ module RubyLLM
                'response.function_call_arguments.done', 'response.created',
                'response.in_progress'
             # Status events - return empty chunk
-            Chunk.new(role: :assistant)
+            Chunk.new(role: :assistant, content: nil)
 
           when 'error'
             # Error event
             error_data = data['error'] || {}
-            raise RubyLLM::Error, error_data['message'] || 'Unknown streaming error'
+            raise RubyLLM::Error.new(nil, error_data['message'] || 'Unknown streaming error')
 
           else
             # Unknown event type - return empty chunk
-            Chunk.new(role: :assistant)
+            Chunk.new(role: :assistant, content: nil)
           end
         end
 

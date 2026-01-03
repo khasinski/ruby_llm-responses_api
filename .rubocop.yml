@@ -13,20 +13,45 @@ Style/FrozenStringLiteralComment:
   Enabled: true
 
 Metrics/BlockLength:
+  Max: 35
   Exclude:
     - 'spec/**/*'
 
 Metrics/MethodLength:
-  Max: 20
+  Max: 30
+  Exclude:
+    - 'spec/**/*'
+    - 'examples/**/*'
 
 Metrics/AbcSize:
-  Max: 25
+  Max: 30
 
 Metrics/CyclomaticComplexity:
-  Max: 10
+  Max: 12
 
 Metrics/PerceivedComplexity:
-  Max: 10
+  Max: 12
+
+Metrics/ModuleLength:
+  Max: 200
 
 Layout/LineLength:
   Max: 120
+
+# The alias file intentionally uses a hyphen to match gem naming
+Naming/FileName:
+  Exclude:
+    - 'lib/ruby_llm-responses_api.rb'
+
+# Development dependencies in gemspec is fine for a gem
+Gemspec/DevelopmentDependencies:
+  Enabled: false
+
+# Empty block is intentional in streaming test
+Lint/EmptyBlock:
+  Exclude:
+    - 'spec/**/*'
+
+# Duplicate branches are sometimes clearer than complex conditionals
+Lint/DuplicateBranch:
+  Enabled: false

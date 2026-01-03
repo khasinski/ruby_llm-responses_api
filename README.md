@@ -1,201 +1,269 @@
 # RubyLLM Responses API Provider
 
-A RubyLLM provider that implements OpenAI's Responses API, providing access to built-in tools (web search, code interpreter, file search), stateful conversations, background mode, and MCP support.
+[![Gem Version](https://badge.fury.io/rb/ruby_llm-responses_api.svg)](https://badge.fury.io/rb/ruby_llm-responses_api)
+
+A [RubyLLM](https://github.com/crmne/ruby_llm) provider plugin that implements OpenAI's [Responses API](https://platform.openai.com/docs/api-reference/responses). Get all the RubyLLM features you love, plus Responses API exclusives:
+
+- **Built-in Tools**: Web search, code interpreter, file search, image generation
+- **Stateful Conversations**: Server-side conversation memory with `previous_response_id`
+- **Background Mode**: Submit long-running tasks and poll for results
+- **MCP Integration**: Connect to Model Context Protocol servers
+
+## Quick Start
+
+```ruby
+require 'ruby_llm-responses_api'
+
+RubyLLM.configure do |config|
+  config.openai_api_key = ENV['OPENAI_API_KEY']
+end
+
+# That's it! Use :openai_responses as your provider
+chat = RubyLLM.chat(model: 'gpt-4o-mini', provider: :openai_responses)
+response = chat.ask("What is 2 + 2?")
+puts response.content  # => "4"
+```
+
+## Installation
+
+Add to your Gemfile:
+
+```ruby
+gem 'ruby_llm-responses_api'
+```
+
+Then run:
+
+```bash
+bundle install
+```
+
+Or install directly:
+
+```bash
+gem install ruby_llm-responses_api
+```
 
 ## Requirements
 
 - Ruby >= 3.1.0
 - [RubyLLM](https://github.com/crmne/ruby_llm) >= 1.0
 
-## Installation
+## Features
 
-Add this line to your application's Gemfile:
-
-```ruby
-gem 'rubyllm-responses-api'
-```
-
-And then execute:
-
-```bash
-bundle install
-```
-
-Or install it yourself:
-
-```bash
-gem install rubyllm-responses-api
-```
-
-## Usage
-
-### Basic Usage
+### Basic Chat
 
 ```ruby
-require 'rubyllm_responses_api'
-
-# Configure RubyLLM with your OpenAI API key
-RubyLLM.configure do |config|
-  config.openai_api_key = ENV['OPENAI_API_KEY']
-end
-
-# Use the Responses API provider
 chat = RubyLLM.chat(model: 'gpt-4o', provider: :openai_responses)
-response = chat.ask("What's the weather like today?")
+response = chat.ask("Explain quantum computing in simple terms")
 puts response.content
+puts "Tokens used: #{response.input_tokens} in, #{response.output_tokens} out"
 ```
 
 ### Streaming
 
 ```ruby
-chat = RubyLLM.chat(model: 'gpt-4o', provider: :openai_responses)
-chat.ask("Tell me a story") do |chunk|
+chat = RubyLLM.chat(model: 'gpt-4o-mini', provider: :openai_responses)
+chat.ask("Write a haiku about Ruby") do |chunk|
   print chunk.content
 end
 ```
 
-### Using Built-in Tools
-
-#### Web Search
+### System Instructions
 
 ```ruby
-chat = RubyLLM.chat(model: 'gpt-4o', provider: :openai_responses)
-
-# Add web search tool to the request
-response = chat.ask(
-  "What are the latest developments in Ruby?",
-  params: {
-    tools: [RubyLLM::ResponsesAPI::BuiltInTools.web_search]
-  }
-)
+chat = RubyLLM.chat(model: 'gpt-4o-mini', provider: :openai_responses)
+chat.with_instructions("You are a pirate. Always respond like a pirate.")
+response = chat.ask("Hello!")
+puts response.content  # "Ahoy, matey! What brings ye to these waters?"
 ```
 
-#### Code Interpreter
+### Function Calling (Tools)
+
+```ruby
+class GetWeatherTool < RubyLLM::Tool
+  description "Get the current weather for a location"
+  param :location, type: "string", desc: "The city name"
+
+  def execute(location:)
+    "The weather in #{location} is sunny, 72°F"
+  end
+end
+
+chat = RubyLLM.chat(model: 'gpt-4o-mini', provider: :openai_responses)
+chat.with_tool(GetWeatherTool)
+response = chat.ask("What's the weather in Tokyo?")
+puts response.content  # Uses the tool and returns weather info
+```
+
+### Multi-turn Conversations
+
+```ruby
+chat = RubyLLM.chat(model: 'gpt-4o-mini', provider: :openai_responses)
+chat.ask("My favorite color is blue.")
+response = chat.ask("What's my favorite color?")
+puts response.content  # "Your favorite color is blue."
+```
+
+### Vision (Images)
+
+```ruby
+chat = RubyLLM.chat(model: 'gpt-4o-mini', provider: :openai_responses)
+
+# From URL
+content = RubyLLM::Content.new(
+  "What do you see in this image?",
+  images: ["https://example.com/image.png"]
+)
+response = chat.ask(content)
+
+# From local file
+content = RubyLLM::Content.new(
+  "Describe this photo",
+  images: ["/path/to/photo.jpg"]
+)
+response = chat.ask(content)
+```
+
+### Structured Output (JSON Schema)
+
+```ruby
+chat = RubyLLM.chat(model: 'gpt-4o-mini', provider: :openai_responses)
+
+schema = {
+  type: 'object',
+  properties: {
+    name: { type: 'string' },
+    age: { type: 'integer' },
+    city: { type: 'string' }
+  },
+  required: %w[name age city],
+  additionalProperties: false
+}
+
+chat.with_schema(schema)
+response = chat.ask("Generate a fictional person")
+puts response.content  # => {"name"=>"Alice", "age"=>28, "city"=>"Seattle"}
+```
+
+## Responses API Exclusive Features
+
+### Web Search
+
+Enable real-time web search in responses:
+
+```ruby
+chat = RubyLLM.chat(model: 'gpt-4o-mini', provider: :openai_responses)
+chat.with_params(tools: [{ type: 'web_search_preview' }])
+
+response = chat.ask("What's the current Bitcoin price?")
+puts response.content  # Real-time data from the web
+```
+
+Or use the helper:
+
+```ruby
+chat.with_params(tools: [RubyLLM::ResponsesAPI::BuiltInTools.web_search])
+```
+
+### Code Interpreter
+
+Let the model execute Python code:
 
 ```ruby
 chat = RubyLLM.chat(model: 'gpt-4.1', provider: :openai_responses)
+chat.with_params(tools: [RubyLLM::ResponsesAPI::BuiltInTools.code_interpreter])
 
-response = chat.ask(
-  "Calculate the fibonacci sequence up to 100",
-  params: {
-    tools: [RubyLLM::ResponsesAPI::BuiltInTools.code_interpreter]
-  }
-)
+response = chat.ask("Calculate the first 20 fibonacci numbers and plot them")
 ```
 
-#### File Search (Vector Store)
+### File Search (Vector Stores)
+
+Search through your uploaded documents:
+
+```ruby
+chat = RubyLLM.chat(model: 'gpt-4o', provider: :openai_responses)
+chat.with_params(
+  tools: [
+    RubyLLM::ResponsesAPI::BuiltInTools.file_search(
+      vector_store_ids: ['vs_abc123']
+    )
+  ]
+)
+
+response = chat.ask("Find all mentions of authentication in the docs")
+```
+
+### Image Generation
+
+Generate images directly in conversations:
+
+```ruby
+chat = RubyLLM.chat(model: 'gpt-4o', provider: :openai_responses)
+chat.with_params(tools: [RubyLLM::ResponsesAPI::BuiltInTools.image_generation])
+
+response = chat.ask("Generate an image of a sunset over mountains")
+# Response will include generated image data
+```
+
+### Stateful Conversations (Server-side Memory)
+
+Let OpenAI store conversation state:
 
 ```ruby
 chat = RubyLLM.chat(model: 'gpt-4o', provider: :openai_responses)
 
-response = chat.ask(
-  "Find information about API authentication",
-  params: {
-    tools: [
-      RubyLLM::ResponsesAPI::BuiltInTools.file_search(
-        vector_store_ids: ['vs_abc123']
-      )
-    ]
-  }
-)
-```
-
-### Stateful Conversations
-
-The Responses API supports server-side conversation state management:
-
-```ruby
-chat = RubyLLM.chat(model: 'gpt-4o', provider: :openai_responses)
-
-# First message - stored on server
-response = chat.ask(
-  "My name is Alice",
-  params: { store: true }
-)
+# Store the conversation on OpenAI's servers
+response = chat.ask("My name is Alice", params: { store: true })
 response_id = response.response_id
 
-# Continue the conversation using the stored state
-response2 = chat.ask(
+# Later, continue from that conversation (even in a new session)
+chat2 = RubyLLM.chat(model: 'gpt-4o', provider: :openai_responses)
+response = chat2.ask(
   "What's my name?",
   params: { previous_response_id: response_id }
 )
-puts response2.content  # "Your name is Alice"
+puts response.content  # "Your name is Alice"
 ```
 
-### Background Mode (Long-running tasks)
+### Background Mode
 
-For tasks that take a long time, use background mode:
+For long-running tasks:
 
 ```ruby
 provider = RubyLLM::Provider.resolve(:openai_responses).new(RubyLLM.config)
 
 # Submit a background request
 response = chat.ask(
-  "Analyze this large dataset and generate a comprehensive report",
+  "Analyze this massive dataset",
   params: { background: true }
 )
 
 # Poll for completion
-final_response = provider.poll_response(response.response_id, interval: 2.0) do |status|
-  puts "Status: #{status['status']}"
+result = provider.poll_response(response.response_id, interval: 2.0) do |status|
+  puts "Status: #{status['status']}"  # queued, in_progress, completed
 end
 
-puts final_response['output']
+puts result['output']
 ```
 
-### MCP (Model Context Protocol) Integration
+### MCP (Model Context Protocol)
 
-Connect to remote MCP servers:
+Connect to external MCP servers:
 
 ```ruby
 chat = RubyLLM.chat(model: 'gpt-4.1', provider: :openai_responses)
 
-response = chat.ask(
-  "Analyze this GitHub repository",
-  params: {
-    tools: [
-      RubyLLM::ResponsesAPI::BuiltInTools.mcp(
-        server_label: 'github',
-        server_url: 'https://mcp.example.com/github',
-        require_approval: 'never',
-        headers: { 'Authorization' => "Bearer #{ENV['GITHUB_TOKEN']}" }
-      )
-    ]
-  }
+mcp_tool = RubyLLM::ResponsesAPI::BuiltInTools.mcp(
+  server_label: 'github',
+  server_url: 'https://mcp.example.com/github',
+  require_approval: 'never',
+  headers: { 'Authorization' => "Bearer #{ENV['GITHUB_TOKEN']}" }
 )
+
+chat.with_params(tools: [mcp_tool])
+response = chat.ask("List my recent GitHub issues")
 ```
-
-### Function Calling
-
-Standard function calling works the same as with the regular OpenAI provider:
-
-```ruby
-weather_tool = RubyLLM::Tool.new(
-  name: 'get_weather',
-  description: 'Get the current weather for a location',
-  parameters: {
-    location: { type: 'string', description: 'City name' }
-  }
-) do |args|
-  "The weather in #{args[:location]} is sunny, 72°F"
-end
-
-chat = RubyLLM.chat(model: 'gpt-4o', provider: :openai_responses)
-chat.with_tool(weather_tool)
-response = chat.ask("What's the weather in San Francisco?")
-```
-
-## API Differences
-
-The Responses API has some key differences from the Chat Completions API:
-
-| Feature | Chat Completions | Responses API |
-|---------|-----------------|---------------|
-| Endpoint | `/v1/chat/completions` | `/v1/responses` |
-| System prompt | In messages array | `instructions` parameter |
-| Response format | `choices[0].message` | `output` array |
-| Statefulness | None | `previous_response_id`, `store` |
-| Built-in tools | None | web_search, file_search, code_interpreter |
 
 ## Configuration
 
@@ -203,35 +271,54 @@ This gem reuses RubyLLM's OpenAI configuration:
 
 ```ruby
 RubyLLM.configure do |config|
+  # Required
   config.openai_api_key = ENV['OPENAI_API_KEY']
-  config.openai_api_base = 'https://api.openai.com/v1'  # Optional
-  config.openai_organization_id = 'org-...'  # Optional
-  config.openai_project_id = 'proj-...'  # Optional
+
+  # Optional
+  config.openai_api_base = 'https://api.openai.com/v1'
+  config.openai_organization_id = 'org-...'
+  config.openai_project_id = 'proj-...'
 end
 ```
 
 ## Supported Models
 
-The Responses API supports these model families:
-- GPT-4o series (gpt-4o, gpt-4o-mini)
-- GPT-4.1 series (gpt-4.1, gpt-4.1-mini, gpt-4.1-nano)
-- O-series reasoning models (o1, o1-mini, o3, o3-mini, o4-mini)
-- GPT-4 Turbo
+| Model Family | Models | Key Features |
+|--------------|--------|--------------|
+| GPT-4o | `gpt-4o`, `gpt-4o-mini` | Vision, function calling, web search |
+| GPT-4.1 | `gpt-4.1`, `gpt-4.1-mini`, `gpt-4.1-nano` | 1M context, all features |
+| O-series | `o1`, `o1-mini`, `o3`, `o3-mini`, `o4-mini` | Advanced reasoning |
+
+## API Differences
+
+The Responses API differs from Chat Completions:
+
+| Feature | Chat Completions | Responses API |
+|---------|-----------------|---------------|
+| Endpoint | `/v1/chat/completions` | `/v1/responses` |
+| System prompt | In messages array | `instructions` parameter |
+| Response format | `choices[0].message` | `output` array |
+| Statefulness | Client-managed | Server-managed via `previous_response_id` |
+| Built-in tools | None | Web search, code interpreter, etc. |
 
 ## Development
 
-After checking out the repo, run `bundle install` to install dependencies. Then, run `bundle exec rspec` to run the tests.
-
 ```bash
-git clone https://github.com/hasik/rubyllm-responses-api.git
-cd rubyllm-responses-api
+git clone https://github.com/khasinski/ruby_llm-responses_api.git
+cd ruby_llm-responses_api
 bundle install
 bundle exec rspec
 ```
 
+Run integration tests with a real API:
+
+```bash
+OPENAI_API_KEY=your_key bundle exec ruby examples/test_real_api.rb
+```
+
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/hasik/rubyllm-responses-api.
+Bug reports and pull requests are welcome on GitHub at https://github.com/khasinski/ruby_llm-responses_api.
 
 ## License
 

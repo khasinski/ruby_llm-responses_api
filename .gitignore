@@ -32,10 +32,12 @@
 # Bundler
 /.bundle/
 /vendor/bundle
-/Gemfile.lock
 
 # RubyLLM source (development only)
 /ruby_llm_source/
+
+# Internal planning docs
+/plan.md
 
 # macOS
 .DS_Store

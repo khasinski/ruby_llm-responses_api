@@ -11,7 +11,7 @@ module RubyLLM
           'models'
         end
 
-        def parse_list_models_response(response, slug, capabilities) # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
+        def parse_list_models_response(response, slug, capabilities)
           models_data = response.body
           models_data = models_data['data'] if models_data.is_a?(Hash) && models_data['data']
 
