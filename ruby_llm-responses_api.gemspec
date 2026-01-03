@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |spec|
   spec.name = 'ruby_llm-responses_api'
-  spec.version = '0.1.0'
+  spec.version = '0.2.0'
   spec.authors = ['Chris Hasinski']
   spec.email = ['krzysztof.hasinski@gmail.com']
 
