@@ -65,7 +65,7 @@ chat = RubyLLM.chat(model: 'gpt-4o', provider: :openai_responses)
 response = chat.ask(
   "What are the latest developments in Ruby?",
   params: {
-    tools: [RubyLLMResponsesAPI::BuiltInTools.web_search]
+    tools: [RubyLLM::ResponsesAPI::BuiltInTools.web_search]
   }
 )
 ```
@@ -78,7 +78,7 @@ chat = RubyLLM.chat(model: 'gpt-4.1', provider: :openai_responses)
 response = chat.ask(
   "Calculate the fibonacci sequence up to 100",
   params: {
-    tools: [RubyLLMResponsesAPI::BuiltInTools.code_interpreter]
+    tools: [RubyLLM::ResponsesAPI::BuiltInTools.code_interpreter]
   }
 )
 ```
@@ -92,7 +92,7 @@ response = chat.ask(
   "Find information about API authentication",
   params: {
     tools: [
-      RubyLLMResponsesAPI::BuiltInTools.file_search(
+      RubyLLM::ResponsesAPI::BuiltInTools.file_search(
         vector_store_ids: ['vs_abc123']
       )
     ]
@@ -154,7 +154,7 @@ response = chat.ask(
   "Analyze this GitHub repository",
   params: {
     tools: [
-      RubyLLMResponsesAPI::BuiltInTools.mcp(
+      RubyLLM::ResponsesAPI::BuiltInTools.mcp(
         server_label: 'github',
         server_url: 'https://mcp.example.com/github',
         require_approval: 'never',

@@ -5,7 +5,7 @@ module RubyLLM
     # OpenAI Responses API provider for RubyLLM.
     # Implements the new Responses API which provides built-in tools,
     # stateful conversations, background mode, and MCP support.
-    class OpenAIResponses < Provider
+    class OpenAIResponses
       include OpenAIResponses::Chat
       include OpenAIResponses::Streaming
       include OpenAIResponses::Tools
