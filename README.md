@@ -58,12 +58,50 @@ chat = Chat.find(1)
 chat.ask("What's my name?")  # => "Alice"
 ```
 
-## Web Search
+## Built-in Tools
+
+The Responses API provides built-in tools that don't require custom implementation.
+
+### Web Search
 
 ```ruby
 chat.with_params(tools: [{ type: 'web_search_preview' }])
-chat.ask("Latest news about Ruby?")
+chat.ask("Latest news about Ruby 3.4?")
 ```
+
+### Code Interpreter
+
+Execute Python code in a sandbox:
+
+```ruby
+chat.with_params(tools: [{ type: 'code_interpreter' }])
+chat.ask("Calculate the first 20 Fibonacci numbers and plot them")
+```
+
+### File Search
+
+Search through uploaded files (requires vector store setup):
+
+```ruby
+chat.with_params(tools: [{ type: 'file_search', vector_store_ids: ['vs_abc123'] }])
+chat.ask("What does the documentation say about authentication?")
+```
+
+### Combining Tools
+
+```ruby
+chat.with_params(tools: [
+  { type: 'web_search_preview' },
+  { type: 'code_interpreter' }
+])
+chat.ask("Find the latest Bitcoin price and plot a chart")
+```
+
+## Why Use the Responses API?
+
+- **Built-in tools** - Web search, code execution, file search without custom implementation
+- **Stateful conversations** - OpenAI stores context server-side via `previous_response_id`
+- **Simpler multi-turn** - No need to send full message history on each request
 
 ## License
 
