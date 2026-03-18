@@ -42,6 +42,66 @@ RSpec.describe RubyLLM::Providers::OpenAIResponses::Chat do
       expect(payload[:input].length).to eq(1)
     end
 
+    it 'embeds files as text or base64' do
+      attachments = [
+        Pathname.new('./spec/fixtures/ruby.png'),
+        Pathname.new('./spec/fixtures/sample.pdf'),
+        Pathname.new('./spec/fixtures/ruby.mp3'),
+        Pathname.new('./spec/fixtures/ruby.txt')
+      ]
+
+      content_with_attachments = RubyLLM::Content.new 'My content with attachments', attachments
+      user_message_with_content = RubyLLM::Message.new role: :user, content: content_with_attachments
+
+      payload = chat_module.render_payload(
+        [user_message_with_content],
+        tools: {},
+        temperature: nil,
+        model: model,
+        stream: false
+      )
+
+      actual_input = payload[:input]
+      expect(actual_input.length).to eq(1)
+
+      actual_content = actual_input.first[:content]
+      expect(actual_content.length).to eq(5)
+
+      expect(actual_content[0]).to eq({ type: 'input_text', text: 'My content with attachments' })
+
+      expect(actual_content[1][:type]).to eq('input_image')
+      expect(actual_content[1][:image_url]).to start_with('data:image/png;base64,')
+
+      expect(actual_content[2][:type]).to eq('input_file')
+      expect(actual_content[2][:filename]).to start_with('sample.pdf')
+      expect(actual_content[2][:file_data]).to start_with('data:application/pdf;base64,')
+
+      expect(actual_content[3][:type]).to eq('input_audio')
+      expect(actual_content[3][:data]).to start_with('data:audio/mpeg;base64,')
+
+      expect(actual_content[4]).to eq(
+        {
+          type: 'input_text',
+          text: "<file name='ruby.txt' mime_type='text/plain'>Ruby is the best.</file>"
+        }
+      )
+    end
+
+    it 'rejects unknown attachments' do
+      content_with_attachment = RubyLLM::Content.new 'Binary', Pathname.new('./spec/fixtures/sample.bin')
+      user_message_with_content = RubyLLM::Message.new role: :user, content: content_with_attachment
+
+      expect do
+        chat_module.render_payload(
+          [user_message_with_content],
+          tools: {},
+          temperature: nil,
+          model: model,
+          stream: false
+        )
+      end.to raise_exception(RubyLLM::UnsupportedAttachmentError)
+    end
+
     it 'includes temperature when provided' do
       payload = chat_module.render_payload(
         [user_message],

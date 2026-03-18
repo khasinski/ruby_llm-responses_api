@@ -173,7 +173,7 @@ module RubyLLM
           # Add attachments if present
           if content.is_a?(RubyLLM::Content)
             content.attachments.each do |attachment|
-              parts << format_attachment(attachment)
+              parts << Media.format_attachment(attachment)
             end
           end
 
@@ -193,43 +193,6 @@ module RubyLLM
           return parts.first[:text] if parts.length == 1 && parts.first[:type] == 'input_text'
 
           parts
-        end
-
-        def format_attachment(attachment)
-          case attachment.type
-          when :image
-            if attachment.url?
-              { type: 'input_image', image_url: attachment.source }
-            else
-              { type: 'input_image', image_url: attachment.for_llm }
-            end
-          when :pdf
-            {
-              type: 'input_file',
-              filename: File.basename(attachment.source.to_s),
-              file_data: attachment.for_llm
-            }
-          when :audio
-            {
-              type: 'input_audio',
-              data: attachment.for_llm,
-              format: detect_audio_format(attachment.source)
-            }
-          else
-            { type: 'input_text', text: "[Unsupported attachment: #{attachment.type}]" }
-          end
-        end
-
-        def detect_audio_format(source)
-          ext = File.extname(source.to_s).downcase
-          case ext
-          when '.mp3' then 'mp3'
-          when '.wav' then 'wav'
-          when '.webm' then 'webm'
-          when '.ogg' then 'ogg'
-          when '.flac' then 'flac'
-          else 'mp3'
-          end
         end
 
         def extract_text_content(content)
