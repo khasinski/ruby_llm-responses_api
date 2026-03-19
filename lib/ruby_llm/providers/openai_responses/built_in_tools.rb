@@ -189,19 +189,31 @@ module RubyLLM
 
         # Parse shell call results from output
         # @param output [Array] Response output array
-        # @return [Array<Hash>] Parsed shell call results
+        # @return [Array<Hash>] Parsed shell call results joined with output by call_id
         def parse_shell_call_results(output)
-          output
-            .select { |item| item['type'] == 'shell_call' }
-            .map do |item|
-              {
-                id: item['id'],
-                call_id: item['call_id'],
-                status: item['status'],
-                action: item['action'],
-                container_id: item['container_id']
-              }
-            end
+          items = Array(output)
+          call_order = shell_call_order(items)
+          shell_calls_by_call_id = shell_call_items_by_call_id(items)
+          shell_outputs_by_call_id = shell_output_items_by_call_id(items)
+
+          call_order.map do |call_id|
+            build_shell_call_result(
+              call_id,
+              shell_call: shell_calls_by_call_id[call_id],
+              shell_outputs: shell_outputs_by_call_id[call_id]
+            )
+          end
+        end
+
+        # Parse shell call results from a final RubyLLM::Message
+        # @param message [RubyLLM::Message] Final message returned by chat completion
+        # @return [Array<Hash>] Parsed shell call results
+        def parse_shell_call_results_from_message(message)
+          body = message&.raw&.body
+          body = JSON.parse(body) if body.is_a?(String)
+          parse_shell_call_results(body.is_a?(Hash) ? body['output'] : nil)
+        rescue JSON::ParserError
+          []
         end
 
         # Extract all citations from message content
@@ -235,6 +247,41 @@ module RubyLLM
               snippet: result['snippet']
             }.compact
           end
+        end
+
+        private_class_method def shell_call_order(items)
+          items.filter_map do |item|
+            item['call_id'] if %w[shell_call shell_call_output].include?(item['type'])
+          end.uniq
+        end
+
+        private_class_method def shell_call_items_by_call_id(items)
+          items
+            .select { |item| item['type'] == 'shell_call' }
+            .to_h { |item| [item['call_id'], item] }
+        end
+
+        private_class_method def shell_output_items_by_call_id(items)
+          items
+            .select { |item| item['type'] == 'shell_call_output' }
+            .each_with_object(Hash.new { |hash, key| hash[key] = [] }) do |item, result|
+              result[item['call_id']] << item
+            end
+        end
+
+        private_class_method def build_shell_call_result(call_id, shell_call:, shell_outputs:)
+          shell_call ||= {}
+          shell_outputs ||= []
+          last_shell_output = shell_outputs.last
+
+          {
+            id: shell_call['id'],
+            call_id: call_id,
+            status: shell_call['status'] || last_shell_output&.dig('status'),
+            environment: RubyLLM::Utils.deep_dup(shell_call['environment']),
+            action: RubyLLM::Utils.deep_dup(shell_call['action']),
+            output: shell_outputs.flat_map { |item| RubyLLM::Utils.deep_dup(item['output'] || []) }
+          }.compact
         end
       end
     end

@@ -71,7 +71,7 @@ RSpec.describe 'Shell tool support' do
     end
 
     describe '.parse_shell_call_results' do
-      it 'extracts shell_call items from output' do
+      it 'joins shell_call metadata with shell_call_output items by call_id' do
         output = [
           {
             'type' => 'shell_call',
@@ -79,7 +79,20 @@ RSpec.describe 'Shell tool support' do
             'call_id' => 'call_123',
             'status' => 'completed',
             'action' => { 'commands' => ['ls -la'], 'timeout_ms' => 120_000 },
-            'container_id' => 'cntr_abc'
+            'environment' => { 'type' => 'container_reference', 'container_id' => 'cntr_abc' }
+          },
+          {
+            'type' => 'shell_call_output',
+            'id' => 'sho_123',
+            'call_id' => 'call_123',
+            'status' => 'completed',
+            'output' => [
+              {
+                'outcome' => { 'type' => 'exit', 'exit_code' => 0 },
+                'stderr' => '',
+                'stdout' => "total 1\n"
+              }
+            ]
           },
           {
             'type' => 'message',
@@ -94,12 +107,89 @@ RSpec.describe 'Shell tool support' do
         expect(results.first[:call_id]).to eq('call_123')
         expect(results.first[:status]).to eq('completed')
         expect(results.first[:action]['commands']).to eq(['ls -la'])
-        expect(results.first[:container_id]).to eq('cntr_abc')
+        expect(results.first[:environment]).to eq(
+          { 'type' => 'container_reference', 'container_id' => 'cntr_abc' }
+        )
+        expect(results.first[:output]).to eq(
+          [
+            {
+              'outcome' => { 'type' => 'exit', 'exit_code' => 0 },
+              'stderr' => '',
+              'stdout' => "total 1\n"
+            }
+          ]
+        )
       end
 
       it 'returns empty array when no shell calls' do
         output = [{ 'type' => 'message', 'content' => [] }]
         expect(built_in.parse_shell_call_results(output)).to be_empty
+      end
+
+      it 'parses shell results from a final message in sync mode' do
+        response = mock_response(
+          {
+            'id' => 'resp_shell',
+            'model' => 'gpt-5.2',
+            'output' => [
+              {
+                'type' => 'shell_call',
+                'id' => 'sh_1',
+                'call_id' => 'call_shell_1',
+                'status' => 'completed',
+                'action' => {
+                  'commands' => ['bundle exec ruby -v'],
+                  'timeout_ms' => nil
+                },
+                'environment' => {
+                  'type' => 'container_reference',
+                  'container_id' => 'cntr_sync'
+                }
+              },
+              {
+                'type' => 'shell_call_output',
+                'id' => 'sho_1',
+                'call_id' => 'call_shell_1',
+                'status' => 'completed',
+                'output' => [
+                  {
+                    'outcome' => { 'type' => 'exit', 'exit_code' => 0 },
+                    'stderr' => '',
+                    'stdout' => "ruby 3.4.8\n"
+                  }
+                ]
+              }
+            ]
+          }
+        )
+
+        message = RubyLLM::Providers::OpenAIResponses::Chat.parse_completion_response(response)
+        results = built_in.parse_shell_call_results_from_message(message)
+
+        expect(results).to eq(
+          [
+            {
+              id: 'sh_1',
+              call_id: 'call_shell_1',
+              status: 'completed',
+              environment: {
+                'type' => 'container_reference',
+                'container_id' => 'cntr_sync'
+              },
+              action: {
+                'commands' => ['bundle exec ruby -v'],
+                'timeout_ms' => nil
+              },
+              output: [
+                {
+                  'outcome' => { 'type' => 'exit', 'exit_code' => 0 },
+                  'stderr' => '',
+                  'stdout' => "ruby 3.4.8\n"
+                }
+              ]
+            }
+          ]
+        )
       end
     end
   end

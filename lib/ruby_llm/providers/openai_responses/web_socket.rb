@@ -241,6 +241,7 @@ module RubyLLM
 
         def accumulate_response(queue, &block)
           accumulator = StreamAccumulator.new
+          completed_response = Streaming::CompletedResponseAccumulator.new
 
           loop do
             raw = queue.pop
@@ -249,6 +250,7 @@ module RubyLLM
             data = JSON.parse(raw)
             event_type = data['type']
 
+            completed_response.add(data)
             chunk = Streaming.build_chunk(data)
             accumulator.add(chunk)
             block&.call(chunk)
@@ -259,7 +261,8 @@ module RubyLLM
             end
           end
 
-          message = accumulator.to_message(nil)
+          raw_response = completed_response.build_response(nil)
+          message = accumulator.to_message(raw_response)
           message.response_id = @last_response_id
           message
         end
