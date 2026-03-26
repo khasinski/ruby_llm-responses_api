@@ -214,7 +214,7 @@ module RubyLLM
         end
 
         def slug
-          :openai_responses
+          'openai_responses'
         end
       end
     end

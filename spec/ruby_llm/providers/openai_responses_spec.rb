@@ -18,8 +18,8 @@ RSpec.describe RubyLLM::Providers::OpenAIResponses do
   end
 
   describe '.slug' do
-    it 'returns :openai_responses' do
-      expect(described_class.slug).to eq(:openai_responses)
+    it 'returns "openai_responses"' do
+      expect(described_class.slug).to eq('openai_responses')
     end
   end
 
