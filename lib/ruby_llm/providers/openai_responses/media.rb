@@ -8,27 +8,6 @@ module RubyLLM
       module Media
         module_function
 
-        def format_content(content)
-          return content if content.is_a?(RubyLLM::Content::Raw)
-          return content unless content.is_a?(RubyLLM::Content)
-
-          parts = []
-          parts << format_text(content.text) if content.text && !content.text.empty?
-
-          content.attachments.each do |attachment|
-            parts << format_attachment(attachment)
-          end
-
-          # Return simple string for text-only content
-          return content.text if parts.length == 1 && parts.first[:type] == 'input_text'
-
-          parts
-        end
-
-        def format_text(text)
-          { type: 'input_text', text: text }
-        end
-
         def format_attachment(attachment)
           case attachment.type
           when :image
