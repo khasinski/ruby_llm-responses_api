@@ -37,8 +37,10 @@ module RubyLLM
             format_pdf(attachment)
           when :audio
             format_audio(attachment)
+          when :text
+            format_text_file(attachment)
           else
-            format_unknown(attachment)
+            raise UnsupportedAttachmentError, attachment.type
           end
         end
 
@@ -72,10 +74,10 @@ module RubyLLM
           }
         end
 
-        def format_unknown(attachment)
+        def format_text_file(text_file)
           {
             type: 'input_text',
-            text: "[Attachment: #{attachment.type}]"
+            text: text_file.for_llm
           }
         end
 
