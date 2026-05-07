@@ -57,6 +57,10 @@ module RubyLLM
 
           ready = Queue.new
           error_holder = []
+          # websocket-client-simple invokes on() blocks with instance_exec, so any
+          # @ivar reference inside resolves to the underlying client, not us.
+          # Capture self as a local so the handlers can call back into this object.
+          owner = self
 
           @ws = client_class.connect(build_ws_url, headers: build_headers)
 
@@ -64,20 +68,11 @@ module RubyLLM
 
           @ws.on(:error) do |e|
             error_holder << e
-            ready.push(:error) unless @connected
+            ready.push(:error) unless owner.connected?
           end
 
-          @ws.on(:close) do
-            @mutex.synchronize do
-              @connected = false
-              @message_queue&.push(nil)
-            end
-          end
-
-          @ws.on(:message) do |msg|
-            q = @mutex.synchronize { @message_queue }
-            q&.push(msg.data)
-          end
+          @ws.on(:close) { owner.__send__(:handle_close) }
+          @ws.on(:message) { |msg| owner.__send__(:handle_message, msg.data) }
 
           result = pop_with_timeout(ready, timeout)
           if result == :error || result.nil?
@@ -195,6 +190,18 @@ module RubyLLM
         class ResponseError < StandardError; end
 
         private
+
+        def handle_close
+          @mutex.synchronize do
+            @connected = false
+            @message_queue&.push(nil)
+          end
+        end
+
+        def handle_message(data)
+          q = @mutex.synchronize { @message_queue }
+          q&.push(data)
+        end
 
         def resolve_client_class
           require 'websocket-client-simple'
