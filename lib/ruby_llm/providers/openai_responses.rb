@@ -16,7 +16,11 @@ module RubyLLM
         @config.openai_api_base || 'https://api.openai.com/v1'
       end
 
+      BUILT_IN_EVENTS_KEY = :openai_responses_built_in_events
+
       # Override to support WebSocket transport via with_params(transport: :websocket)
+      # and to capture server-side built-in tool events when streaming over HTTP
+      # (the streaming accumulator in ruby_llm core does not surface them).
       # rubocop:disable Metrics/ParameterLists
       def complete(messages, tools:, temperature:, model:, params: {}, headers: {},
                    schema: nil, thinking: nil, tool_prefs: nil, &block)
@@ -24,6 +28,8 @@ module RubyLLM
           ws_complete(messages, tools: tools, temperature: temperature, model: model,
                                 params: params.except(:transport), schema: schema,
                                 thinking: thinking, &block)
+        elsif block_given?
+          capture_built_in_events { super }
         else
           super
         end
@@ -166,6 +172,23 @@ module RubyLLM
       end
 
       private
+
+      # Run the given block with a thread-local collector for built-in tool
+      # events. Streaming.build_chunk appends events into this collector as it
+      # processes response.completed; we then attach them to the returned
+      # message so they reach the chat callback layer.
+      def capture_built_in_events
+        previous = Thread.current[BUILT_IN_EVENTS_KEY]
+        Thread.current[BUILT_IN_EVENTS_KEY] = []
+        message = yield
+        events = Thread.current[BUILT_IN_EVENTS_KEY]
+        if message.respond_to?(:built_in_tool_events=) && events&.any?
+          message.built_in_tool_events = events
+        end
+        message
+      ensure
+        Thread.current[BUILT_IN_EVENTS_KEY] = previous
+      end
 
       def ws_complete(messages, tools:, temperature:, model:, params:, schema:, thinking:, &block) # rubocop:disable Metrics/ParameterLists
         normalized_temperature = maybe_normalize_temperature(temperature, model)

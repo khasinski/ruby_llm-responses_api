@@ -269,6 +269,30 @@ RSpec.describe RubyLLM::Providers::OpenAIResponses::Chat do
       expect(message.tool_calls['call_abc123'].name).to eq('get_weather')
       expect(message.tool_calls['call_abc123'].arguments).to eq({ 'location' => 'San Francisco' })
     end
+
+    it 'attaches built_in_tool_events for server-side tools (issue #1)' do
+      body = {
+        'id' => 'resp_789',
+        'model' => 'gpt-4o',
+        'status' => 'completed',
+        'output' => [
+          {
+            'type' => 'web_search_call',
+            'id' => 'ws_1',
+            'status' => 'completed',
+            'action' => { 'type' => 'search', 'query' => 'ruby' }
+          },
+          { 'type' => 'message', 'role' => 'assistant',
+            'content' => [{ 'type' => 'output_text', 'text' => 'Ruby is a language.' }] }
+        ],
+        'usage' => { 'input_tokens' => 5, 'output_tokens' => 7 }
+      }
+
+      message = chat_module.parse_completion_response(mock_response(body))
+
+      expect(message.built_in_tool_events.size).to eq(1)
+      expect(message.built_in_tool_events.first[:tool_call].name).to eq('web_search')
+    end
   end
 
   describe '.format_input' do

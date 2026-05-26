@@ -130,6 +130,7 @@ module RubyLLM
             cache_creation_tokens: 0,
             model_id: data['model'],
             response_id: data['id'],
+            built_in_tool_events: BuiltInTools.extract_events(output),
             raw: response
           )
         end

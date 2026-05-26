@@ -249,6 +249,7 @@ module RubyLLM
 
         def accumulate_response(queue, &block)
           accumulator = StreamAccumulator.new
+          built_in_events = []
 
           loop do
             raw = pop_response_event(queue)
@@ -267,12 +268,14 @@ module RubyLLM
 
             if event_type == 'response.completed'
               track_response_id(data)
+              built_in_events.concat(BuiltInTools.extract_events(data.dig('response', 'output') || []))
               break
             end
           end
 
           message = accumulator.to_message(nil)
           message.response_id = @last_response_id
+          message.built_in_tool_events = built_in_events if message.respond_to?(:built_in_tool_events=) && built_in_events.any?
           message
         end
 

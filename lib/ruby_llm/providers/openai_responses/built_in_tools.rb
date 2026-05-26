@@ -187,6 +187,78 @@ module RubyLLM
             end
         end
 
+        # Server-executed built-in tool output item types that should surface
+        # as tool_call / tool_result callbacks on RubyLLM::Chat.
+        CALL_ITEM_TYPES = %w[
+          web_search_call
+          file_search_call
+          code_interpreter_call
+          image_generation_call
+          shell_call
+          apply_patch_call
+          mcp_call
+          local_shell_call
+          computer_call
+        ].freeze
+
+        # Build a list of {tool_call:, result:} events from the response output.
+        # Used to surface server-side built-in tool activity through the standard
+        # on_tool_call / on_tool_result callbacks (issue #1).
+        def extract_events(output)
+          return [] unless output.is_a?(Array)
+
+          output.select { |item| CALL_ITEM_TYPES.include?(item['type']) }
+                .map { |item| build_event(item) }
+        end
+
+        private_class_method def build_event(item)
+          type_label = item['type'].sub(/_call\z/, '')
+
+          tool_call = RubyLLM::ToolCall.new(
+            id: item['id'],
+            name: type_label,
+            arguments: call_arguments(item)
+          )
+
+          {
+            tool_call: tool_call,
+            result: call_result(item)
+          }
+        end
+
+        private_class_method def call_arguments(item)
+          case item['type']
+          when 'code_interpreter_call'
+            { code: item['code'], container_id: item['container_id'] }.compact
+          when 'shell_call', 'local_shell_call'
+            { action: item['action'], container_id: item['container_id'] }.compact
+          when 'apply_patch_call'
+            { operation: item['operation'] }.compact
+          when 'mcp_call'
+            { name: item['name'], arguments: item['arguments'], server_label: item['server_label'] }.compact
+          when 'computer_call'
+            { action: item['action'] }.compact
+          when 'file_search_call'
+            { queries: item['queries'] }.compact
+          when 'web_search_call'
+            { action: item['action'], query: item.dig('action', 'query') }.compact
+          else
+            {}
+          end
+        end
+
+        private_class_method def call_result(item)
+          {
+            id: item['id'],
+            type: item['type'],
+            status: item['status'],
+            results: item['results'],
+            result: item['result'],
+            output: item['output'],
+            action: item['action']
+          }.compact
+        end
+
         # Parse shell call results from output
         # @param output [Array] Response output array
         # @return [Array<Hash>] Parsed shell call results
