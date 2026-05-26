@@ -70,6 +70,19 @@ RSpec.describe 'Shell tool support' do
       end
     end
 
+    describe '.web_search' do
+      it 'creates stable web search configuration by default' do
+        tool = built_in.web_search
+        expect(tool[:type]).to eq('web_search')
+      end
+
+      it 'supports legacy preview web search configuration' do
+        tool = built_in.web_search_preview(search_context_size: 'high')
+        expect(tool[:type]).to eq('web_search_preview')
+        expect(tool[:search_context_size]).to eq('high')
+      end
+    end
+
     describe '.parse_shell_call_results' do
       it 'extracts shell_call items from output' do
         output = [

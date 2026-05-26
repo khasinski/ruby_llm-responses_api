@@ -17,7 +17,7 @@ RubyLLM.configure do |config|
   config.openai_api_key = ENV['OPENAI_API_KEY']
 end
 
-chat = RubyLLM.chat(model: 'gpt-4o-mini', provider: :openai_responses)
+chat = RubyLLM.chat(model: 'gpt-5.5', provider: :openai_responses)
 response = chat.ask("Hello!")
 puts response.content
 ```
@@ -29,7 +29,7 @@ All standard RubyLLM features work as expected (streaming, tools, vision, struct
 Conversations automatically chain via `previous_response_id`:
 
 ```ruby
-chat = RubyLLM.chat(model: 'gpt-4o-mini', provider: :openai_responses)
+chat = RubyLLM.chat(model: 'gpt-5.5', provider: :openai_responses)
 chat.ask("My name is Alice.")
 chat.ask("What's my name?")  # => "Your name is Alice."
 ```
@@ -50,7 +50,7 @@ Then use normally:
 
 ```ruby
 # Day 1
-chat = Chat.create!(model_id: 'gpt-4o-mini', provider: :openai_responses)
+chat = Chat.create!(model_id: 'gpt-5.5', provider: :openai_responses)
 chat.ask("My name is Alice.")
 
 # Day 2 (after restart)
@@ -65,12 +65,15 @@ The Responses API provides built-in tools that don't require custom implementati
 ### Web Search
 
 ```ruby
-chat.with_params(tools: [{ type: 'web_search_preview' }])
+chat.with_params(tools: [{ type: 'web_search' }])
 chat.ask("Latest news about Ruby 3.4?")
 
 # Or with helper
 tool = RubyLLM::ResponsesAPI::BuiltInTools.web_search(search_context_size: 'high')
 chat.with_params(tools: [tool])
+
+# Legacy preview type is still available when needed
+tool = RubyLLM::ResponsesAPI::BuiltInTools.web_search_preview
 ```
 
 ### Code Interpreter
@@ -97,7 +100,7 @@ Execute commands in hosted containers or local terminal environments. Requires G
 
 ```ruby
 # Auto-provisioned container (default)
-chat = RubyLLM.chat(model: 'gpt-5.2', provider: :openai_responses)
+chat = RubyLLM.chat(model: 'gpt-5.5', provider: :openai_responses)
 chat.with_params(tools: [{ type: 'shell', environment: { type: 'container_auto' } }])
 chat.ask("List all Python files in the project")
 
@@ -131,7 +134,7 @@ tool = RubyLLM::ResponsesAPI::BuiltInTools.shell(environment_type: 'local')
 Structured diff-based file editing. Requires GPT-5 family models.
 
 ```ruby
-chat = RubyLLM.chat(model: 'gpt-5.2', provider: :openai_responses)
+chat = RubyLLM.chat(model: 'gpt-5.5', provider: :openai_responses)
 chat.with_params(tools: [{ type: 'apply_patch' }])
 chat.ask("Add error handling to the User#save method")
 
@@ -162,7 +165,7 @@ chat.with_params(tools: [tool])
 
 ```ruby
 chat.with_params(tools: [
-  { type: 'web_search_preview' },
+  { type: 'web_search' },
   { type: 'code_interpreter' },
   { type: 'shell', environment: { type: 'container_auto' } }
 ])
@@ -195,12 +198,29 @@ end
 
 When the token count crosses the threshold, the server automatically compacts the conversation. The compacted state is carried forward transparently via `previous_response_id`.
 
+You can also run an explicit compaction pass or count request input tokens before creating a response:
+
+```ruby
+provider = chat.instance_variable_get(:@provider)
+
+compacted = provider.compact_response(
+  model: 'gpt-5.5',
+  input: [{ type: 'message', role: 'user', content: 'Summarize this long session...' }]
+)
+
+tokens = provider.count_input_tokens(
+  model: 'gpt-5.5',
+  input: 'Tell me a joke.'
+)
+puts tokens['input_tokens']
+```
+
 ## Containers API
 
 Manage persistent execution environments for the shell tool and code interpreter:
 
 ```ruby
-chat = RubyLLM.chat(model: 'gpt-5.2', provider: :openai_responses)
+chat = RubyLLM.chat(model: 'gpt-5.5', provider: :openai_responses)
 provider = chat.instance_variable_get(:@provider)
 
 # Create a container
@@ -247,7 +267,7 @@ Server-side built-in tools (web search, code interpreter, file search, shell, ap
 
 ```ruby
 chat = RubyLLM.chat(model: 'gpt-4o', provider: :openai_responses)
-chat.with_params(tools: [{ type: 'web_search_preview' }])
+chat.with_params(tools: [{ type: 'web_search' }])
 
 chat.on_tool_call  { |tc| puts "#{tc.name} called (id=#{tc.id})" }
 chat.on_tool_result { |r|  puts "  -> status=#{r[:status]}" }

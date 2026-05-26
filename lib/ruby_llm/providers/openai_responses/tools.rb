@@ -17,7 +17,8 @@ module RubyLLM
 
         # Built-in tool type constants
         BUILT_IN_TOOLS = {
-          web_search: { type: 'web_search_preview' },
+          web_search: { type: 'web_search' },
+          web_search_preview: { type: 'web_search_preview' },
           file_search: ->(vector_store_ids) { { type: 'file_search', vector_store_ids: vector_store_ids } },
           code_interpreter: { type: 'code_interpreter', container: { type: 'auto' } },
           image_generation: { type: 'image_generation' },
@@ -149,9 +150,17 @@ module RubyLLM
         end
 
         # Helper to create built-in tool configurations
-        def web_search_tool(search_context_size: nil)
+        def web_search_tool(search_context_size: nil, user_location: nil, preview: false)
+          tool = { type: preview ? 'web_search_preview' : 'web_search' }
+          tool[:search_context_size] = search_context_size if search_context_size
+          tool[:user_location] = user_location if user_location
+          tool
+        end
+
+        def web_search_preview_tool(search_context_size: nil, user_location: nil)
           tool = { type: 'web_search_preview' }
           tool[:search_context_size] = search_context_size if search_context_size
+          tool[:user_location] = user_location if user_location
           tool
         end
 

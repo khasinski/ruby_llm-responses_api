@@ -10,6 +10,9 @@ module RubyLLM
 
         # Models that support the Responses API
         RESPONSES_API_MODELS = %w[
+          gpt-5.5
+          gpt-5.2 gpt-5.1 gpt-5.1-codex-max gpt-5.1-codex gpt-5.1-codex-mini gpt-5.1-chat
+          gpt-5 gpt-5-pro gpt-5-mini gpt-5-nano
           gpt-4o gpt-4o-mini gpt-4o-2024-05-13 gpt-4o-2024-08-06 gpt-4o-2024-11-20
           gpt-4o-mini-2024-07-18
           gpt-4.1 gpt-4.1-mini gpt-4.1-nano
@@ -21,6 +24,8 @@ module RubyLLM
 
         # Models with vision capabilities
         VISION_MODELS = %w[
+          gpt-5.5
+          gpt-5.2 gpt-5.1 gpt-5.1-chat gpt-5 gpt-5-pro gpt-5-mini gpt-5-nano
           gpt-4o gpt-4o-mini gpt-4o-2024-05-13 gpt-4o-2024-08-06 gpt-4o-2024-11-20
           gpt-4o-mini-2024-07-18
           gpt-4.1 gpt-4.1-mini gpt-4.1-nano
@@ -30,22 +35,39 @@ module RubyLLM
         ].freeze
 
         # Reasoning models (o-series)
-        REASONING_MODELS = %w[o1 o1-mini o1-preview o1-2024-12-17 o3 o3-mini o4-mini].freeze
+        REASONING_MODELS = %w[
+          gpt-5.5 gpt-5.2 gpt-5.1 gpt-5.1-codex-max gpt-5.1-codex gpt-5.1-codex-mini
+          gpt-5 gpt-5-pro gpt-5-mini gpt-5-nano
+          o1 o1-mini o1-preview o1-2024-12-17 o3 o3-mini o4-mini
+        ].freeze
 
         # Models that support web search
         WEB_SEARCH_MODELS = %w[
+          gpt-5.5 gpt-5.2 gpt-5.1 gpt-5.1-codex-max gpt-5 gpt-5-pro gpt-5-mini
           gpt-4o gpt-4o-mini gpt-4.1 gpt-4.1-mini gpt-4.1-nano
           o1 o3 o3-mini o4-mini
         ].freeze
 
         # Models that support code interpreter
         CODE_INTERPRETER_MODELS = %w[
+          gpt-5.5 gpt-5.2 gpt-5.1 gpt-5 gpt-5-pro gpt-5-mini
           gpt-4o gpt-4o-mini gpt-4.1 gpt-4.1-mini gpt-4.1-nano
           o1 o3 o3-mini o4-mini
         ].freeze
 
         # Context windows by model
         CONTEXT_WINDOWS = {
+          'gpt-5.5' => 1_050_000,
+          'gpt-5.2' => 400_000,
+          'gpt-5.1' => 400_000,
+          'gpt-5.1-codex-max' => 400_000,
+          'gpt-5.1-codex' => 400_000,
+          'gpt-5.1-codex-mini' => 400_000,
+          'gpt-5.1-chat' => 128_000,
+          'gpt-5' => 400_000,
+          'gpt-5-pro' => 400_000,
+          'gpt-5-mini' => 400_000,
+          'gpt-5-nano' => 400_000,
           'gpt-4o' => 128_000,
           'gpt-4o-mini' => 128_000,
           'gpt-4o-2024-05-13' => 128_000,
@@ -67,6 +89,17 @@ module RubyLLM
 
         # Max output tokens by model
         MAX_OUTPUT_TOKENS = {
+          'gpt-5.5' => 128_000,
+          'gpt-5.2' => 128_000,
+          'gpt-5.1' => 128_000,
+          'gpt-5.1-codex-max' => 128_000,
+          'gpt-5.1-codex' => 128_000,
+          'gpt-5.1-codex-mini' => 128_000,
+          'gpt-5.1-chat' => 16_384,
+          'gpt-5' => 128_000,
+          'gpt-5-pro' => 128_000,
+          'gpt-5-mini' => 128_000,
+          'gpt-5-nano' => 128_000,
           'gpt-4o' => 16_384,
           'gpt-4o-mini' => 16_384,
           'gpt-4o-2024-05-13' => 4_096,
@@ -178,6 +211,10 @@ module RubyLLM
 
         def model_family(model_id)
           case model_id
+          when /^gpt-5\.5/ then 'gpt-5.5'
+          when /^gpt-5\.2/ then 'gpt-5.2'
+          when /^gpt-5\.1/ then 'gpt-5.1'
+          when /^gpt-5/ then 'gpt-5'
           when /^gpt-4\.1/ then 'gpt-4.1'
           when /^gpt-4o-mini/ then 'gpt-4o-mini'
           when /^gpt-4o/ then 'gpt-4o'

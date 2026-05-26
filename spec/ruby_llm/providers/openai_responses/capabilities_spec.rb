@@ -6,6 +6,11 @@ RSpec.describe RubyLLM::Providers::OpenAIResponses::Capabilities do
   let(:capabilities) { RubyLLM::Providers::OpenAIResponses::Capabilities }
 
   describe '.supports_responses_api?' do
+    it 'returns true for GPT-5.5 models' do
+      expect(capabilities.supports_responses_api?('gpt-5.5')).to be true
+      expect(capabilities.supports_responses_api?('gpt-5.5-2026-05-01')).to be true
+    end
+
     it 'returns true for GPT-4o models' do
       expect(capabilities.supports_responses_api?('gpt-4o')).to be true
       expect(capabilities.supports_responses_api?('gpt-4o-mini')).to be true
@@ -26,6 +31,7 @@ RSpec.describe RubyLLM::Providers::OpenAIResponses::Capabilities do
 
   describe '.supports_vision?' do
     it 'returns true for vision-capable models' do
+      expect(capabilities.supports_vision?('gpt-5.5')).to be true
       expect(capabilities.supports_vision?('gpt-4o')).to be true
       expect(capabilities.supports_vision?('gpt-4.1')).to be true
     end
@@ -41,6 +47,11 @@ RSpec.describe RubyLLM::Providers::OpenAIResponses::Capabilities do
     it 'returns false for GPT models' do
       expect(capabilities.reasoning_model?('gpt-4o')).to be false
     end
+
+    it 'returns true for GPT-5 reasoning models' do
+      expect(capabilities.reasoning_model?('gpt-5.5')).to be true
+      expect(capabilities.reasoning_model?('gpt-5-mini')).to be true
+    end
   end
 
   describe '.context_window_for' do
@@ -51,12 +62,17 @@ RSpec.describe RubyLLM::Providers::OpenAIResponses::Capabilities do
     it 'returns correct context window for GPT-4.1' do
       expect(capabilities.context_window_for('gpt-4.1')).to eq(1_000_000)
     end
+
+    it 'returns correct context window for GPT-5.5' do
+      expect(capabilities.context_window_for('gpt-5.5')).to eq(1_050_000)
+    end
   end
 
   describe '.normalize_temperature' do
     it 'returns nil for reasoning models' do
       expect(capabilities.normalize_temperature(0.7, 'o1')).to be_nil
       expect(capabilities.normalize_temperature(0.7, 'o3')).to be_nil
+      expect(capabilities.normalize_temperature(0.7, 'gpt-5.5')).to be_nil
     end
 
     it 'returns temperature for non-reasoning models' do
@@ -78,6 +94,11 @@ RSpec.describe RubyLLM::Providers::OpenAIResponses::Capabilities do
     it 'includes reasoning for o-series models' do
       caps = capabilities.capabilities_for('o3')
       expect(caps).to include('reasoning')
+    end
+
+    it 'includes current hosted tool capabilities for GPT-5.5' do
+      caps = capabilities.capabilities_for('gpt-5.5')
+      expect(caps).to include('reasoning', 'web_search', 'code_interpreter')
     end
   end
 end

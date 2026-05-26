@@ -90,6 +90,26 @@ module RubyLLM
         end
       end
 
+      # Run an explicit compaction pass over a response input.
+      # @param model [String] Model ID used for compaction
+      # @param input [String, Array<Hash>] Response input items to compact
+      # @param params [Hash] Additional Responses API parameters
+      # @return [Hash] Compacted response data
+      def compact_response(model:, input:, **params)
+        response = @connection.post(Compaction.compact_url, { model: model, input: input }.merge(params))
+        response.body
+      end
+
+      # Count input tokens for a Responses API request without creating a response.
+      # @param model [String] Model ID used for tokenization
+      # @param input [String, Array<Hash>] Response input
+      # @param params [Hash] Additional Responses API parameters
+      # @return [Hash] Token count data
+      def count_input_tokens(model:, input:, **params)
+        response = @connection.post(Compaction.input_tokens_url, { model: model, input: input }.merge(params))
+        response.body
+      end
+
       # --- Container Management ---
 
       # Create a new container

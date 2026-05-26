@@ -4,9 +4,27 @@ module RubyLLM
   module Providers
     class OpenAIResponses
       # Registers OpenAI Responses API models with RubyLLM
-      # Models updated January 2026 based on OpenAI documentation
+      # Models updated May 2026 based on OpenAI documentation
       module ModelRegistry
         MODELS = [
+          # ===================
+          # GPT-5.5 Series (Latest flagship - May 2026)
+          # ===================
+          {
+            id: 'gpt-5.5',
+            name: 'GPT-5.5',
+            provider: 'openai_responses',
+            family: 'gpt-5.5',
+            context_window: 1_050_000,
+            max_output_tokens: 128_000,
+            modalities: { input: %w[text image], output: ['text'] },
+            capabilities: %w[
+              streaming function_calling structured_output vision reasoning
+              web_search file_search image_generation code_interpreter shell
+              apply_patch computer_use mcp
+            ]
+          },
+
           # ===================
           # GPT-5.2 Series (Latest flagship - December 2025)
           # ===================

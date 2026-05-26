@@ -34,6 +34,18 @@ module RubyLLM
 
           payload
         end
+
+        # URL for explicit Responses API compaction.
+        # @return [String] The URL path
+        def compact_url
+          'responses/compact'
+        end
+
+        # URL for Responses API input token counting.
+        # @return [String] The URL path
+        def input_tokens_url
+          'responses/input_tokens'
+        end
       end
     end
   end

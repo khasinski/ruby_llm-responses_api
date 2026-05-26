@@ -16,11 +16,17 @@ module RubyLLM
         # Web Search tool configuration
         # @param search_context_size [String, nil] 'low', 'medium', or 'high'
         # @param user_location [Hash, nil] { type: 'approximate', city: '...', country: '...' }
-        def web_search(search_context_size: nil, user_location: nil)
-          tool = { type: 'web_search_preview' }
+        # @param preview [Boolean] use the legacy preview tool type
+        def web_search(search_context_size: nil, user_location: nil, preview: false)
+          tool = { type: preview ? 'web_search_preview' : 'web_search' }
           tool[:search_context_size] = search_context_size if search_context_size
           tool[:user_location] = user_location if user_location
           tool
+        end
+
+        # Legacy Web Search preview tool configuration.
+        def web_search_preview(search_context_size: nil, user_location: nil)
+          web_search(search_context_size: search_context_size, user_location: user_location, preview: true)
         end
 
         # File Search tool configuration

@@ -3,6 +3,8 @@
 require 'spec_helper'
 
 RSpec.describe RubyLLM::Providers::OpenAIResponses do
+  include ResponseHelpers
+
   let(:config) do
     RubyLLM::Configuration.new.tap do |c|
       c.openai_api_key = 'test-api-key'
@@ -102,6 +104,48 @@ RSpec.describe RubyLLM::Providers::OpenAIResponses do
       )
 
       expect(mock_ws).not_to have_received(:call)
+    end
+  end
+
+  describe '#compact_response' do
+    it 'posts to the Responses compaction endpoint' do
+      response = mock_response({ 'object' => 'response.compaction', 'output' => [] })
+      allow(provider.connection).to receive(:post).and_return(response)
+
+      result = provider.compact_response(
+        model: 'gpt-5.5',
+        input: [{ type: 'message', role: 'user', content: 'Hello' }],
+        store: false
+      )
+
+      expect(provider.connection).to have_received(:post).with(
+        'responses/compact',
+        {
+          model: 'gpt-5.5',
+          input: [{ type: 'message', role: 'user', content: 'Hello' }],
+          store: false
+        }
+      )
+      expect(result['object']).to eq('response.compaction')
+    end
+  end
+
+  describe '#count_input_tokens' do
+    it 'posts to the Responses input token endpoint' do
+      response = mock_response({ 'object' => 'response.input_tokens', 'input_tokens' => 11 })
+      allow(provider.connection).to receive(:post).and_return(response)
+
+      result = provider.count_input_tokens(model: 'gpt-5.5', input: 'Tell me a joke.', instructions: 'Be brief.')
+
+      expect(provider.connection).to have_received(:post).with(
+        'responses/input_tokens',
+        {
+          model: 'gpt-5.5',
+          input: 'Tell me a joke.',
+          instructions: 'Be brief.'
+        }
+      )
+      expect(result['input_tokens']).to eq(11)
     end
   end
 end

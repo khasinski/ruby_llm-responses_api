@@ -29,18 +29,46 @@ RSpec.describe RubyLLM::Providers::OpenAIResponses::Tools do
 
       expect(result).to eq(built_in)
     end
+
+    it 'maps :web_search to the current stable tool type' do
+      expect(tools_module.tool_for(:web_search)).to eq({ type: 'web_search' })
+    end
+
+    it 'keeps :web_search_preview available for legacy callers' do
+      expect(tools_module.tool_for(:web_search_preview)).to eq({ type: 'web_search_preview' })
+    end
   end
 
   describe 'built-in tool helpers' do
     describe '.web_search_tool' do
       it 'creates web search configuration' do
         tool = tools_module.web_search_tool
-        expect(tool[:type]).to eq('web_search_preview')
+        expect(tool[:type]).to eq('web_search')
       end
 
       it 'includes search_context_size when provided' do
         tool = tools_module.web_search_tool(search_context_size: 'high')
         expect(tool[:search_context_size]).to eq('high')
+      end
+
+      it 'includes user_location when provided' do
+        location = { type: 'approximate', country: 'US', city: 'New York' }
+        tool = tools_module.web_search_tool(user_location: location)
+        expect(tool[:user_location]).to eq(location)
+      end
+
+      it 'can emit the legacy preview tool type' do
+        tool = tools_module.web_search_tool(preview: true)
+        expect(tool[:type]).to eq('web_search_preview')
+      end
+    end
+
+    describe '.web_search_preview_tool' do
+      it 'creates legacy web search preview configuration' do
+        tool = tools_module.web_search_preview_tool(search_context_size: 'low')
+
+        expect(tool[:type]).to eq('web_search_preview')
+        expect(tool[:search_context_size]).to eq('low')
       end
     end
 

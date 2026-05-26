@@ -56,6 +56,16 @@ RSpec.describe RubyLLM::Providers::OpenAIResponses::Compaction do
     end
   end
 
+  describe 'URL helpers' do
+    it 'returns compact URL' do
+      expect(compaction.compact_url).to eq('responses/compact')
+    end
+
+    it 'returns input token count URL' do
+      expect(compaction.input_tokens_url).to eq('responses/input_tokens')
+    end
+  end
+
   describe 'namespace access' do
     it 'is accessible via RubyLLM::ResponsesAPI::Compaction' do
       expect(RubyLLM::ResponsesAPI::Compaction).to eq(compaction)
