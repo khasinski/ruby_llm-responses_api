@@ -11,7 +11,7 @@ http_interactions:
         city name"}},"required":["location"],"additionalProperties":false,"strict":true},"strict":true}]}'
     headers:
       User-Agent:
-      - Faraday v2.14.0
+      - Faraday v2.14.2
       Authorization:
       - Bearer <OPENAI_API_KEY>
       Content-Type:
@@ -26,15 +26,35 @@ http_interactions:
       message: OK
     headers:
       Date:
-      - Wed, 18 Feb 2026 10:25:55 GMT
+      - Tue, 26 May 2026 09:59:02 GMT
       Content-Type:
       - application/json
       Transfer-Encoding:
       - chunked
       Connection:
       - keep-alive
+      Cf-Ray:
+      - a01becb47950c3b0-WAW
+      Cf-Cache-Status:
+      - DYNAMIC
       Server:
       - cloudflare
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      X-Content-Type-Options:
+      - nosniff
+      Access-Control-Expose-Headers:
+      - CF-Ray
+      - CF-Ray
+      - X-Request-ID
+      Openai-Organization:
+      - user-h7m2t30jnyqzec1thkvt5rcd
+      Openai-Processing-Ms:
+      - '1439'
+      Openai-Project:
+      - proj_yBBvayevSgRR3SVjSmBgm0so
+      Openai-Version:
+      - '2020-10-01'
       X-Ratelimit-Limit-Requests:
       - '5000'
       X-Ratelimit-Limit-Tokens:
@@ -47,43 +67,27 @@ http_interactions:
       - 12ms
       X-Ratelimit-Reset-Tokens:
       - 4ms
-      Openai-Version:
-      - '2020-10-01'
-      Openai-Organization:
-      - user-h7m2t30jnyqzec1thkvt5rcd
-      Openai-Project:
-      - proj_yBBvayevSgRR3SVjSmBgm0so
       X-Request-Id:
-      - req_5edf05ade12d4bcba76b58bb2060093b
-      Openai-Processing-Ms:
-      - '950'
-      Cf-Cache-Status:
-      - DYNAMIC
+      - req_44b404792cd04587b3a47c277e626ce6
       Set-Cookie:
-      - __cf_bm=Sn69N0CKsZIUx10Lt2Jg3Ud2..oT0ONoIQDbZqPpDNc-1771410353.9961998-1.0.1.1-hEnMwtRBGIfFo4hj6ndmuGwRVbquGlgpuNQkj0hoWhqR5PzvUCkoFrNlv8FxalRDCXtyu.pU_xlTzrYkn.Unnf_iSYS_CU8qsWes13zmejd.obcNiKLEu1pc7FUVw1EW;
-        HttpOnly; Secure; Path=/; Domain=api.openai.com; Expires=Wed, 18 Feb 2026
-        10:55:55 GMT
-      Strict-Transport-Security:
-      - max-age=31536000; includeSubDomains; preload
-      X-Content-Type-Options:
-      - nosniff
-      Cf-Ray:
-      - 9cfcd2b87b13eed3-WAW
+      - __cf_bm=DrHc2XVGamwIv7WKy8RRkul3SJ9ZqxidOUGkX44YdyM-1779789540.5516448-1.0.1.1-wiWgCxvdbVoBcDPlhl3VkhQH9RGLPVIdd199_KUJBk7.R5VXICsX_rN6nJZY3VDa946wWFz0qTSpTL0G4zqQMrWY8AbAm7e2eMsm8UKMP.mmu.Z.uuxZTRj6X4Tl7n1P;
+        HttpOnly; SameSite=None; Secure; Path=/; Domain=api.openai.com; Expires=Tue,
+        26 May 2026 10:29:02 GMT
       Alt-Svc:
       - h3=":443"; ma=86400
     body:
       encoding: ASCII-8BIT
       string: |-
         {
-          "id": "resp_0adbe5450d1f3f4200699593b21dbc819694ad619e8649c8c9",
+          "id": "resp_08e3246dba24c056006a156ee4a59c819c9b812b23b16ac288",
           "object": "response",
-          "created_at": 1771410354,
+          "created_at": 1779789540,
           "status": "completed",
           "background": false,
           "billing": {
             "payer": "developer"
           },
-          "completed_at": 1771410354,
+          "completed_at": 1779789541,
           "error": null,
           "frequency_penalty": 0.0,
           "incomplete_details": null,
@@ -91,13 +95,14 @@ http_interactions:
           "max_output_tokens": null,
           "max_tool_calls": null,
           "model": "gpt-4o-mini-2024-07-18",
+          "moderation": null,
           "output": [
             {
-              "id": "fc_0adbe5450d1f3f4200699593b2a68c8196baf8ef663a4a594a",
+              "id": "fc_08e3246dba24c056006a156ee5e774819c823f785a9502e4f1",
               "type": "function_call",
               "status": "completed",
               "arguments": "{\"location\":\"Tokyo\"}",
-              "call_id": "call_7xVIaW6HuwHg3hlPdSV6JVtJ",
+              "call_id": "call_Oz70jaTogOU11W3JFDRo8YOW",
               "name": "test_weather"
             }
           ],
@@ -105,8 +110,9 @@ http_interactions:
           "presence_penalty": 0.0,
           "previous_response_id": null,
           "prompt_cache_key": null,
-          "prompt_cache_retention": null,
+          "prompt_cache_retention": "in_memory",
           "reasoning": {
+            "context": null,
             "effort": null,
             "summary": null
           },
@@ -160,20 +166,19 @@ http_interactions:
           "user": null,
           "metadata": {}
         }
-  recorded_at: Wed, 18 Feb 2026 10:25:55 GMT
+  recorded_at: Tue, 26 May 2026 09:59:02 GMT
 - request:
     method: post
     uri: https://api.openai.com/v1/responses
     body:
       encoding: UTF-8
-      string: '{"model":"gpt-4o-mini","input":[{"type":"message","role":"user","content":"What''s
-        the weather in Tokyo?"},{"type":"function_call","call_id":"call_7xVIaW6HuwHg3hlPdSV6JVtJ","name":"test_weather","arguments":"{\"location\":\"Tokyo\"}"},{"type":"function_call_output","call_id":"call_7xVIaW6HuwHg3hlPdSV6JVtJ","output":"The
+      string: '{"model":"gpt-4o-mini","input":[{"type":"function_call_output","call_id":"call_Oz70jaTogOU11W3JFDRo8YOW","output":"The
         weather in Tokyo is sunny, 72°F"}],"stream":false,"tools":[{"type":"function","name":"test_weather","description":"Get
         the current weather for a location","parameters":{"type":"object","properties":{"location":{"type":"string","description":"The
-        city name"}},"required":["location"],"additionalProperties":false,"strict":true},"strict":true}],"previous_response_id":"resp_0adbe5450d1f3f4200699593b21dbc819694ad619e8649c8c9"}'
+        city name"}},"required":["location"],"additionalProperties":false,"strict":true},"strict":true}],"previous_response_id":"resp_08e3246dba24c056006a156ee4a59c819c9b812b23b16ac288"}'
     headers:
       User-Agent:
-      - Faraday v2.14.0
+      - Faraday v2.14.2
       Authorization:
       - Bearer <OPENAI_API_KEY>
       Content-Type:
@@ -188,15 +193,35 @@ http_interactions:
       message: OK
     headers:
       Date:
-      - Wed, 18 Feb 2026 10:25:56 GMT
+      - Tue, 26 May 2026 09:59:03 GMT
       Content-Type:
       - application/json
       Transfer-Encoding:
       - chunked
       Connection:
       - keep-alive
+      Cf-Ray:
+      - a01becbe8d493013-WAW
+      Cf-Cache-Status:
+      - DYNAMIC
       Server:
       - cloudflare
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      X-Content-Type-Options:
+      - nosniff
+      Access-Control-Expose-Headers:
+      - CF-Ray
+      - CF-Ray
+      - X-Request-ID
+      Openai-Organization:
+      - user-h7m2t30jnyqzec1thkvt5rcd
+      Openai-Processing-Ms:
+      - '1119'
+      Openai-Project:
+      - proj_yBBvayevSgRR3SVjSmBgm0so
+      Openai-Version:
+      - '2020-10-01'
       X-Ratelimit-Limit-Requests:
       - '5000'
       X-Ratelimit-Limit-Tokens:
@@ -204,48 +229,32 @@ http_interactions:
       X-Ratelimit-Remaining-Requests:
       - '4999'
       X-Ratelimit-Remaining-Tokens:
-      - '3999676'
+      - '3999700'
       X-Ratelimit-Reset-Requests:
       - 12ms
       X-Ratelimit-Reset-Tokens:
       - 4ms
-      Openai-Version:
-      - '2020-10-01'
-      Openai-Organization:
-      - user-h7m2t30jnyqzec1thkvt5rcd
-      Openai-Project:
-      - proj_yBBvayevSgRR3SVjSmBgm0so
       X-Request-Id:
-      - req_490bc3b8274b4c2e915b94bb5feef483
-      Openai-Processing-Ms:
-      - '831'
-      Cf-Cache-Status:
-      - DYNAMIC
+      - req_56f538915b46491fa13c2d49c8c4d5e6
       Set-Cookie:
-      - __cf_bm=rIQl7oRspgep5H3jgytwwSRYzWHY3XRgFD6Z..NY_5I-1771410355.1475618-1.0.1.1-si4MvCsEDuBdRXPjAP2BScgd9WgqmfIW2Ijc.j0nMMwiJIgZZgTFqlLxWiCLu.uE2GzDxLvb6UmYsMyuGsMn7cjanbLj_EacKJJjYWTHhml5i3KZwdsrR_uu8DCVUCHN;
-        HttpOnly; Secure; Path=/; Domain=api.openai.com; Expires=Wed, 18 Feb 2026
-        10:55:56 GMT
-      Strict-Transport-Security:
-      - max-age=31536000; includeSubDomains; preload
-      X-Content-Type-Options:
-      - nosniff
-      Cf-Ray:
-      - 9cfcd2bfac045f09-WAW
+      - __cf_bm=gLLZ22_jABSAbKvGnSrvtZCmEaXu.ml3j7x9VF0LrC8-1779789542.167591-1.0.1.1-Xem4RJuWh3om5FMy7KCavFo9pXwSZGrDU5wzXupShPchtuPZ_alrUUz_GL0Ks688JIGRR4liasEqUVA2Q_2vTNMZ8j0qnfp5eYX0AJkxpOGm2WVMVPJliHCpWtXHOiKI;
+        HttpOnly; SameSite=None; Secure; Path=/; Domain=api.openai.com; Expires=Tue,
+        26 May 2026 10:29:03 GMT
       Alt-Svc:
       - h3=":443"; ma=86400
     body:
       encoding: ASCII-8BIT
       string: |-
         {
-          "id": "resp_0adbe5450d1f3f4200699593b3410c819685764766c7646e25",
+          "id": "resp_08e3246dba24c056006a156ee64454819cb89dbdbef16a6633",
           "object": "response",
-          "created_at": 1771410355,
+          "created_at": 1779789542,
           "status": "completed",
           "background": false,
           "billing": {
             "payer": "developer"
           },
-          "completed_at": 1771410355,
+          "completed_at": 1779789543,
           "error": null,
           "frequency_penalty": 0.0,
           "incomplete_details": null,
@@ -253,9 +262,10 @@ http_interactions:
           "max_output_tokens": null,
           "max_tool_calls": null,
           "model": "gpt-4o-mini-2024-07-18",
+          "moderation": null,
           "output": [
             {
-              "id": "msg_0adbe5450d1f3f4200699593b3adac8196a35cbadf701436b3",
+              "id": "msg_08e3246dba24c056006a156ee6c92c819c9d35dd37bd3ceb0f",
               "type": "message",
               "status": "completed",
               "content": [
@@ -263,7 +273,7 @@ http_interactions:
                   "type": "output_text",
                   "annotations": [],
                   "logprobs": [],
-                  "text": "The weather in Tokyo is sunny, with a temperature of 72\u00b0F."
+                  "text": "The weather in Tokyo is sunny with a temperature of 72\u00b0F."
                 }
               ],
               "role": "assistant"
@@ -271,10 +281,11 @@ http_interactions:
           ],
           "parallel_tool_calls": true,
           "presence_penalty": 0.0,
-          "previous_response_id": "resp_0adbe5450d1f3f4200699593b21dbc819694ad619e8649c8c9",
+          "previous_response_id": "resp_08e3246dba24c056006a156ee4a59c819c9b812b23b16ac288",
           "prompt_cache_key": null,
-          "prompt_cache_retention": null,
+          "prompt_cache_retention": "in_memory",
           "reasoning": {
+            "context": null,
             "effort": null,
             "summary": null
           },
@@ -315,18 +326,18 @@ http_interactions:
           "top_p": 1.0,
           "truncation": "disabled",
           "usage": {
-            "input_tokens": 107,
+            "input_tokens": 83,
             "input_tokens_details": {
               "cached_tokens": 0
             },
-            "output_tokens": 17,
+            "output_tokens": 16,
             "output_tokens_details": {
               "reasoning_tokens": 0
             },
-            "total_tokens": 124
+            "total_tokens": 99
           },
           "user": null,
           "metadata": {}
         }
-  recorded_at: Wed, 18 Feb 2026 10:25:56 GMT
+  recorded_at: Tue, 26 May 2026 09:59:03 GMT
 recorded_with: VCR 6.4.0

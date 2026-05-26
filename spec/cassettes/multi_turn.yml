@@ -9,7 +9,7 @@ http_interactions:
         favorite color is blue. Remember that."}],"stream":false}'
     headers:
       User-Agent:
-      - Faraday v2.14.0
+      - Faraday v2.14.2
       Authorization:
       - Bearer <OPENAI_API_KEY>
       Content-Type:
@@ -24,15 +24,35 @@ http_interactions:
       message: OK
     headers:
       Date:
-      - Wed, 18 Feb 2026 10:26:12 GMT
+      - Tue, 26 May 2026 09:59:05 GMT
       Content-Type:
       - application/json
       Transfer-Encoding:
       - chunked
       Connection:
       - keep-alive
+      Cf-Ray:
+      - a01becc7aa08da34-WAW
+      Cf-Cache-Status:
+      - DYNAMIC
       Server:
       - cloudflare
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      X-Content-Type-Options:
+      - nosniff
+      Access-Control-Expose-Headers:
+      - CF-Ray
+      - CF-Ray
+      - X-Request-ID
+      Openai-Organization:
+      - user-h7m2t30jnyqzec1thkvt5rcd
+      Openai-Processing-Ms:
+      - '1262'
+      Openai-Project:
+      - proj_yBBvayevSgRR3SVjSmBgm0so
+      Openai-Version:
+      - '2020-10-01'
       X-Ratelimit-Limit-Requests:
       - '5000'
       X-Ratelimit-Limit-Tokens:
@@ -45,43 +65,27 @@ http_interactions:
       - 12ms
       X-Ratelimit-Reset-Tokens:
       - 0s
-      Openai-Version:
-      - '2020-10-01'
-      Openai-Organization:
-      - user-h7m2t30jnyqzec1thkvt5rcd
-      Openai-Project:
-      - proj_yBBvayevSgRR3SVjSmBgm0so
       X-Request-Id:
-      - req_973f9088a54a4606bae764aa5885d142
-      Openai-Processing-Ms:
-      - '996'
-      Cf-Cache-Status:
-      - DYNAMIC
+      - req_2712bd40114e4b2c8632173377ebe839
       Set-Cookie:
-      - __cf_bm=VpXqTBLHohOhFSqoWDWgkMeP.v5LVeW0KdLGVhNy0BU-1771410371.5219884-1.0.1.1-gxYQyYd26EGfTcdBf5ADUw9jKR0n5ArDX6fMRey5W3LnlR5gl4pUKTN3NiknBfeXAkt2Z23fHuSWrDIvHD0UQixLxkx5oDmV3FOeuWnIt2fgNpQbJaLkKUdWSZUJFqq7;
-        HttpOnly; Secure; Path=/; Domain=api.openai.com; Expires=Wed, 18 Feb 2026
-        10:56:12 GMT
-      Strict-Transport-Security:
-      - max-age=31536000; includeSubDomains; preload
-      X-Content-Type-Options:
-      - nosniff
-      Cf-Ray:
-      - 9cfcd3260c7c3f48-WAW
+      - __cf_bm=zz6uWrnL5S74hfJ76POPyQn3CCcx1rPeTengVaEMY2o-1779789543.6232233-1.0.1.1-NCFmagvVFkEBqL9o9j0MqW4sflRZOh8g7WxW4AQ2xaPiGh1YOuLYGATCzA.v6VFJNTjkmGbEr3iX21uIKuqz_WRhctV9piuBNc8wU3zd.Y7r7STn9TpxhQg.t7_RXF20;
+        HttpOnly; SameSite=None; Secure; Path=/; Domain=api.openai.com; Expires=Tue,
+        26 May 2026 10:29:05 GMT
       Alt-Svc:
       - h3=":443"; ma=86400
     body:
       encoding: ASCII-8BIT
       string: |-
         {
-          "id": "resp_010ce71bb4fe56b600699593c39d1c819598ac2c19dd7d1057",
+          "id": "resp_0222ce746e6cd17a006a156ee7b800819fb9f1c9f944a8405f",
           "object": "response",
-          "created_at": 1771410371,
+          "created_at": 1779789543,
           "status": "completed",
           "background": false,
           "billing": {
             "payer": "developer"
           },
-          "completed_at": 1771410372,
+          "completed_at": 1779789544,
           "error": null,
           "frequency_penalty": 0.0,
           "incomplete_details": null,
@@ -89,9 +93,10 @@ http_interactions:
           "max_output_tokens": null,
           "max_tool_calls": null,
           "model": "gpt-4o-mini-2024-07-18",
+          "moderation": null,
           "output": [
             {
-              "id": "msg_010ce71bb4fe56b600699593c3ed148195a3fca8c18f68b548",
+              "id": "msg_0222ce746e6cd17a006a156ee825b4819fa2b6ded45c304a4a",
               "type": "message",
               "status": "completed",
               "content": [
@@ -99,7 +104,7 @@ http_interactions:
                   "type": "output_text",
                   "annotations": [],
                   "logprobs": [],
-                  "text": "I can\u2019t remember details between our chats, but I can note that you like blue for this conversation! What do you like most about that color?"
+                  "text": "I can't remember personal details like favorite colors, but I can help you with anything related to blue or anything else you'd like to discuss!"
                 }
               ],
               "role": "assistant"
@@ -109,8 +114,9 @@ http_interactions:
           "presence_penalty": 0.0,
           "previous_response_id": null,
           "prompt_cache_key": null,
-          "prompt_cache_retention": null,
+          "prompt_cache_retention": "in_memory",
           "reasoning": {
+            "context": null,
             "effort": null,
             "summary": null
           },
@@ -134,29 +140,26 @@ http_interactions:
             "input_tokens_details": {
               "cached_tokens": 0
             },
-            "output_tokens": 31,
+            "output_tokens": 28,
             "output_tokens_details": {
               "reasoning_tokens": 0
             },
-            "total_tokens": 47
+            "total_tokens": 44
           },
           "user": null,
           "metadata": {}
         }
-  recorded_at: Wed, 18 Feb 2026 10:26:12 GMT
+  recorded_at: Tue, 26 May 2026 09:59:05 GMT
 - request:
     method: post
     uri: https://api.openai.com/v1/responses
     body:
       encoding: UTF-8
-      string: '{"model":"gpt-4o-mini","input":[{"type":"message","role":"user","content":"My
-        favorite color is blue. Remember that."},{"type":"message","role":"assistant","content":"I
-        can’t remember details between our chats, but I can note that you like blue
-        for this conversation! What do you like most about that color?"},{"type":"message","role":"user","content":"What
-        is my favorite color?"}],"stream":false,"previous_response_id":"resp_010ce71bb4fe56b600699593c39d1c819598ac2c19dd7d1057"}'
+      string: '{"model":"gpt-4o-mini","input":[{"type":"message","role":"user","content":"What
+        is my favorite color?"}],"stream":false,"previous_response_id":"resp_0222ce746e6cd17a006a156ee7b800819fb9f1c9f944a8405f"}'
     headers:
       User-Agent:
-      - Faraday v2.14.0
+      - Faraday v2.14.2
       Authorization:
       - Bearer <OPENAI_API_KEY>
       Content-Type:
@@ -171,15 +174,35 @@ http_interactions:
       message: OK
     headers:
       Date:
-      - Wed, 18 Feb 2026 10:26:13 GMT
+      - Tue, 26 May 2026 09:59:06 GMT
       Content-Type:
       - application/json
       Transfer-Encoding:
       - chunked
       Connection:
       - keep-alive
+      Cf-Ray:
+      - a01becd0dd00c012-WAW
+      Cf-Cache-Status:
+      - DYNAMIC
       Server:
       - cloudflare
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      X-Content-Type-Options:
+      - nosniff
+      Access-Control-Expose-Headers:
+      - CF-Ray
+      - CF-Ray
+      - X-Request-ID
+      Openai-Organization:
+      - user-h7m2t30jnyqzec1thkvt5rcd
+      Openai-Processing-Ms:
+      - '1026'
+      Openai-Project:
+      - proj_yBBvayevSgRR3SVjSmBgm0so
+      Openai-Version:
+      - '2020-10-01'
       X-Ratelimit-Limit-Requests:
       - '5000'
       X-Ratelimit-Limit-Tokens:
@@ -187,48 +210,32 @@ http_interactions:
       X-Ratelimit-Remaining-Requests:
       - '4999'
       X-Ratelimit-Remaining-Tokens:
-      - '3999874'
+      - '3999924'
       X-Ratelimit-Reset-Requests:
       - 12ms
       X-Ratelimit-Reset-Tokens:
       - 1ms
-      Openai-Version:
-      - '2020-10-01'
-      Openai-Organization:
-      - user-h7m2t30jnyqzec1thkvt5rcd
-      Openai-Project:
-      - proj_yBBvayevSgRR3SVjSmBgm0so
       X-Request-Id:
-      - req_a3c0487003f84a5ba09a80b032bcbbc3
-      Openai-Processing-Ms:
-      - '634'
-      Cf-Cache-Status:
-      - DYNAMIC
+      - req_5219d64716204f29a46b74a79cf5e3bf
       Set-Cookie:
-      - __cf_bm=vjcUJnhtDWW6NVN88NlKz7T.6I5bYicJFVSXtM.Di_o-1771410372.713422-1.0.1.1-MhlYLHvttDc1ZXWwaSKMqUROPHKx86hv_DSKbZrLquZDdHHgCoOiyHaLXqY2uczJTqDISsbIpXTbzh1taGGV4E5MWqiP9cTAeQ.lFIzyLGjN45fOVsElWkleqUA9QJnc;
-        HttpOnly; Secure; Path=/; Domain=api.openai.com; Expires=Wed, 18 Feb 2026
-        10:56:13 GMT
-      Strict-Transport-Security:
-      - max-age=31536000; includeSubDomains; preload
-      X-Content-Type-Options:
-      - nosniff
-      Cf-Ray:
-      - 9cfcd32d7d1d1df9-WAW
+      - __cf_bm=3YW_W3G661SA7kLQYFFO5SKtVNU1R8gxbGrg3_eGbbY-1779789545.0933676-1.0.1.1-Ttxd3dlOmFIzToKbUwBaQw7U5pkrWRP0WVWcBG4TvdtJwbCxxp7fMNarS6CT_rWENaWJBHSHNHZOtSpzBpsEWiYvP35JLVDowxOPeP507DU2QOWhokXe0UJY93SEgQeg;
+        HttpOnly; SameSite=None; Secure; Path=/; Domain=api.openai.com; Expires=Tue,
+        26 May 2026 10:29:06 GMT
       Alt-Svc:
       - h3=":443"; ma=86400
     body:
       encoding: ASCII-8BIT
       string: |-
         {
-          "id": "resp_010ce71bb4fe56b600699593c4cca48195bdd75750b627580a",
+          "id": "resp_0222ce746e6cd17a006a156ee93380819f8df315d7df96ea71",
           "object": "response",
-          "created_at": 1771410372,
+          "created_at": 1779789545,
           "status": "completed",
           "background": false,
           "billing": {
             "payer": "developer"
           },
-          "completed_at": 1771410373,
+          "completed_at": 1779789546,
           "error": null,
           "frequency_penalty": 0.0,
           "incomplete_details": null,
@@ -236,9 +243,10 @@ http_interactions:
           "max_output_tokens": null,
           "max_tool_calls": null,
           "model": "gpt-4o-mini-2024-07-18",
+          "moderation": null,
           "output": [
             {
-              "id": "msg_010ce71bb4fe56b600699593c521848195bdd90f2605e6985f",
+              "id": "msg_0222ce746e6cd17a006a156ee9cd04819f80ae0289c4719548",
               "type": "message",
               "status": "completed",
               "content": [
@@ -246,7 +254,7 @@ http_interactions:
                   "type": "output_text",
                   "annotations": [],
                   "logprobs": [],
-                  "text": "Your favorite color is blue!"
+                  "text": "You mentioned that your favorite color is blue!"
                 }
               ],
               "role": "assistant"
@@ -254,10 +262,11 @@ http_interactions:
           ],
           "parallel_tool_calls": true,
           "presence_penalty": 0.0,
-          "previous_response_id": "resp_010ce71bb4fe56b600699593c39d1c819598ac2c19dd7d1057",
+          "previous_response_id": "resp_0222ce746e6cd17a006a156ee7b800819fb9f1c9f944a8405f",
           "prompt_cache_key": null,
-          "prompt_cache_retention": null,
+          "prompt_cache_retention": "in_memory",
           "reasoning": {
+            "context": null,
             "effort": null,
             "summary": null
           },
@@ -277,18 +286,18 @@ http_interactions:
           "top_p": 1.0,
           "truncation": "disabled",
           "usage": {
-            "input_tokens": 107,
+            "input_tokens": 57,
             "input_tokens_details": {
               "cached_tokens": 0
             },
-            "output_tokens": 7,
+            "output_tokens": 10,
             "output_tokens_details": {
               "reasoning_tokens": 0
             },
-            "total_tokens": 114
+            "total_tokens": 67
           },
           "user": null,
           "metadata": {}
         }
-  recorded_at: Wed, 18 Feb 2026 10:26:13 GMT
+  recorded_at: Tue, 26 May 2026 09:59:06 GMT
 recorded_with: VCR 6.4.0

@@ -11,7 +11,7 @@ http_interactions:
         expression to evaluate"}},"required":["expression"],"additionalProperties":false,"strict":true},"strict":true}]}'
     headers:
       User-Agent:
-      - Faraday v2.14.0
+      - Faraday v2.14.2
       Authorization:
       - Bearer <OPENAI_API_KEY>
       Content-Type:
@@ -26,15 +26,35 @@ http_interactions:
       message: OK
     headers:
       Date:
-      - Wed, 18 Feb 2026 10:25:57 GMT
+      - Tue, 26 May 2026 09:58:58 GMT
       Content-Type:
       - application/json
       Transfer-Encoding:
       - chunked
       Connection:
       - keep-alive
+      Cf-Ray:
+      - a01bec9cdef1b8f5-WAW
+      Cf-Cache-Status:
+      - DYNAMIC
       Server:
       - cloudflare
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      X-Content-Type-Options:
+      - nosniff
+      Access-Control-Expose-Headers:
+      - CF-Ray
+      - CF-Ray
+      - X-Request-ID
+      Openai-Organization:
+      - user-h7m2t30jnyqzec1thkvt5rcd
+      Openai-Processing-Ms:
+      - '1813'
+      Openai-Project:
+      - proj_yBBvayevSgRR3SVjSmBgm0so
+      Openai-Version:
+      - '2020-10-01'
       X-Ratelimit-Limit-Requests:
       - '5000'
       X-Ratelimit-Limit-Tokens:
@@ -47,43 +67,27 @@ http_interactions:
       - 12ms
       X-Ratelimit-Reset-Tokens:
       - 4ms
-      Openai-Version:
-      - '2020-10-01'
-      Openai-Organization:
-      - user-h7m2t30jnyqzec1thkvt5rcd
-      Openai-Project:
-      - proj_yBBvayevSgRR3SVjSmBgm0so
       X-Request-Id:
-      - req_80e568b7297f4a66b43131a3330970f8
-      Openai-Processing-Ms:
-      - '894'
-      Cf-Cache-Status:
-      - DYNAMIC
+      - req_e315d2140e6444629e08091240c59931
       Set-Cookie:
-      - __cf_bm=leEeGhRNWhArzjlbodEZQLjWdHQ2ae1ktA.npEgEC4o-1771410356.193771-1.0.1.1-TwTp6VObwNULM5zuPA4w0U7LSSZsi9Swq6Ve1sx0mvhERt3WEDOp13F2g6yelHIODUf0tCqP8Law1eg8sMD60gu8cA4qIHK3oSE5TpdpIbCQphNSK0yNFdlo5ySVB1LF;
-        HttpOnly; Secure; Path=/; Domain=api.openai.com; Expires=Wed, 18 Feb 2026
-        10:55:57 GMT
-      Strict-Transport-Security:
-      - max-age=31536000; includeSubDomains; preload
-      X-Content-Type-Options:
-      - nosniff
-      Cf-Ray:
-      - 9cfcd2c638ad3dd0-WAW
+      - __cf_bm=DBprP4JEcSm4zElZCGj85ySlvANt1UiAwjaY85QtewI-1779789536.7771425-1.0.1.1-7cwJFIU_xGCaPKXTs8hsB3HANgc.ZeHBqbRGL9qIv..fQHcnnLvPe4FnQkDFLJi5ztuTy.hapnz5LgcY9tcfx9SRPvm4sQEmxpoJLuZjPcoVIQ0BTxym3ROziYFlrqHO;
+        HttpOnly; SameSite=None; Secure; Path=/; Domain=api.openai.com; Expires=Tue,
+        26 May 2026 10:28:58 GMT
       Alt-Svc:
       - h3=":443"; ma=86400
     body:
       encoding: ASCII-8BIT
       string: |-
         {
-          "id": "resp_01a29ecb13810a7800699593b44cb481909e469516314f9bdc",
+          "id": "resp_06034cf1a86afa83006a156ee0e21881978765465646d274d9",
           "object": "response",
-          "created_at": 1771410356,
+          "created_at": 1779789536,
           "status": "completed",
           "background": false,
           "billing": {
             "payer": "developer"
           },
-          "completed_at": 1771410357,
+          "completed_at": 1779789538,
           "error": null,
           "frequency_penalty": 0.0,
           "incomplete_details": null,
@@ -91,13 +95,14 @@ http_interactions:
           "max_output_tokens": null,
           "max_tool_calls": null,
           "model": "gpt-4o-mini-2024-07-18",
+          "moderation": null,
           "output": [
             {
-              "id": "fc_01a29ecb13810a7800699593b4cef0819081539eb6d0189c18",
+              "id": "fc_06034cf1a86afa83006a156ee22d6881978542ef7c516f5e18",
               "type": "function_call",
               "status": "completed",
               "arguments": "{\"expression\":\"(100 + 50) / 3\"}",
-              "call_id": "call_ItxW0AA5Q8deQPzZfPxyJVYQ",
+              "call_id": "call_vr7Omv65AA65GF8SGNqT2I73",
               "name": "test_calculator"
             }
           ],
@@ -105,8 +110,9 @@ http_interactions:
           "presence_penalty": 0.0,
           "previous_response_id": null,
           "prompt_cache_key": null,
-          "prompt_cache_retention": null,
+          "prompt_cache_retention": "in_memory",
           "reasoning": {
+            "context": null,
             "effort": null,
             "summary": null
           },
@@ -160,20 +166,18 @@ http_interactions:
           "user": null,
           "metadata": {}
         }
-  recorded_at: Wed, 18 Feb 2026 10:25:57 GMT
+  recorded_at: Tue, 26 May 2026 09:58:58 GMT
 - request:
     method: post
     uri: https://api.openai.com/v1/responses
     body:
       encoding: UTF-8
-      string: '{"model":"gpt-4o-mini","input":[{"type":"message","role":"user","content":"Calculate
-        (100 + 50) / 3"},{"type":"function_call","call_id":"call_ItxW0AA5Q8deQPzZfPxyJVYQ","name":"test_calculator","arguments":"{\"expression\":\"(100
-        + 50) / 3\"}"},{"type":"function_call_output","call_id":"call_ItxW0AA5Q8deQPzZfPxyJVYQ","output":"50"}],"stream":false,"tools":[{"type":"function","name":"test_calculator","description":"Perform
+      string: '{"model":"gpt-4o-mini","input":[{"type":"function_call_output","call_id":"call_vr7Omv65AA65GF8SGNqT2I73","output":"50"}],"stream":false,"tools":[{"type":"function","name":"test_calculator","description":"Perform
         basic math calculations","parameters":{"type":"object","properties":{"expression":{"type":"string","description":"Math
-        expression to evaluate"}},"required":["expression"],"additionalProperties":false,"strict":true},"strict":true}],"previous_response_id":"resp_01a29ecb13810a7800699593b44cb481909e469516314f9bdc"}'
+        expression to evaluate"}},"required":["expression"],"additionalProperties":false,"strict":true},"strict":true}],"previous_response_id":"resp_06034cf1a86afa83006a156ee0e21881978765465646d274d9"}'
     headers:
       User-Agent:
-      - Faraday v2.14.0
+      - Faraday v2.14.2
       Authorization:
       - Bearer <OPENAI_API_KEY>
       Content-Type:
@@ -188,15 +192,35 @@ http_interactions:
       message: OK
     headers:
       Date:
-      - Wed, 18 Feb 2026 10:25:58 GMT
+      - Tue, 26 May 2026 09:59:00 GMT
       Content-Type:
       - application/json
       Transfer-Encoding:
       - chunked
       Connection:
       - keep-alive
+      Cf-Ray:
+      - a01beca97d1a33bf-WAW
+      Cf-Cache-Status:
+      - DYNAMIC
       Server:
       - cloudflare
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      X-Content-Type-Options:
+      - nosniff
+      Access-Control-Expose-Headers:
+      - CF-Ray
+      - CF-Ray
+      - X-Request-ID
+      Openai-Organization:
+      - user-h7m2t30jnyqzec1thkvt5rcd
+      Openai-Processing-Ms:
+      - '1519'
+      Openai-Project:
+      - proj_yBBvayevSgRR3SVjSmBgm0so
+      Openai-Version:
+      - '2020-10-01'
       X-Ratelimit-Limit-Requests:
       - '5000'
       X-Ratelimit-Limit-Tokens:
@@ -204,48 +228,32 @@ http_interactions:
       X-Ratelimit-Remaining-Requests:
       - '4999'
       X-Ratelimit-Remaining-Tokens:
-      - '3999659'
+      - '3999696'
       X-Ratelimit-Reset-Requests:
       - 12ms
       X-Ratelimit-Reset-Tokens:
-      - 5ms
-      Openai-Version:
-      - '2020-10-01'
-      Openai-Organization:
-      - user-h7m2t30jnyqzec1thkvt5rcd
-      Openai-Project:
-      - proj_yBBvayevSgRR3SVjSmBgm0so
+      - 4ms
       X-Request-Id:
-      - req_3f299fd2907748b1aec527f362dc4a8e
-      Openai-Processing-Ms:
-      - '724'
-      Cf-Cache-Status:
-      - DYNAMIC
+      - req_36df6bd81c9e4a908fa624f710dfbaa1
       Set-Cookie:
-      - __cf_bm=wlgZ3hvcYIt5gN5Bte6pjvzdlIRhinZBsG9N6BGf7I4-1771410357.2836673-1.0.1.1-StJ0Zfos_M7hGOu0FoSU.Mg9YuYnND0ZgXs405SBAKJF1U9MZMO9K0dv5wi6i.A7pI4tymTn_1rOxKptk.rdMEPw8woDF6I5YSE09LNH7mrU6HLe2yiW9BUJyJUu7mH2;
-        HttpOnly; Secure; Path=/; Domain=api.openai.com; Expires=Wed, 18 Feb 2026
-        10:55:58 GMT
-      Strict-Transport-Security:
-      - max-age=31536000; includeSubDomains; preload
-      X-Content-Type-Options:
-      - nosniff
-      Cf-Ray:
-      - 9cfcd2cd0cd7ecbe-WAW
+      - __cf_bm=CckTVho9Ghre6B18.MapDPeY0_p1cLRFpXBIgZBy.9g-1779789538.7996154-1.0.1.1-flySQx0aWNdoyqegEAPaRRaVFYHIduNP3HBj071ERU_2Dr_tHahEzA82tXZse9eIC3UhZEax5VOblH4rCWVVRgTAqWon1bAeG3qgiDRixHN1tZExNYk7tKRX2Xm36udR;
+        HttpOnly; SameSite=None; Secure; Path=/; Domain=api.openai.com; Expires=Tue,
+        26 May 2026 10:29:00 GMT
       Alt-Svc:
       - h3=":443"; ma=86400
     body:
       encoding: ASCII-8BIT
       string: |-
         {
-          "id": "resp_01a29ecb13810a7800699593b561508190ac431cc7b761da1a",
+          "id": "resp_06034cf1a86afa83006a156ee2e4608197a6f41aea81e2459a",
           "object": "response",
-          "created_at": 1771410357,
+          "created_at": 1779789539,
           "status": "completed",
           "background": false,
           "billing": {
             "payer": "developer"
           },
-          "completed_at": 1771410358,
+          "completed_at": 1779789540,
           "error": null,
           "frequency_penalty": 0.0,
           "incomplete_details": null,
@@ -253,9 +261,10 @@ http_interactions:
           "max_output_tokens": null,
           "max_tool_calls": null,
           "model": "gpt-4o-mini-2024-07-18",
+          "moderation": null,
           "output": [
             {
-              "id": "msg_01a29ecb13810a7800699593b5b3888190a727a42530cb6f11",
+              "id": "msg_06034cf1a86afa83006a156ee3bf8481979549f8cae267ce1a",
               "type": "message",
               "status": "completed",
               "content": [
@@ -263,7 +272,7 @@ http_interactions:
                   "type": "output_text",
                   "annotations": [],
                   "logprobs": [],
-                  "text": "The result of \\((100 + 50) / 3\\) is 50."
+                  "text": "The result of \\((100 + 50) / 3\\) is \\(50\\)."
                 }
               ],
               "role": "assistant"
@@ -271,10 +280,11 @@ http_interactions:
           ],
           "parallel_tool_calls": true,
           "presence_penalty": 0.0,
-          "previous_response_id": "resp_01a29ecb13810a7800699593b44cb481909e469516314f9bdc",
+          "previous_response_id": "resp_06034cf1a86afa83006a156ee0e21881978765465646d274d9",
           "prompt_cache_key": null,
-          "prompt_cache_retention": null,
+          "prompt_cache_retention": "in_memory",
           "reasoning": {
+            "context": null,
             "effort": null,
             "summary": null
           },
@@ -315,18 +325,18 @@ http_interactions:
           "top_p": 1.0,
           "truncation": "disabled",
           "usage": {
-            "input_tokens": 124,
+            "input_tokens": 87,
             "input_tokens_details": {
               "cached_tokens": 0
             },
-            "output_tokens": 21,
+            "output_tokens": 22,
             "output_tokens_details": {
               "reasoning_tokens": 0
             },
-            "total_tokens": 145
+            "total_tokens": 109
           },
           "user": null,
           "metadata": {}
         }
-  recorded_at: Wed, 18 Feb 2026 10:25:58 GMT
+  recorded_at: Tue, 26 May 2026 09:59:00 GMT
 recorded_with: VCR 6.4.0

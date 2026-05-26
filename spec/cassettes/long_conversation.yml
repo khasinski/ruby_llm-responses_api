@@ -9,7 +9,7 @@ http_interactions:
         name is Alice."}],"stream":false}'
     headers:
       User-Agent:
-      - Faraday v2.14.0
+      - Faraday v2.14.2
       Authorization:
       - Bearer <OPENAI_API_KEY>
       Content-Type:
@@ -24,15 +24,35 @@ http_interactions:
       message: OK
     headers:
       Date:
-      - Wed, 18 Feb 2026 10:26:14 GMT
+      - Tue, 26 May 2026 09:59:08 GMT
       Content-Type:
       - application/json
       Transfer-Encoding:
       - chunked
       Connection:
       - keep-alive
+      Cf-Ray:
+      - a01becd89b9a3224-WAW
+      Cf-Cache-Status:
+      - DYNAMIC
       Server:
       - cloudflare
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      X-Content-Type-Options:
+      - nosniff
+      Access-Control-Expose-Headers:
+      - CF-Ray
+      - CF-Ray
+      - X-Request-ID
+      Openai-Organization:
+      - user-h7m2t30jnyqzec1thkvt5rcd
+      Openai-Processing-Ms:
+      - '1699'
+      Openai-Project:
+      - proj_yBBvayevSgRR3SVjSmBgm0so
+      Openai-Version:
+      - '2020-10-01'
       X-Ratelimit-Limit-Requests:
       - '5000'
       X-Ratelimit-Limit-Tokens:
@@ -45,43 +65,27 @@ http_interactions:
       - 12ms
       X-Ratelimit-Reset-Tokens:
       - 0s
-      Openai-Version:
-      - '2020-10-01'
-      Openai-Organization:
-      - user-h7m2t30jnyqzec1thkvt5rcd
-      Openai-Project:
-      - proj_yBBvayevSgRR3SVjSmBgm0so
       X-Request-Id:
-      - req_652505b9ab024cf1b130b89d94a5396f
-      Openai-Processing-Ms:
-      - '646'
-      Cf-Cache-Status:
-      - DYNAMIC
+      - req_a1b635f5b3ec41d09846cc48abf84789
       Set-Cookie:
-      - __cf_bm=RJtVEq8jZaJnIPzl87OAlDecY6e0hGlFL9zjmkHUvYk-1771410373.5549552-1.0.1.1-xhpAJGNWIp9fIRifPv.t9vbrQ4ZZKsJBahFcfnPQA9vOWfTREVosPB.cQyfZwIxYWn8ogusfj0O5S7vaS5J3v5JmP3q6HnTej05h2VLHH_c8dYhSsXxxZKse77qv41gZ;
-        HttpOnly; Secure; Path=/; Domain=api.openai.com; Expires=Wed, 18 Feb 2026
-        10:56:14 GMT
-      Strict-Transport-Security:
-      - max-age=31536000; includeSubDomains; preload
-      X-Content-Type-Options:
-      - nosniff
-      Cf-Ray:
-      - 9cfcd332ba2c7b43-WAW
+      - __cf_bm=78giQhrOweBjkjtu27b8T5ApEHhLpEW7ICKnW.8ar9A-1779789546.3387444-1.0.1.1-Nf4j3vWSCxi.RFnLeLZkd_UBkCGRVUVa9Bumf4_G_CrbvWdx6FapBj.Ej5oudKxhNMVWmN5yeIoY2mQU_wW0oII0Y6Z7WLvSeDn6BgVK.m5BEC1nunF44ba_iQ82dFgj;
+        HttpOnly; SameSite=None; Secure; Path=/; Domain=api.openai.com; Expires=Tue,
+        26 May 2026 10:29:08 GMT
       Alt-Svc:
       - h3=":443"; ma=86400
     body:
       encoding: ASCII-8BIT
       string: |-
         {
-          "id": "resp_02aa534f382f1c8700699593c5a4908194b5adf94e567ee39a",
+          "id": "resp_01a64b6acbc74589006a156eeb0d1081a3ab91f121f5df2825",
           "object": "response",
-          "created_at": 1771410373,
+          "created_at": 1779789547,
           "status": "completed",
           "background": false,
           "billing": {
             "payer": "developer"
           },
-          "completed_at": 1771410374,
+          "completed_at": 1779789548,
           "error": null,
           "frequency_penalty": 0.0,
           "incomplete_details": null,
@@ -89,9 +93,10 @@ http_interactions:
           "max_output_tokens": null,
           "max_tool_calls": null,
           "model": "gpt-4o-mini-2024-07-18",
+          "moderation": null,
           "output": [
             {
-              "id": "msg_02aa534f382f1c8700699593c5f01c81949cc096206542c118",
+              "id": "msg_01a64b6acbc74589006a156eec50b081a3b511890b2e68f670",
               "type": "message",
               "status": "completed",
               "content": [
@@ -109,8 +114,9 @@ http_interactions:
           "presence_penalty": 0.0,
           "previous_response_id": null,
           "prompt_cache_key": null,
-          "prompt_cache_retention": null,
+          "prompt_cache_retention": "in_memory",
           "reasoning": {
+            "context": null,
             "effort": null,
             "summary": null
           },
@@ -143,19 +149,17 @@ http_interactions:
           "user": null,
           "metadata": {}
         }
-  recorded_at: Wed, 18 Feb 2026 10:26:14 GMT
+  recorded_at: Tue, 26 May 2026 09:59:08 GMT
 - request:
     method: post
     uri: https://api.openai.com/v1/responses
     body:
       encoding: UTF-8
-      string: '{"model":"gpt-4o-mini","input":[{"type":"message","role":"user","content":"My
-        name is Alice."},{"type":"message","role":"assistant","content":"Nice to meet
-        you, Alice! How can I assist you today?"},{"type":"message","role":"user","content":"I
-        live in Seattle."}],"stream":false,"previous_response_id":"resp_02aa534f382f1c8700699593c5a4908194b5adf94e567ee39a"}'
+      string: '{"model":"gpt-4o-mini","input":[{"type":"message","role":"user","content":"I
+        live in Seattle."}],"stream":false,"previous_response_id":"resp_01a64b6acbc74589006a156eeb0d1081a3ab91f121f5df2825"}'
     headers:
       User-Agent:
-      - Faraday v2.14.0
+      - Faraday v2.14.2
       Authorization:
       - Bearer <OPENAI_API_KEY>
       Content-Type:
@@ -170,15 +174,35 @@ http_interactions:
       message: OK
     headers:
       Date:
-      - Wed, 18 Feb 2026 10:26:15 GMT
+      - Tue, 26 May 2026 09:59:10 GMT
       Content-Type:
       - application/json
       Transfer-Encoding:
       - chunked
       Connection:
       - keep-alive
+      Cf-Ray:
+      - a01bece8484a7a60-WAW
+      Cf-Cache-Status:
+      - DYNAMIC
       Server:
       - cloudflare
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      X-Content-Type-Options:
+      - nosniff
+      Access-Control-Expose-Headers:
+      - CF-Ray
+      - CF-Ray
+      - X-Request-ID
+      Openai-Organization:
+      - user-h7m2t30jnyqzec1thkvt5rcd
+      Openai-Processing-Ms:
+      - '1728'
+      Openai-Project:
+      - proj_yBBvayevSgRR3SVjSmBgm0so
+      Openai-Version:
+      - '2020-10-01'
       X-Ratelimit-Limit-Requests:
       - '5000'
       X-Ratelimit-Limit-Tokens:
@@ -186,48 +210,32 @@ http_interactions:
       X-Ratelimit-Remaining-Requests:
       - '4999'
       X-Ratelimit-Remaining-Tokens:
-      - '3999915'
+      - '3999942'
       X-Ratelimit-Reset-Requests:
       - 12ms
       X-Ratelimit-Reset-Tokens:
-      - 1ms
-      Openai-Version:
-      - '2020-10-01'
-      Openai-Organization:
-      - user-h7m2t30jnyqzec1thkvt5rcd
-      Openai-Project:
-      - proj_yBBvayevSgRR3SVjSmBgm0so
+      - 0s
       X-Request-Id:
-      - req_01bd6b4db3ae47cb88bc388a0130e22a
-      Openai-Processing-Ms:
-      - '1033'
-      Cf-Cache-Status:
-      - DYNAMIC
+      - req_2f9d28dcdcfa4680aa1190a0663ed298
       Set-Cookie:
-      - __cf_bm=m8_S0auPT2uVfgdSQTAB.J8Vrb338Tyj_wdYs8hY_Vw-1771410374.3847136-1.0.1.1-zadbooO_hOKOOnQ6hH90tpgx4BabWHlp4uLC0qJtTh0V_uMS7.XArTEjQvPa25XVMyNmhTaYGzfOlrVeKi.lGlMLq3rWcuVFbvobAGNlMLiyP0b3jGpHgpjKzKKLVXo4;
-        HttpOnly; Secure; Path=/; Domain=api.openai.com; Expires=Wed, 18 Feb 2026
-        10:56:15 GMT
-      Strict-Transport-Security:
-      - max-age=31536000; includeSubDomains; preload
-      X-Content-Type-Options:
-      - nosniff
-      Cf-Ray:
-      - 9cfcd337ea03bf1f-WAW
+      - __cf_bm=ahkXFrSAmxzaJXBnpe5fDzYPOAw9jNmfgmVWFr3dVkY-1779789548.842051-1.0.1.1-8ZAYxzRIdfmlNFuWNpcRgqfz4P_7rkjJf13Yy7eiQsVi28_IbxUAwQXWHIXBn82Mlie7wXrVARMIVcjGFvhdqhT.flWdbmPecR5tZ3W_ZkkJ3EKxqfAFzifSgwO8SY9L;
+        HttpOnly; SameSite=None; Secure; Path=/; Domain=api.openai.com; Expires=Tue,
+        26 May 2026 10:29:10 GMT
       Alt-Svc:
       - h3=":443"; ma=86400
     body:
       encoding: ASCII-8BIT
       string: |-
         {
-          "id": "resp_02aa534f382f1c8700699593c67900819486b04fd916fd0708",
+          "id": "resp_01a64b6acbc74589006a156eecef2081a39e82346a5f76f3b9",
           "object": "response",
-          "created_at": 1771410374,
+          "created_at": 1779789549,
           "status": "completed",
           "background": false,
           "billing": {
             "payer": "developer"
           },
-          "completed_at": 1771410375,
+          "completed_at": 1779789550,
           "error": null,
           "frequency_penalty": 0.0,
           "incomplete_details": null,
@@ -235,9 +243,10 @@ http_interactions:
           "max_output_tokens": null,
           "max_tool_calls": null,
           "model": "gpt-4o-mini-2024-07-18",
+          "moderation": null,
           "output": [
             {
-              "id": "msg_02aa534f382f1c8700699593c6e6d4819498e1e16d03a6d925",
+              "id": "msg_01a64b6acbc74589006a156eed9fe481a38ec22c6f6492ec4f",
               "type": "message",
               "status": "completed",
               "content": [
@@ -245,7 +254,7 @@ http_interactions:
                   "type": "output_text",
                   "annotations": [],
                   "logprobs": [],
-                  "text": "That\u2019s great! Seattle has so much to offer, from its beautiful waterfront to amazing coffee spots. Do you have any favorite places in the city?"
+                  "text": "That\u2019s great! Seattle has so much to offer, from the beautiful waterfront to the vibrant arts scene. What do you love most about living there?"
                 }
               ],
               "role": "assistant"
@@ -253,10 +262,11 @@ http_interactions:
           ],
           "parallel_tool_calls": true,
           "presence_penalty": 0.0,
-          "previous_response_id": "resp_02aa534f382f1c8700699593c5a4908194b5adf94e567ee39a",
+          "previous_response_id": "resp_01a64b6acbc74589006a156eeb0d1081a3ab91f121f5df2825",
           "prompt_cache_key": null,
-          "prompt_cache_retention": null,
+          "prompt_cache_retention": "in_memory",
           "reasoning": {
+            "context": null,
             "effort": null,
             "summary": null
           },
@@ -276,7 +286,7 @@ http_interactions:
           "top_p": 1.0,
           "truncation": "disabled",
           "usage": {
-            "input_tokens": 66,
+            "input_tokens": 39,
             "input_tokens_details": {
               "cached_tokens": 0
             },
@@ -284,27 +294,22 @@ http_interactions:
             "output_tokens_details": {
               "reasoning_tokens": 0
             },
-            "total_tokens": 97
+            "total_tokens": 70
           },
           "user": null,
           "metadata": {}
         }
-  recorded_at: Wed, 18 Feb 2026 10:26:15 GMT
+  recorded_at: Tue, 26 May 2026 09:59:10 GMT
 - request:
     method: post
     uri: https://api.openai.com/v1/responses
     body:
       encoding: UTF-8
-      string: '{"model":"gpt-4o-mini","input":[{"type":"message","role":"user","content":"My
-        name is Alice."},{"type":"message","role":"assistant","content":"Nice to meet
-        you, Alice! How can I assist you today?"},{"type":"message","role":"user","content":"I
-        live in Seattle."},{"type":"message","role":"assistant","content":"That’s
-        great! Seattle has so much to offer, from its beautiful waterfront to amazing
-        coffee spots. Do you have any favorite places in the city?"},{"type":"message","role":"user","content":"I
-        work as an engineer."}],"stream":false,"previous_response_id":"resp_02aa534f382f1c8700699593c67900819486b04fd916fd0708"}'
+      string: '{"model":"gpt-4o-mini","input":[{"type":"message","role":"user","content":"I
+        work as an engineer."}],"stream":false,"previous_response_id":"resp_01a64b6acbc74589006a156eecef2081a39e82346a5f76f3b9"}'
     headers:
       User-Agent:
-      - Faraday v2.14.0
+      - Faraday v2.14.2
       Authorization:
       - Bearer <OPENAI_API_KEY>
       Content-Type:
@@ -319,15 +324,35 @@ http_interactions:
       message: OK
     headers:
       Date:
-      - Wed, 18 Feb 2026 10:26:16 GMT
+      - Tue, 26 May 2026 09:59:12 GMT
       Content-Type:
       - application/json
       Transfer-Encoding:
       - chunked
       Connection:
       - keep-alive
+      Cf-Ray:
+      - a01becf4c967daca-WAW
+      Cf-Cache-Status:
+      - DYNAMIC
       Server:
       - cloudflare
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      X-Content-Type-Options:
+      - nosniff
+      Access-Control-Expose-Headers:
+      - CF-Ray
+      - CF-Ray
+      - X-Request-ID
+      Openai-Organization:
+      - user-h7m2t30jnyqzec1thkvt5rcd
+      Openai-Processing-Ms:
+      - '1647'
+      Openai-Project:
+      - proj_yBBvayevSgRR3SVjSmBgm0so
+      Openai-Version:
+      - '2020-10-01'
       X-Ratelimit-Limit-Requests:
       - '5000'
       X-Ratelimit-Limit-Tokens:
@@ -335,48 +360,182 @@ http_interactions:
       X-Ratelimit-Remaining-Requests:
       - '4999'
       X-Ratelimit-Remaining-Tokens:
-      - '3999801'
+      - '3999898'
+      X-Ratelimit-Reset-Requests:
+      - 12ms
+      X-Ratelimit-Reset-Tokens:
+      - 1ms
+      X-Request-Id:
+      - req_0ab2e45a33b241a783c9ef11a2a8f6ea
+      Set-Cookie:
+      - __cf_bm=kj7URc3gY2593595mGHRqEEaXfp2ihWkNm_OQ3EN83k-1779789550.8452759-1.0.1.1-ms8wRfwfiVf0JQhR5E.PEqpptP6_ClLlCZBIJMIxK49_SH54EbTOo6.6zIFsg9pEc5rADwOCUwPa1n9064PCV0XJDwOVJNLa2P_vkS.JUHZv.XyyH_PRoGi8Z2ixLqtT;
+        HttpOnly; SameSite=None; Secure; Path=/; Domain=api.openai.com; Expires=Tue,
+        26 May 2026 10:29:12 GMT
+      Alt-Svc:
+      - h3=":443"; ma=86400
+    body:
+      encoding: ASCII-8BIT
+      string: |-
+        {
+          "id": "resp_01a64b6acbc74589006a156eef0cac81a392ebfba81e66634a",
+          "object": "response",
+          "created_at": 1779789551,
+          "status": "completed",
+          "background": false,
+          "billing": {
+            "payer": "developer"
+          },
+          "completed_at": 1779789552,
+          "error": null,
+          "frequency_penalty": 0.0,
+          "incomplete_details": null,
+          "instructions": null,
+          "max_output_tokens": null,
+          "max_tool_calls": null,
+          "model": "gpt-4o-mini-2024-07-18",
+          "moderation": null,
+          "output": [
+            {
+              "id": "msg_01a64b6acbc74589006a156ef00e2081a3b5b752a0a261e1c8",
+              "type": "message",
+              "status": "completed",
+              "content": [
+                {
+                  "type": "output_text",
+                  "annotations": [],
+                  "logprobs": [],
+                  "text": "That's awesome, Alice! Engineering is a fascinating field. What kind of engineering do you specialize in?"
+                }
+              ],
+              "role": "assistant"
+            }
+          ],
+          "parallel_tool_calls": true,
+          "presence_penalty": 0.0,
+          "previous_response_id": "resp_01a64b6acbc74589006a156eecef2081a39e82346a5f76f3b9",
+          "prompt_cache_key": null,
+          "prompt_cache_retention": "in_memory",
+          "reasoning": {
+            "context": null,
+            "effort": null,
+            "summary": null
+          },
+          "safety_identifier": null,
+          "service_tier": "default",
+          "store": true,
+          "temperature": 1.0,
+          "text": {
+            "format": {
+              "type": "text"
+            },
+            "verbosity": "medium"
+          },
+          "tool_choice": "auto",
+          "tools": [],
+          "top_logprobs": 0,
+          "top_p": 1.0,
+          "truncation": "disabled",
+          "usage": {
+            "input_tokens": 83,
+            "input_tokens_details": {
+              "cached_tokens": 0
+            },
+            "output_tokens": 21,
+            "output_tokens_details": {
+              "reasoning_tokens": 0
+            },
+            "total_tokens": 104
+          },
+          "user": null,
+          "metadata": {}
+        }
+  recorded_at: Tue, 26 May 2026 09:59:12 GMT
+- request:
+    method: post
+    uri: https://api.openai.com/v1/responses
+    body:
+      encoding: UTF-8
+      string: '{"model":"gpt-4o-mini","input":[{"type":"message","role":"user","content":"What
+        do you know about me? List the facts."}],"stream":false,"previous_response_id":"resp_01a64b6acbc74589006a156eef0cac81a392ebfba81e66634a"}'
+    headers:
+      User-Agent:
+      - Faraday v2.14.2
+      Authorization:
+      - Bearer <OPENAI_API_KEY>
+      Content-Type:
+      - application/json
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Tue, 26 May 2026 09:59:14 GMT
+      Content-Type:
+      - application/json
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Cf-Ray:
+      - a01bed00cf43ee43-WAW
+      Cf-Cache-Status:
+      - DYNAMIC
+      Server:
+      - cloudflare
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      X-Content-Type-Options:
+      - nosniff
+      Access-Control-Expose-Headers:
+      - CF-Ray
+      - CF-Ray
+      - X-Request-ID
+      Openai-Organization:
+      - user-h7m2t30jnyqzec1thkvt5rcd
+      Openai-Processing-Ms:
+      - '1715'
+      Openai-Project:
+      - proj_yBBvayevSgRR3SVjSmBgm0so
+      Openai-Version:
+      - '2020-10-01'
+      X-Ratelimit-Limit-Requests:
+      - '5000'
+      X-Ratelimit-Limit-Tokens:
+      - '4000000'
+      X-Ratelimit-Remaining-Requests:
+      - '4999'
+      X-Ratelimit-Remaining-Tokens:
+      - '3999859'
       X-Ratelimit-Reset-Requests:
       - 12ms
       X-Ratelimit-Reset-Tokens:
       - 2ms
-      Openai-Version:
-      - '2020-10-01'
-      Openai-Organization:
-      - user-h7m2t30jnyqzec1thkvt5rcd
-      Openai-Project:
-      - proj_yBBvayevSgRR3SVjSmBgm0so
       X-Request-Id:
-      - req_1e82014e5b8640968b2f761cf41fac45
-      Openai-Processing-Ms:
-      - '995'
-      Cf-Cache-Status:
-      - DYNAMIC
+      - req_93e3ae8120ad4d5f99bc86a0a88a10db
       Set-Cookie:
-      - __cf_bm=RuvunlijJqhrPkTHkVStjnTuJjH7WY2H5_MZ5BKhXDk-1771410375.605848-1.0.1.1-maGU_Noso0oueEosMr5z.pWEGAX00lhGrVklqQW46Q2mTE8sbdgqAV5c2pPByowUoUjXJiCpdrEl6xN..0DiyIWAVuLTp78rUujt8FRHO2Zko89OQvh5re7yrK23vrMD;
-        HttpOnly; Secure; Path=/; Domain=api.openai.com; Expires=Wed, 18 Feb 2026
-        10:56:16 GMT
-      Strict-Transport-Security:
-      - max-age=31536000; includeSubDomains; preload
-      X-Content-Type-Options:
-      - nosniff
-      Cf-Ray:
-      - 9cfcd33f8f5283eb-WAW
+      - __cf_bm=JgW3E1uSFTVjB8VpORmwYeYWAUW16joldyvO0pUO1Ik-1779789552.761734-1.0.1.1-aJeldMNPQb9B_jP9sK1bikuGRm1N39vymQcTZ1uCzHm83Am1iZRTU15rYqL_gnby_zoHDerg1La.mtNrqPozuZ9_TpG9zcojhJbvbiPBBDbWlkg3dnL.DWhQ6m7oYnRW;
+        HttpOnly; SameSite=None; Secure; Path=/; Domain=api.openai.com; Expires=Tue,
+        26 May 2026 10:29:14 GMT
       Alt-Svc:
       - h3=":443"; ma=86400
     body:
       encoding: ASCII-8BIT
       string: |-
         {
-          "id": "resp_02aa534f382f1c8700699593c7b27c81948c28893d8b7faf02",
+          "id": "resp_01a64b6acbc74589006a156ef0dd6081a3bda445820e27e401",
           "object": "response",
-          "created_at": 1771410375,
+          "created_at": 1779789552,
           "status": "completed",
           "background": false,
           "billing": {
             "payer": "developer"
           },
-          "completed_at": 1771410376,
+          "completed_at": 1779789554,
           "error": null,
           "frequency_penalty": 0.0,
           "incomplete_details": null,
@@ -384,9 +543,10 @@ http_interactions:
           "max_output_tokens": null,
           "max_tool_calls": null,
           "model": "gpt-4o-mini-2024-07-18",
+          "moderation": null,
           "output": [
             {
-              "id": "msg_02aa534f382f1c8700699593c83eb8819481a5b89a58ecc245",
+              "id": "msg_01a64b6acbc74589006a156ef162d881a3b8320a7c61dcb247",
               "type": "message",
               "status": "completed",
               "content": [
@@ -394,7 +554,7 @@ http_interactions:
                   "type": "output_text",
                   "annotations": [],
                   "logprobs": [],
-                  "text": "That\u2019s interesting, Alice! What type of engineering do you specialize in?"
+                  "text": "Sure! Here are the facts I know about you:\n\n1. Your name is Alice.\n2. You live in Seattle.\n3. You work as an engineer.\n\nIf you'd like to share more or have any questions, feel free!"
                 }
               ],
               "role": "assistant"
@@ -402,10 +562,11 @@ http_interactions:
           ],
           "parallel_tool_calls": true,
           "presence_penalty": 0.0,
-          "previous_response_id": "resp_02aa534f382f1c8700699593c67900819486b04fd916fd0708",
+          "previous_response_id": "resp_01a64b6acbc74589006a156eef0cac81a392ebfba81e66634a",
           "prompt_cache_key": null,
-          "prompt_cache_retention": null,
+          "prompt_cache_retention": "in_memory",
           "reasoning": {
+            "context": null,
             "effort": null,
             "summary": null
           },
@@ -425,169 +586,18 @@ http_interactions:
           "top_p": 1.0,
           "truncation": "disabled",
           "usage": {
-            "input_tokens": 180,
+            "input_tokens": 122,
             "input_tokens_details": {
               "cached_tokens": 0
             },
-            "output_tokens": 16,
+            "output_tokens": 48,
             "output_tokens_details": {
               "reasoning_tokens": 0
             },
-            "total_tokens": 196
+            "total_tokens": 170
           },
           "user": null,
           "metadata": {}
         }
-  recorded_at: Wed, 18 Feb 2026 10:26:16 GMT
-- request:
-    method: post
-    uri: https://api.openai.com/v1/responses
-    body:
-      encoding: UTF-8
-      string: '{"model":"gpt-4o-mini","input":[{"type":"message","role":"user","content":"My
-        name is Alice."},{"type":"message","role":"assistant","content":"Nice to meet
-        you, Alice! How can I assist you today?"},{"type":"message","role":"user","content":"I
-        live in Seattle."},{"type":"message","role":"assistant","content":"That’s
-        great! Seattle has so much to offer, from its beautiful waterfront to amazing
-        coffee spots. Do you have any favorite places in the city?"},{"type":"message","role":"user","content":"I
-        work as an engineer."},{"type":"message","role":"assistant","content":"That’s
-        interesting, Alice! What type of engineering do you specialize in?"},{"type":"message","role":"user","content":"What
-        do you know about me? List the facts."}],"stream":false,"previous_response_id":"resp_02aa534f382f1c8700699593c7b27c81948c28893d8b7faf02"}'
-    headers:
-      User-Agent:
-      - Faraday v2.14.0
-      Authorization:
-      - Bearer <OPENAI_API_KEY>
-      Content-Type:
-      - application/json
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-      Accept:
-      - "*/*"
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Date:
-      - Wed, 18 Feb 2026 10:26:18 GMT
-      Content-Type:
-      - application/json
-      Transfer-Encoding:
-      - chunked
-      Connection:
-      - keep-alive
-      Server:
-      - cloudflare
-      X-Ratelimit-Limit-Requests:
-      - '5000'
-      X-Ratelimit-Limit-Tokens:
-      - '4000000'
-      X-Ratelimit-Remaining-Requests:
-      - '4999'
-      X-Ratelimit-Remaining-Tokens:
-      - '3999668'
-      X-Ratelimit-Reset-Requests:
-      - 12ms
-      X-Ratelimit-Reset-Tokens:
-      - 4ms
-      Openai-Version:
-      - '2020-10-01'
-      Openai-Organization:
-      - user-h7m2t30jnyqzec1thkvt5rcd
-      Openai-Project:
-      - proj_yBBvayevSgRR3SVjSmBgm0so
-      X-Request-Id:
-      - req_64536cf6adb34aa5ab6ad53b5bbeb303
-      Openai-Processing-Ms:
-      - '1727'
-      Cf-Cache-Status:
-      - DYNAMIC
-      Set-Cookie:
-      - __cf_bm=81T0NAEspveFeCnkmcNUVT_ETdTbLe69TuXxpPqJ6.s-1771410376.792666-1.0.1.1-AYt1jaP92wUhukLw3FTmA40Q3qp2Ojrjh6Vzb35tYNV9BYbyqkPE_HWSRIuoQo7ao2C27ucDK_ZY25NUiKj7fQxNwQ3bCuR0d0cg7g_.wLgfcztZ9YFFjTUCFOwvW4iz;
-        HttpOnly; Secure; Path=/; Domain=api.openai.com; Expires=Wed, 18 Feb 2026
-        10:56:18 GMT
-      Strict-Transport-Security:
-      - max-age=31536000; includeSubDomains; preload
-      X-Content-Type-Options:
-      - nosniff
-      Cf-Ray:
-      - 9cfcd346ff69bfab-WAW
-      Alt-Svc:
-      - h3=":443"; ma=86400
-    body:
-      encoding: ASCII-8BIT
-      string: |-
-        {
-          "id": "resp_02aa534f382f1c8700699593c8e0f081948d1360370b161a09",
-          "object": "response",
-          "created_at": 1771410376,
-          "status": "completed",
-          "background": false,
-          "billing": {
-            "payer": "developer"
-          },
-          "completed_at": 1771410378,
-          "error": null,
-          "frequency_penalty": 0.0,
-          "incomplete_details": null,
-          "instructions": null,
-          "max_output_tokens": null,
-          "max_tool_calls": null,
-          "model": "gpt-4o-mini-2024-07-18",
-          "output": [
-            {
-              "id": "msg_02aa534f382f1c8700699593c953b4819491d277f4709690fe",
-              "type": "message",
-              "status": "completed",
-              "content": [
-                {
-                  "type": "output_text",
-                  "annotations": [],
-                  "logprobs": [],
-                  "text": "Based on our conversation, here are the facts I know about you:\n\n1. Your name is Alice.\n2. You live in Seattle.\n3. You work as an engineer.\n\nIf you'd like to share more or talk about something specific, feel free!"
-                }
-              ],
-              "role": "assistant"
-            }
-          ],
-          "parallel_tool_calls": true,
-          "presence_penalty": 0.0,
-          "previous_response_id": "resp_02aa534f382f1c8700699593c7b27c81948c28893d8b7faf02",
-          "prompt_cache_key": null,
-          "prompt_cache_retention": null,
-          "reasoning": {
-            "effort": null,
-            "summary": null
-          },
-          "safety_identifier": null,
-          "service_tier": "default",
-          "store": true,
-          "temperature": 1.0,
-          "text": {
-            "format": {
-              "type": "text"
-            },
-            "verbosity": "medium"
-          },
-          "tool_choice": "auto",
-          "tools": [],
-          "top_logprobs": 0,
-          "top_p": 1.0,
-          "truncation": "disabled",
-          "usage": {
-            "input_tokens": 313,
-            "input_tokens_details": {
-              "cached_tokens": 0
-            },
-            "output_tokens": 52,
-            "output_tokens_details": {
-              "reasoning_tokens": 0
-            },
-            "total_tokens": 365
-          },
-          "user": null,
-          "metadata": {}
-        }
-  recorded_at: Wed, 18 Feb 2026 10:26:18 GMT
+  recorded_at: Tue, 26 May 2026 09:59:14 GMT
 recorded_with: VCR 6.4.0
