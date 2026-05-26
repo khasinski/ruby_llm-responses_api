@@ -241,9 +241,27 @@ result = provider.poll_response(response.response_id, interval: 2.0) do |status|
 end
 ```
 
+## Observing Built-in Tool Activity
+
+Server-side built-in tools (web search, code interpreter, file search, shell, apply patch, image generation, MCP, computer use, local shell) fire through the same `on_tool_call` / `on_tool_result` callbacks as locally executed function tools:
+
+```ruby
+chat = RubyLLM.chat(model: 'gpt-4o', provider: :openai_responses)
+chat.with_params(tools: [{ type: 'web_search_preview' }])
+
+chat.on_tool_call  { |tc| puts "#{tc.name} called (id=#{tc.id})" }
+chat.on_tool_result { |r|  puts "  -> status=#{r[:status]}" }
+
+chat.ask("What's the latest Ruby release?")
+# web_search called (id=ws_...)
+#   -> status=completed
+```
+
+The newer `before_tool_call` / `after_tool_result` API (ruby_llm 1.13+) is supported too. Each `ToolCall` carries a normalized name (`web_search`, `code_interpreter`, `file_search`, `image_generation`, `shell`, `apply_patch`, `mcp`, `computer`, `local_shell`) and best-effort arguments extracted from the response item.
+
 ## Parsing Built-in Tool Results
 
-When the API returns results from built-in tools, use the parsers to extract structured data:
+When you want the structured payload rather than just the callback, use the parsers:
 
 ```ruby
 # Access raw response output (available via response.raw)

@@ -25,9 +25,18 @@ module RubyLLM
 
         def dispatch_built_in_tool_events(message)
           message.built_in_tool_events.each do |event|
-            @on[:tool_call]&.call(event[:tool_call])
-            @on[:tool_result]&.call(event[:result])
+            fire_callback(:before_tool_call, :tool_call, event[:tool_call])
+            fire_callback(:after_tool_result, :tool_result, event[:result])
           end
+        end
+
+        # Mirrors RubyLLM::Chat#run_callbacks (private since 1.13): dispatches
+        # through the new @callbacks array API if present, and always falls
+        # back to the legacy @on hash so older ruby_llm versions still work.
+        def fire_callback(new_name, legacy_name, *args)
+          callbacks = instance_variable_defined?(:@callbacks) ? @callbacks : nil
+          callbacks[new_name]&.each { |cb| cb.call(*args) } if callbacks
+          @on[legacy_name]&.call(*args)
         end
       end
     end

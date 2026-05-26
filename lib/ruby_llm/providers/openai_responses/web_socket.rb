@@ -266,16 +266,18 @@ module RubyLLM
             accumulator.add(chunk)
             block&.call(chunk)
 
-            if event_type == 'response.completed'
-              track_response_id(data)
-              built_in_events.concat(BuiltInTools.extract_events(data.dig('response', 'output') || []))
-              break
-            end
+            next unless event_type == 'response.completed'
+
+            track_response_id(data)
+            built_in_events.concat(BuiltInTools.extract_events(data.dig('response', 'output') || []))
+            break
           end
 
           message = accumulator.to_message(nil)
           message.response_id = @last_response_id
-          message.built_in_tool_events = built_in_events if message.respond_to?(:built_in_tool_events=) && built_in_events.any?
+          if message.respond_to?(:built_in_tool_events=) && built_in_events.any?
+            message.built_in_tool_events = built_in_events
+          end
           message
         end
 

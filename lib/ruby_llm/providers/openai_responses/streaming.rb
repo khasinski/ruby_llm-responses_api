@@ -40,9 +40,7 @@ module RubyLLM
             cached_tokens = usage.dig('input_tokens_details', 'cached_tokens')
 
             collector = Thread.current[OpenAIResponses::BUILT_IN_EVENTS_KEY]
-            if collector
-              collector.concat(BuiltInTools.extract_events(response_data['output'] || []))
-            end
+            collector&.concat(BuiltInTools.extract_events(response_data['output'] || []))
 
             Chunk.new(
               role: :assistant,

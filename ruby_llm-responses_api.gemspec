@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |spec|
   spec.name = 'ruby_llm-responses_api'
-  spec.version = '0.5.4'
+  spec.version = '0.6.0'
   spec.authors = ['Chris Hasinski']
   spec.email = ['krzysztof.hasinski@gmail.com']
 
@@ -23,7 +23,7 @@ Gem::Specification.new do |spec|
   spec.files = Dir.glob('{lib}/**/*') + %w[README.md LICENSE.txt CHANGELOG.md]
   spec.require_paths = ['lib']
 
-  spec.add_dependency 'ruby_llm', '>= 1.0'
+  spec.add_dependency 'ruby_llm', '>= 1.13'
 
   spec.add_development_dependency 'activerecord', '~> 7.0'
   spec.add_development_dependency 'rake', '~> 13.0'

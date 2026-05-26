@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.6.0] - 2026-05-26
+
+### Added
+
+- Fire `on_tool_call` / `on_tool_result` (and the newer `before_tool_call` / `after_tool_result`) for server-side built-in tools: web search, file search, code interpreter, image generation, shell, apply patch, MCP, computer use, local shell (issue #1 by @myxoh)
+- Configurable WebSocket `response_timeout` (default 60s); stalled streams now raise `ConnectionError` instead of hanging forever on `queue.pop`
+
+### Fixed
+
+- Stop sending the full message history alongside `previous_response_id` in chained conversations; this caused server-side chain state to grow quadratically and reach the context-window ceiling far earlier than the visible content suggested (issue #10 reported by @theclunkerjunker)
+- Drop the rejected `OpenAI-Beta: responses.websocket=v1` header that prevented the live `wss://api.openai.com/v1/responses` endpoint from accepting connections
+- Send `response.create` fields at the top level over WebSocket instead of nested under a `response` key, which made the live endpoint reject every request as `missing_required_parameter: model` (PR #8 by @lucas-domeij)
+- Bind WebSocket `on(:message)` / `on(:close)` / `on(:error)` handlers via a local closure so they no longer reference ivars on the underlying client (which silently dropped every incoming frame and made `#call` hang) (PR #9 by @lucas-domeij)
+
+### Changed
+
+- `ruby_llm` dependency bumped to `>= 1.13` so the existing `thinking:` / `tool_prefs:` overrides match the upstream `Provider#complete` signature
+
 ## [0.5.4] - 2026-04-06
 
 ### Changed

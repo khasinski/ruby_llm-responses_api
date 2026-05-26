@@ -182,9 +182,7 @@ module RubyLLM
         Thread.current[BUILT_IN_EVENTS_KEY] = []
         message = yield
         events = Thread.current[BUILT_IN_EVENTS_KEY]
-        if message.respond_to?(:built_in_tool_events=) && events&.any?
-          message.built_in_tool_events = events
-        end
+        message.built_in_tool_events = events if message.respond_to?(:built_in_tool_events=) && events&.any?
         message
       ensure
         Thread.current[BUILT_IN_EVENTS_KEY] = previous
