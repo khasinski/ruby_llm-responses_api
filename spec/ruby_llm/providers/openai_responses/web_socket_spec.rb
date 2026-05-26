@@ -152,8 +152,8 @@ RSpec.describe RubyLLM::Providers::OpenAIResponses::WebSocket do
 
       payload = last_sent_payload
       expect(payload['type']).to eq('response.create')
-      expect(payload['response']['model']).to eq('gpt-4o')
-      expect(payload['response']['input']).to eq([{ 'type' => 'message', 'role' => 'user', 'content' => 'Hello' }])
+      expect(payload['model']).to eq('gpt-4o')
+      expect(payload['input']).to eq([{ 'type' => 'message', 'role' => 'user', 'content' => 'Hello' }])
     end
 
     it 'includes tools in payload when provided' do
@@ -163,8 +163,8 @@ RSpec.describe RubyLLM::Providers::OpenAIResponses::WebSocket do
         ws.create_response(model: 'gpt-4o', input: [], tools: tools)
       end
 
-      expect(last_sent_payload['response']['tools']).to be_an(Array)
-      expect(last_sent_payload['response']['tools'].length).to eq(2)
+      expect(last_sent_payload['tools']).to be_an(Array)
+      expect(last_sent_payload['tools'].length).to eq(2)
     end
 
     it 'routes events through Streaming.build_chunk and yields chunks' do
@@ -205,7 +205,7 @@ RSpec.describe RubyLLM::Providers::OpenAIResponses::WebSocket do
         ws.create_response(model: 'gpt-4o', input: [{ type: 'message', role: 'user', content: 'Second' }])
       end
 
-      expect(last_sent_payload['response']['previous_response_id']).to eq('resp_ws_001')
+      expect(last_sent_payload['previous_response_id']).to eq('resp_ws_001')
       expect(ws.last_response_id).to eq('resp_ws_002')
     end
 
@@ -214,7 +214,7 @@ RSpec.describe RubyLLM::Providers::OpenAIResponses::WebSocket do
         ws.create_response(model: 'gpt-4o', input: [], previous_response_id: 'resp_explicit_123')
       end
 
-      expect(last_sent_payload['response']['previous_response_id']).to eq('resp_explicit_123')
+      expect(last_sent_payload['previous_response_id']).to eq('resp_explicit_123')
     end
 
     it 'includes instructions when provided' do
@@ -222,7 +222,7 @@ RSpec.describe RubyLLM::Providers::OpenAIResponses::WebSocket do
         ws.create_response(model: 'gpt-4o', input: [], instructions: 'You are a helpful assistant.')
       end
 
-      expect(last_sent_payload['response']['instructions']).to eq('You are a helpful assistant.')
+      expect(last_sent_payload['instructions']).to eq('You are a helpful assistant.')
     end
 
     it 'raises on error event' do
@@ -252,8 +252,8 @@ RSpec.describe RubyLLM::Providers::OpenAIResponses::WebSocket do
       end
 
       payload = last_sent_payload
-      expect(payload['response']['store']).to be false
-      expect(payload['response']['metadata']).to eq({ 'session' => 'abc' })
+      expect(payload['store']).to be false
+      expect(payload['metadata']).to eq({ 'session' => 'abc' })
     end
 
     it 'applies compaction params' do
@@ -261,7 +261,7 @@ RSpec.describe RubyLLM::Providers::OpenAIResponses::WebSocket do
         ws.create_response(model: 'gpt-4o', input: [], compact_threshold: 100_000)
       end
 
-      expect(last_sent_payload['response']['context_management']).to eq(
+      expect(last_sent_payload['context_management']).to eq(
         [{ 'type' => 'compaction', 'compact_threshold' => 100_000 }]
       )
     end
@@ -271,7 +271,7 @@ RSpec.describe RubyLLM::Providers::OpenAIResponses::WebSocket do
         ws.create_response(model: 'gpt-4o', input: [], store: true, compact_threshold: 50_000)
       end
 
-      response_payload = last_sent_payload['response']
+      response_payload = last_sent_payload
       expect(response_payload).not_to have_key('compact_threshold')
     end
 
@@ -296,7 +296,7 @@ RSpec.describe RubyLLM::Providers::OpenAIResponses::WebSocket do
 
       sent = last_sent_payload
       expect(sent['type']).to eq('response.create')
-      expect(sent['response']['model']).to eq('gpt-4o')
+      expect(sent['model']).to eq('gpt-4o')
     end
 
     it 'strips :stream from the payload' do
@@ -306,7 +306,7 @@ RSpec.describe RubyLLM::Providers::OpenAIResponses::WebSocket do
         ws.call(payload)
       end
 
-      expect(last_sent_payload['response']).not_to have_key('stream')
+      expect(last_sent_payload).not_to have_key('stream')
     end
 
     it 'yields chunks and returns assembled Message' do
@@ -336,8 +336,8 @@ RSpec.describe RubyLLM::Providers::OpenAIResponses::WebSocket do
 
       payload = last_sent_payload
       expect(payload['type']).to eq('response.create')
-      expect(payload['response']['generate']).to be false
-      expect(payload['response']['model']).to eq('gpt-4o')
+      expect(payload['generate']).to be false
+      expect(payload['model']).to eq('gpt-4o')
     end
   end
 

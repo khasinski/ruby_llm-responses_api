@@ -98,7 +98,7 @@ module RubyLLM
           queue = Queue.new
           @mutex.synchronize { @message_queue = queue }
 
-          envelope = { type: 'response.create', response: payload.except(:stream) }
+          envelope = { type: 'response.create' }.merge(payload.except(:stream))
           send_json(envelope)
           accumulate_response(queue, &)
         ensure
@@ -139,10 +139,7 @@ module RubyLLM
           queue = Queue.new
           @mutex.synchronize { @message_queue = queue }
 
-          payload = {
-            type: 'response.create',
-            response: { model: model, generate: false }.merge(extra)
-          }
+          payload = { type: 'response.create', model: model, generate: false }.merge(extra)
 
           send_json(payload)
 
