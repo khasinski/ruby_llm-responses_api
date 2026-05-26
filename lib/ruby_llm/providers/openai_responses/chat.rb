@@ -20,9 +20,12 @@ module RubyLLM
 
           instructions = system_messages.map { |m| extract_text_content(m.content) }.join("\n\n")
 
+          last_response_id = extract_last_response_id(messages)
+          input_messages = unchained_messages(non_system_messages, last_response_id)
+
           payload = {
             model: model.id,
-            input: format_input(non_system_messages),
+            input: format_input(input_messages),
             stream: stream
           }
 
@@ -30,8 +33,6 @@ module RubyLLM
           payload[:temperature] = temperature unless temperature.nil?
           apply_tools(payload, tools, tool_prefs)
           payload[:text] = build_schema_format(schema) if schema
-
-          last_response_id = extract_last_response_id(messages)
           payload[:previous_response_id] = last_response_id if last_response_id
 
           payload
@@ -83,6 +84,21 @@ module RubyLLM
             .map(&:response_id)
             .compact
             .last
+        end
+
+        # When chaining via previous_response_id, the API expects only the new
+        # items in `input` -- the rest already lives in the server-side response
+        # chain. Sending the full history every turn appends it to that chain
+        # and causes O(N^2) input_tokens growth. See issue #10.
+        def unchained_messages(messages, last_response_id)
+          return messages unless last_response_id
+
+          anchor = messages.rindex do |m|
+            m.role == :assistant && m.respond_to?(:response_id) && m.response_id == last_response_id
+          end
+          return messages unless anchor
+
+          messages[(anchor + 1)..] || []
         end
 
         def parse_completion_response(response)

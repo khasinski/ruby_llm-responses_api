@@ -102,6 +102,82 @@ RSpec.describe RubyLLM::Providers::OpenAIResponses::Chat do
       end.to raise_exception(RubyLLM::UnsupportedAttachmentError)
     end
 
+    context 'with previous_response_id chain' do
+      it 'sends only the new user message in input, not the full history' do
+        first_user = RubyLLM::Message.new(role: :user, content: 'Hello')
+        first_assistant = RubyLLM::Message.new(
+          role: :assistant, content: 'Hi there!', response_id: 'resp_abc123'
+        )
+        second_user = RubyLLM::Message.new(role: :user, content: 'And your name?')
+
+        payload = chat_module.render_payload(
+          [first_user, first_assistant, second_user],
+          tools: {}, temperature: nil, model: model, stream: false
+        )
+
+        expect(payload[:previous_response_id]).to eq('resp_abc123')
+        expect(payload[:input].length).to eq(1)
+        expect(payload[:input].first[:content]).to eq('And your name?')
+      end
+
+      it 'includes tool results that came after the chained assistant turn' do
+        first_user = RubyLLM::Message.new(role: :user, content: 'What is the weather?')
+        assistant_with_calls = RubyLLM::Message.new(
+          role: :assistant,
+          content: nil,
+          tool_calls: {
+            'call_1' => RubyLLM::ToolCall.new(id: 'call_1', name: 'get_weather', arguments: {})
+          },
+          response_id: 'resp_xyz'
+        )
+        tool_result = RubyLLM::Message.new(
+          role: :tool, content: '{"temp": 72}', tool_call_id: 'call_1'
+        )
+
+        payload = chat_module.render_payload(
+          [first_user, assistant_with_calls, tool_result],
+          tools: {}, temperature: nil, model: model, stream: false
+        )
+
+        expect(payload[:previous_response_id]).to eq('resp_xyz')
+        expect(payload[:input].length).to eq(1)
+        expect(payload[:input].first[:type]).to eq('function_call_output')
+        expect(payload[:input].first[:call_id]).to eq('call_1')
+      end
+
+      it 'sends full history when no assistant response_id is present' do
+        first_user = RubyLLM::Message.new(role: :user, content: 'Hello')
+        first_assistant = RubyLLM::Message.new(role: :assistant, content: 'Hi!')
+        second_user = RubyLLM::Message.new(role: :user, content: 'How are you?')
+
+        payload = chat_module.render_payload(
+          [first_user, first_assistant, second_user],
+          tools: {}, temperature: nil, model: model, stream: false
+        )
+
+        expect(payload).not_to have_key(:previous_response_id)
+        expect(payload[:input].length).to eq(3)
+      end
+
+      it 'anchors on the most recent assistant response_id across many turns' do
+        msgs = [
+          RubyLLM::Message.new(role: :user, content: 'Turn 1'),
+          RubyLLM::Message.new(role: :assistant, content: 'Reply 1', response_id: 'resp_1'),
+          RubyLLM::Message.new(role: :user, content: 'Turn 2'),
+          RubyLLM::Message.new(role: :assistant, content: 'Reply 2', response_id: 'resp_2'),
+          RubyLLM::Message.new(role: :user, content: 'Turn 3')
+        ]
+
+        payload = chat_module.render_payload(
+          msgs, tools: {}, temperature: nil, model: model, stream: false
+        )
+
+        expect(payload[:previous_response_id]).to eq('resp_2')
+        expect(payload[:input].length).to eq(1)
+        expect(payload[:input].first[:content]).to eq('Turn 3')
+      end
+    end
+
     it 'includes temperature when provided' do
       payload = chat_module.render_payload(
         [user_message],
