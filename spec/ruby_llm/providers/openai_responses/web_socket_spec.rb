@@ -31,7 +31,9 @@ RSpec.describe RubyLLM::Providers::OpenAIResponses::WebSocket do
     def close; end
 
     def emit(event, *args)
-      @handlers[event].each { |h| h.call(*args) }
+      # Mirror websocket-client-simple, which uses instance_exec so that
+      # handlers run with `self` set to the underlying client.
+      @handlers[event].each { |h| instance_exec(*args, &h) }
     end
 
     def has_handler?(event)
