@@ -14,7 +14,13 @@ RSpec.describe 'WebSocket integration', :live_ws do
     chunks = []
     message = ws.create_response(
       model: 'gpt-4o-mini',
-      input: [{ type: 'message', role: 'user', content: 'Say "hello" and nothing else.' }]
+      input: [
+        {
+          type: 'message',
+          role: 'user',
+          content: [{ type: 'input_text', text: 'Say "hello" and nothing else.' }]
+        }
+      ]
     ) do |chunk|
       chunks << chunk
     end
@@ -31,7 +37,13 @@ RSpec.describe 'WebSocket integration', :live_ws do
 
     ws.create_response(
       model: 'gpt-4o-mini',
-      input: [{ type: 'message', role: 'user', content: 'My name is Alice.' }]
+      input: [
+        {
+          type: 'message',
+          role: 'user',
+          content: [{ type: 'input_text', text: 'My name is Alice.' }]
+        }
+      ]
     )
 
     first_id = ws.last_response_id
@@ -39,7 +51,13 @@ RSpec.describe 'WebSocket integration', :live_ws do
 
     message = ws.create_response(
       model: 'gpt-4o-mini',
-      input: [{ type: 'message', role: 'user', content: "What's my name?" }]
+      input: [
+        {
+          type: 'message',
+          role: 'user',
+          content: [{ type: 'input_text', text: "What's my name?" }]
+        }
+      ]
     )
 
     expect(message.content.downcase).to include('alice')

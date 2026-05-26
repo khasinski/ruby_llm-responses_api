@@ -24,6 +24,7 @@ module RubyLLM
       class WebSocket # rubocop:disable Metrics/ClassLength
         WEBSOCKET_PATH = '/v1/responses'
         KNOWN_PARAMS = %i[store metadata compact_threshold context_management].freeze
+        RESPONSE_TIMEOUT = :response_timeout
 
         attr_reader :last_response_id
 
@@ -32,13 +33,16 @@ module RubyLLM
         # @param organization_id [String, nil] OpenAI organization ID
         # @param project_id [String, nil] OpenAI project ID
         # @param client_class [#connect, nil] WebSocket client class (for testing)
+        # @param response_timeout [Numeric] seconds to wait for a response event
+        # rubocop:disable Metrics/ParameterLists
         def initialize(api_key:, api_base: 'https://api.openai.com/v1', organization_id: nil, project_id: nil,
-                       client_class: nil)
+                       client_class: nil, response_timeout: 60)
           @api_key = api_key
           @api_base = api_base
           @organization_id = organization_id
           @project_id = project_id
           @client_class = client_class
+          @response_timeout = response_timeout
 
           @ws = nil
           @mutex = Mutex.new
@@ -47,6 +51,7 @@ module RubyLLM
           @last_response_id = nil
           @message_queue = nil
         end
+        # rubocop:enable Metrics/ParameterLists
 
         # Open the WebSocket connection. Blocks until the connection is established.
         # @param timeout [Numeric] seconds to wait for the connection (default: 10)
@@ -217,8 +222,7 @@ module RubyLLM
 
         def build_headers
           headers = {
-            'Authorization' => "Bearer #{@api_key}",
-            'OpenAI-Beta' => 'responses.websocket=v1'
+            'Authorization' => "Bearer #{@api_key}"
           }
           headers['OpenAI-Organization'] = @organization_id if @organization_id
           headers['OpenAI-Project'] = @project_id if @project_id
@@ -247,7 +251,11 @@ module RubyLLM
           accumulator = StreamAccumulator.new
 
           loop do
-            raw = queue.pop
+            raw = pop_response_event(queue)
+            if raw == RESPONSE_TIMEOUT
+              raise ConnectionError, "Timed out waiting for WebSocket response after #{@response_timeout} seconds"
+            end
+
             break if raw.nil?
 
             data = JSON.parse(raw)
@@ -293,6 +301,12 @@ module RubyLLM
           Timeout.timeout(seconds) { queue.pop }
         rescue Timeout::Error
           nil
+        end
+
+        def pop_response_event(queue)
+          Timeout.timeout(@response_timeout) { queue.pop }
+        rescue Timeout::Error
+          RESPONSE_TIMEOUT
         end
       end
     end
