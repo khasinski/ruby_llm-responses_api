@@ -44,10 +44,7 @@ RSpec.describe RubyLLM::Providers::OpenAIResponses::Streaming do
       expect(chunk.model_id).to eq('gpt-4o-mini')
     end
 
-    it 'collects built-in tool events from response.completed into the thread-local collector' do
-      key = RubyLLM::Providers::OpenAIResponses::BUILT_IN_EVENTS_KEY
-      Thread.current[key] = []
-
+    it 'attaches built-in tool events from response.completed onto the chunk' do
       data = {
         'type' => 'response.completed',
         'response' => {
@@ -59,13 +56,21 @@ RSpec.describe RubyLLM::Providers::OpenAIResponses::Streaming do
         }
       }
 
-      described_class.build_chunk(data)
+      chunk = described_class.build_chunk(data)
 
-      events = Thread.current[key]
-      expect(events.size).to eq(1)
-      expect(events.first[:tool_call].name).to eq('web_search')
-    ensure
-      Thread.current[key] = nil
+      expect(chunk.built_in_tool_events.size).to eq(1)
+      expect(chunk.built_in_tool_events.first[:tool_call].name).to eq('web_search')
+    end
+
+    it 'leaves built_in_tool_events nil on chunks without built-in tool activity' do
+      data = {
+        'type' => 'response.completed',
+        'response' => { 'id' => 'resp_xyz', 'output' => [], 'usage' => {} }
+      }
+
+      chunk = described_class.build_chunk(data)
+
+      expect(chunk.built_in_tool_events).to be_nil
     end
 
     it 'builds chunk from output item added (function call)' do

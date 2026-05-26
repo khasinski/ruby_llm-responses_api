@@ -196,6 +196,24 @@ RSpec.describe RubyLLM::Providers::OpenAIResponses::WebSocket do
       expect(ws.last_response_id).to eq('resp_ws_001')
     end
 
+    it 'attaches built_in_tool_events to the assembled message (issue #1)' do
+      events = standard_events
+      # Inject a web_search_call into the response.completed output.
+      completed = events.last
+      completed['response']['output'] = [
+        { 'type' => 'web_search_call', 'id' => 'ws_call_1', 'status' => 'completed',
+          'action' => { 'type' => 'search', 'query' => 'ruby' } }
+      ]
+
+      message = with_events(events) do
+        ws.create_response(model: 'gpt-4o', input: [])
+      end
+
+      expect(message.built_in_tool_events.size).to eq(1)
+      expect(message.built_in_tool_events.first[:tool_call].name).to eq('web_search')
+      expect(message.built_in_tool_events.first[:result][:status]).to eq('completed')
+    end
+
     it 'auto-chains with previous last_response_id' do
       with_events(standard_events(response_id: 'resp_ws_001')) do
         ws.create_response(model: 'gpt-4o', input: [{ type: 'message', role: 'user', content: 'First' }])

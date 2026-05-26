@@ -68,7 +68,8 @@ RSpec.describe RubyLLM::Providers::OpenAIResponses::BuiltInTools do
         { 'type' => 'file_search_call', 'id' => 'fs_1', 'status' => 'completed', 'queries' => %w[ruby] },
         { 'type' => 'image_generation_call', 'id' => 'ig_1', 'status' => 'completed', 'result' => 'b64...' },
         { 'type' => 'shell_call', 'id' => 'sh_1', 'status' => 'completed', 'action' => { 'command' => %w[ls] } },
-        { 'type' => 'apply_patch_call', 'id' => 'ap_1', 'status' => 'completed', 'operation' => { 'type' => 'create' } },
+        { 'type' => 'apply_patch_call', 'id' => 'ap_1', 'status' => 'completed',
+          'operation' => { 'type' => 'create' } },
         { 'type' => 'mcp_call', 'id' => 'mcp_1', 'status' => 'completed', 'name' => 'do_thing',
           'arguments' => '{}', 'server_label' => 'my-server' }
       ]

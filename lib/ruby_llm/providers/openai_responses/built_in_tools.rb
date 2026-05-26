@@ -187,19 +187,23 @@ module RubyLLM
             end
         end
 
-        # Server-executed built-in tool output item types that should surface
-        # as tool_call / tool_result callbacks on RubyLLM::Chat.
-        CALL_ITEM_TYPES = %w[
-          web_search_call
-          file_search_call
-          code_interpreter_call
-          image_generation_call
-          shell_call
-          apply_patch_call
-          mcp_call
-          local_shell_call
-          computer_call
-        ].freeze
+        # Server-executed built-in tool output item types and their argument
+        # extractors. The key is the output `type` from the Responses API; the
+        # value is a lambda that pulls the relevant arguments out of that item.
+        # To support a new built-in tool, add an entry here.
+        CALL_ARGUMENT_EXTRACTORS = {
+          'web_search_call' => ->(item) { { action: item['action'], query: item.dig('action', 'query') } },
+          'file_search_call' => ->(item) { { queries: item['queries'] } },
+          'code_interpreter_call' => ->(item) { { code: item['code'], container_id: item['container_id'] } },
+          'image_generation_call' => ->(_item) { {} },
+          'shell_call' => ->(item) { { action: item['action'], container_id: item['container_id'] } },
+          'local_shell_call' => ->(item) { { action: item['action'], container_id: item['container_id'] } },
+          'apply_patch_call' => ->(item) { { operation: item['operation'] } },
+          'mcp_call' => lambda { |item|
+            { name: item['name'], arguments: item['arguments'], server_label: item['server_label'] }
+          },
+          'computer_call' => ->(item) { { action: item['action'] } }
+        }.freeze
 
         # Build a list of {tool_call:, result:} events from the response output.
         # Used to surface server-side built-in tool activity through the standard
@@ -207,7 +211,7 @@ module RubyLLM
         def extract_events(output)
           return [] unless output.is_a?(Array)
 
-          output.select { |item| CALL_ITEM_TYPES.include?(item['type']) }
+          output.select { |item| CALL_ARGUMENT_EXTRACTORS.key?(item['type']) }
                 .map { |item| build_event(item) }
         end
 
@@ -227,24 +231,10 @@ module RubyLLM
         end
 
         private_class_method def call_arguments(item)
-          case item['type']
-          when 'code_interpreter_call'
-            { code: item['code'], container_id: item['container_id'] }.compact
-          when 'shell_call', 'local_shell_call'
-            { action: item['action'], container_id: item['container_id'] }.compact
-          when 'apply_patch_call'
-            { operation: item['operation'] }.compact
-          when 'mcp_call'
-            { name: item['name'], arguments: item['arguments'], server_label: item['server_label'] }.compact
-          when 'computer_call'
-            { action: item['action'] }.compact
-          when 'file_search_call'
-            { queries: item['queries'] }.compact
-          when 'web_search_call'
-            { action: item['action'], query: item.dig('action', 'query') }.compact
-          else
-            {}
-          end
+          extractor = CALL_ARGUMENT_EXTRACTORS[item['type']]
+          return {} unless extractor
+
+          extractor.call(item).compact
         end
 
         private_class_method def call_result(item)

@@ -34,13 +34,14 @@ module RubyLLM
             )
 
           when 'response.completed'
-            # Final response with usage stats
+            # Final response with usage stats and any server-side built-in
+            # tool activity (web_search_call, code_interpreter_call, etc.) that
+            # the model executed. StreamAccumulatorExtension forwards
+            # built_in_tool_events onto the assembled Message.
             response_data = data['response'] || {}
             usage = response_data['usage'] || {}
             cached_tokens = usage.dig('input_tokens_details', 'cached_tokens')
-
-            collector = Thread.current[OpenAIResponses::BUILT_IN_EVENTS_KEY]
-            collector&.concat(BuiltInTools.extract_events(response_data['output'] || []))
+            built_in_events = BuiltInTools.extract_events(response_data['output'] || [])
 
             Chunk.new(
               role: :assistant,
@@ -50,7 +51,8 @@ module RubyLLM
               cached_tokens: cached_tokens,
               cache_creation_tokens: 0,
               model_id: response_data['model'],
-              response_id: response_data['id']
+              response_id: response_data['id'],
+              built_in_tool_events: built_in_events.empty? ? nil : built_in_events
             )
 
           when 'response.output_item.added'
