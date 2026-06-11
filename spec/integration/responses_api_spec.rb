@@ -12,7 +12,7 @@ class TestWeatherTool < RubyLLM::Tool
   end
 end
 
-class TestCalculatorTool < RubyLLM::Tool # rubocop:disable Style/OneClassPerFile
+class TestCalculatorTool < RubyLLM::Tool
   description 'Perform basic math calculations'
   param :expression, type: 'string', desc: 'Math expression to evaluate'
 

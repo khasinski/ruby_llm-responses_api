@@ -41,7 +41,7 @@ RubyLLM::Providers::OpenAIResponses::ModelRegistry.register_all!
 module RubyLLM
   # ResponsesAPI namespace for direct access to helpers and version
   module ResponsesAPI
-    VERSION = '0.6.0'
+    VERSION = '0.6.1'
 
     # Shorthand access to built-in tool helpers
     BuiltInTools = Providers::OpenAIResponses::BuiltInTools

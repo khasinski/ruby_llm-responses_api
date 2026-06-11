@@ -5,7 +5,7 @@ module RubyLLM
     # OpenAI Responses API provider for RubyLLM.
     # Implements the new Responses API which provides built-in tools,
     # stateful conversations, background mode, and MCP support.
-    class OpenAIResponses
+    class OpenAIResponses # rubocop:disable Metrics/ClassLength
       include OpenAIResponses::Chat
       include OpenAIResponses::Streaming
       include OpenAIResponses::Tools
@@ -219,14 +219,35 @@ module RubyLLM
       # DELETE request via the underlying Faraday connection
       # RubyLLM::Connection only exposes get/post, so we use Faraday directly
       def delete_request(url)
-        @connection.connection.delete(url) do |req|
-          req.headers.merge!(headers)
+        payload = { provider: slug, method: :delete, url: url }
+
+        instrument_request(payload) do
+          response = @connection.connection.delete(url) do |req|
+            req.headers.merge!(headers)
+          end
+          payload[:status] = response.status if response.respond_to?(:status)
+          response
         end
+      end
+
+      def instrument_request(payload, &)
+        return yield unless RubyLLM.respond_to?(:instrument)
+
+        RubyLLM.instrument('request.ruby_llm', payload, config: @config, &)
       end
 
       class << self
         def capabilities
           OpenAIResponses::Capabilities
+        end
+
+        def configuration_options
+          %i[
+            openai_api_key
+            openai_api_base
+            openai_organization_id
+            openai_project_id
+          ]
         end
 
         def configuration_requirements

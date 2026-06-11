@@ -199,6 +199,37 @@ RSpec.describe RubyLLM::Providers::OpenAIResponses::Streaming do
       expect(tc.name).to eq('get_weather')
       expect(tc.arguments).to eq({ 'city' => 'Berlin' })
     end
+
+    it 'accumulates arguments when deltas reference the output item id' do
+      accumulator = RubyLLM::StreamAccumulator.new
+
+      added = described_class.build_chunk(
+        'type' => 'response.output_item.added',
+        'item' => {
+          'id' => 'fc_xyz',
+          'type' => 'function_call',
+          'call_id' => 'call_abc',
+          'name' => 'get_weather'
+        }
+      )
+      accumulator.add(added)
+
+      ['{"city"', ':"Berlin"', '}'].each do |fragment|
+        delta = described_class.build_chunk(
+          'type' => 'response.function_call_arguments.delta',
+          'item_id' => 'fc_xyz',
+          'delta' => fragment
+        )
+        accumulator.add(delta)
+      end
+
+      message = accumulator.to_message(nil)
+      tc = message.tool_calls['call_abc']
+
+      expect(tc).not_to be_nil
+      expect(tc.name).to eq('get_weather')
+      expect(tc.arguments).to eq({ 'city' => 'Berlin' })
+    end
   end
 
   describe '.parse_streaming_error' do

@@ -155,6 +155,10 @@ module RubyLLM
           model_matches?(model_id, CODE_INTERPRETER_MODELS)
         end
 
+        def supports_tool_parallel_control?(_model_id)
+          true
+        end
+
         def reasoning_model?(model_id)
           model_matches?(model_id, REASONING_MODELS)
         end

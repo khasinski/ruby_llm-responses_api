@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.6.1] - 2026-06-11
+
+### Added
+
+- RubyLLM 1.16 compatibility for request instrumentation, including `request.ruby_llm` events for manual Responses API DELETE requests while preserving RubyLLM 1.15 compatibility
+- Explicit provider `configuration_options` for OpenAI API key, base URL, organization, and project settings
+- Explicit `supports_tool_parallel_control?` capability so RubyLLM can discover Responses API support for `calls: :many` / `calls: :one`
+
+### Fixed
+
+- Streamed function-call argument accumulation with RubyLLM 1.16's indexed `StreamAccumulator`, including Responses API `item_id` deltas
+
 ## [0.6.0] - 2026-05-26
 
 ### Added

@@ -37,6 +37,12 @@ RSpec.describe RubyLLM::Providers::OpenAIResponses::Capabilities do
     end
   end
 
+  describe '.supports_tool_parallel_control?' do
+    it 'returns true for Responses API models' do
+      expect(capabilities.supports_tool_parallel_control?('gpt-4o')).to be true
+    end
+  end
+
   describe '.reasoning_model?' do
     it 'returns true for o-series models' do
       expect(capabilities.reasoning_model?('o1')).to be true
