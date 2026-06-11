@@ -10,12 +10,38 @@ RSpec.describe RubyLLM::Providers::OpenAIResponses do
       c.openai_api_key = 'test-api-key'
     end
   end
+  let(:instrumenter) do
+    Class.new do
+      attr_reader :events
+
+      def initialize
+        @events = []
+      end
+
+      def instrument(name, payload)
+        result = yield if block_given?
+        @events << [name, payload.dup]
+        result
+      end
+    end.new
+  end
 
   let(:provider) { described_class.new(config) }
 
   describe '.configuration_requirements' do
     it 'requires openai_api_key' do
       expect(described_class.configuration_requirements).to eq(%i[openai_api_key])
+    end
+  end
+
+  describe '.configuration_options' do
+    it 'declares OpenAI configuration options used by the provider' do
+      expect(described_class.configuration_options).to include(
+        :openai_api_key,
+        :openai_api_base,
+        :openai_organization_id,
+        :openai_project_id
+      )
     end
   end
 
@@ -146,6 +172,43 @@ RSpec.describe RubyLLM::Providers::OpenAIResponses do
         }
       )
       expect(result['input_tokens']).to eq(11)
+    end
+  end
+
+  describe '#delete_response' do
+    it 'instruments manual DELETE requests' do
+      config.instrumenter = instrumenter
+      response = mock_response({ 'deleted' => true }, status: 200)
+
+      allow(provider.connection.connection).to receive(:delete).and_return(response)
+
+      result = provider.delete_response('resp_123')
+
+      expect(result).to eq({ 'deleted' => true })
+      expect(provider.connection.connection).to have_received(:delete).with('responses/resp_123')
+      expect(instrumenter.events).to include(
+        [
+          'request.ruby_llm',
+          {
+            provider: 'openai_responses',
+            method: :delete,
+            url: 'responses/resp_123',
+            status: 200
+          }
+        ]
+      )
+    end
+
+    it 'works without RubyLLM instrumentation support' do
+      response = mock_response({ 'deleted' => true }, status: 200)
+
+      allow(provider.connection.connection).to receive(:delete).and_return(response)
+      allow(RubyLLM).to receive(:respond_to?).with(:instrument).and_return(false)
+
+      result = provider.delete_response('resp_123')
+
+      expect(result).to eq({ 'deleted' => true })
+      expect(provider.connection.connection).to have_received(:delete).with('responses/resp_123')
     end
   end
 end

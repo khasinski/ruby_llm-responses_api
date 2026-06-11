@@ -12,7 +12,7 @@ module RubyLLM
           'responses'
         end
 
-        def build_chunk(data) # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/MethodLength
+        def build_chunk(data) # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/MethodLength,Metrics/PerceivedComplexity
           event_type = data['type']
 
           case event_type
@@ -59,11 +59,12 @@ module RubyLLM
             # New output item started (function call, message, etc.)
             item = data['item'] || {}
             if item['type'] == 'function_call'
+              stream_key = item['id'] || item['call_id']
               Chunk.new(
                 role: :assistant,
                 content: nil,
                 tool_calls: {
-                  item['call_id'] => ToolCall.new(
+                  stream_key => ToolCall.new(
                     id: item['call_id'],
                     name: item['name'],
                     arguments: ''
@@ -97,12 +98,14 @@ module RubyLLM
           call_id = data['call_id'] || data['item_id']
           return nil unless call_id
 
-          # Argument delta events don't carry a tool name — only the initial
-          # output_item.added event does. Omit `id` on nameless deltas so
-          # StreamAccumulator appends arguments to the latest tool call
-          # instead of creating a new entry that overwrites the named one.
+          stream_key = data['item_id']
+          stream_key ||= data['call_id'] if data['call_id']&.start_with?('call_')
+
+          # Argument delta events usually carry an item_id, while the final
+          # function call id lives on output_item.added. When only an unmapped
+          # id is available, use nil so RubyLLM 1.16 appends to the latest call.
           {
-            call_id => ToolCall.new(
+            stream_key => ToolCall.new(
               id: data['name'] ? call_id : nil,
               name: data['name'],
               arguments: data['delta'] || ''
