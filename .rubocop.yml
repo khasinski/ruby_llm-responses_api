@@ -13,6 +13,9 @@ Style/Documentation:
 Style/FrozenStringLiteralComment:
   Enabled: true
 
+Style/OneClassPerFile:
+  Enabled: false
+
 Metrics/BlockLength:
   Max: 35
   Exclude:
