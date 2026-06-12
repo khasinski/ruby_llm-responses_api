@@ -2,7 +2,7 @@
 
 Extensions for [RubyLLM](https://github.com/crmne/ruby_llm)'s native OpenAI [Responses API](https://platform.openai.com/docs/api-reference/responses) support.
 
-On RubyLLM versions with native Responses protocol support, this gem extends the built-in `:openai` provider with stateful response chaining, built-in tool helpers, background/response lifecycle helpers, containers, server-side compaction, batches, and WebSocket transport. Older RubyLLM versions still load the legacy `:openai_responses` provider as a fallback.
+On RubyLLM versions with native Responses protocol support, this gem extends the built-in `:openai` provider with stateful response chaining, built-in tool helpers, background/response lifecycle helpers, containers, server-side compaction, batches, and WebSocket transport. The old `provider: :openai_responses` name is aliased to `:openai` so existing applications can migrate without changing chat construction. Older RubyLLM versions still load the legacy `:openai_responses` provider as a fallback.
 
 RubyLLM 1.17 users should use the native OpenAI provider flow documented in [RubyLLM_1_17.md](RubyLLM_1_17.md).
 

@@ -2,7 +2,7 @@
 
 This reference covers using `ruby_llm-responses_api` with RubyLLM 1.17, where OpenAI Responses API support is native to RubyLLM.
 
-Use RubyLLM's built-in `:openai` provider. The old `:openai_responses` provider is only a compatibility fallback for older RubyLLM versions.
+Use RubyLLM's built-in `:openai` provider. The old `provider: :openai_responses` name is aliased to `:openai` on RubyLLM 1.17 so existing applications can migrate without changing chat construction.
 
 ## Installation
 
@@ -201,6 +201,6 @@ ws.disconnect
 
 ## Legacy Provider
 
-For RubyLLM 1.17, prefer `provider: :openai`.
+For RubyLLM 1.17, prefer `provider: :openai` for new code.
 
-The `:openai_responses` provider path is retained only for older RubyLLM releases that do not have native Responses protocol support.
+Existing code that still passes `provider: :openai_responses` is mapped to RubyLLM's native `:openai` provider. The standalone `:openai_responses` provider implementation is retained only for older RubyLLM releases that do not have native Responses protocol support.

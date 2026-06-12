@@ -222,6 +222,14 @@ module RubyLLM
         end
       end
 
+      module NativeProviderAlias
+        def resolve(model_id, provider: nil, assume_exists: false, config: nil)
+          provider = :openai if provider.to_sym == :openai_responses
+
+          super
+        end
+      end
+
       class << self
         def extract_last_response_id(messages)
           messages
@@ -258,4 +266,8 @@ RubyLLM::Providers::OpenAI.prepend(
 
 RubyLLM::Protocols::Responses.prepend(
   RubyLLM::Providers::OpenAIResponses::NativeResponsesExtension
+)
+
+RubyLLM::Models.singleton_class.prepend(
+  RubyLLM::Providers::OpenAIResponses::NativeProviderAlias
 )
