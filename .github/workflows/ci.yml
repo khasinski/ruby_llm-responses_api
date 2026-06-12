@@ -12,9 +12,24 @@ jobs:
     strategy:
       matrix:
         ruby-version: ['3.1', '3.2', '3.3', '3.4']
+        ruby-llm: ['locked']
+        include:
+          - ruby-version: '3.4'
+            ruby-llm: 'native'
+
+    name: Ruby ${{ matrix.ruby-version }} / RubyLLM ${{ matrix.ruby-llm }}
+    env:
+      RUBY_LLM_SOURCE: ${{ matrix.ruby-llm == 'native' && '1' || '' }}
 
     steps:
       - uses: actions/checkout@v4
+
+      - name: Check out RubyLLM native source
+        if: matrix.ruby-llm == 'native'
+        uses: actions/checkout@v4
+        with:
+          repository: crmne/ruby_llm
+          path: ruby_llm_source
 
       - name: Set up Ruby ${{ matrix.ruby-version }}
         uses: ruby/setup-ruby@v1
@@ -22,10 +37,18 @@ jobs:
           ruby-version: ${{ matrix.ruby-version }}
           bundler-cache: true
 
-      - name: Run tests
+      - name: Run legacy tests
+        if: matrix.ruby-llm == 'locked'
         env:
           OPENAI_API_KEY: test-api-key
         run: bundle exec rspec
+
+      - name: Run native RubyLLM compatibility tests
+        if: matrix.ruby-llm == 'native'
+        env:
+          OPENAI_API_KEY: test-api-key
+          RUBY_LLM_SOURCE: '1'
+        run: bundle exec rspec spec/ruby_llm/providers/openai_responses/native_compatibility_spec.rb
 
   lint:
     runs-on: ubuntu-latest
