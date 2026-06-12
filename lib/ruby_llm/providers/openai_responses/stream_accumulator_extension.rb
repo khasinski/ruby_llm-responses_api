@@ -9,6 +9,8 @@ module RubyLLM
       module StreamAccumulatorExtension
         def add(chunk)
           super
+          @response_id = chunk.response_id if chunk.respond_to?(:response_id) && chunk.response_id
+
           events = chunk_built_in_events(chunk)
           return if events.nil? || events.empty?
 
@@ -18,6 +20,8 @@ module RubyLLM
 
         def to_message(response)
           message = super
+          message.response_id = @response_id if @response_id && message.respond_to?(:response_id=)
+
           if @built_in_tool_events && !@built_in_tool_events.empty? && message.respond_to?(:built_in_tool_events=)
             message.built_in_tool_events = @built_in_tool_events
           end

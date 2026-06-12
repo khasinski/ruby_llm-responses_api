@@ -84,7 +84,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `Batch#wait!` to poll until completion with progress callbacks
   - `Batch#results` returns a `Hash<custom_id, Message>` using the same parsing as `Chat`
   - `Batch#errors`, `Batch#cancel!`, and status helpers (`completed?`, `in_progress?`, `failed?`)
-  - Resume from a previous session via `RubyLLM.batch(id: "batch_abc", provider: :openai_responses)`
+  - Resume from a previous session via `RubyLLM.batch(id: "batch_abc", provider: :openai)`
   - `RubyLLM.batches` to list existing batches
   - `Batches` helper module with JSONL builder, URL helpers, and result parsing
 

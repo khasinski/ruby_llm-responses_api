@@ -96,7 +96,6 @@ module RubyLLM
         end
 
         # Parse JSONL output into a Hash of { custom_id => Message }.
-        # Reuses Chat.extract_output_text and Chat.extract_tool_calls to avoid duplication.
         def parse_results_to_messages(jsonl_string)
           results = parse_results(jsonl_string)
           results.each_with_object({}) do |result, hash|
@@ -105,8 +104,8 @@ module RubyLLM
             next unless response_body
 
             output = response_body['output'] || []
-            content = Chat.extract_output_text(output)
-            tool_calls = Chat.extract_tool_calls(output)
+            content = extract_output_text(output)
+            tool_calls = extract_tool_calls(output)
             usage = response_body['usage'] || {}
 
             hash[custom_id] = Message.new(
@@ -124,6 +123,22 @@ module RubyLLM
         def parse_errors(jsonl_string)
           results = parse_results(jsonl_string)
           results.select { |r| r.dig('response', 'status_code')&.>= 400 }
+        end
+
+        def extract_output_text(output)
+          output
+            .select { |item| item['type'] == 'message' }
+            .flat_map { |item| item['content'] || [] }
+            .select { |part| part['type'] == 'output_text' }
+            .map { |part| part['text'] }
+            .join
+        end
+
+        def extract_tool_calls(output)
+          calls = output.select { |item| item['type'] == 'function_call' }
+          return nil if calls.empty?
+
+          Tools.parse_tool_calls(calls)
         end
       end
     end

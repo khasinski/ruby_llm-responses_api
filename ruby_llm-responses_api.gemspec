@@ -6,11 +6,11 @@ Gem::Specification.new do |spec|
   spec.authors = ['Chris Hasinski']
   spec.email = ['krzysztof.hasinski@gmail.com']
 
-  spec.summary = 'OpenAI Responses API provider for RubyLLM'
-  spec.description = 'A RubyLLM provider that implements OpenAI\'s Responses API, ' \
-                     'providing access to built-in tools (web search, code interpreter, ' \
-                     'file search, shell, apply patch), stateful conversations, ' \
-                     'server-side compaction, containers API, background mode, and MCP support.'
+  spec.summary = 'Advanced OpenAI Responses API extensions for RubyLLM'
+  spec.description = 'RubyLLM extensions for the native OpenAI Responses API protocol, ' \
+                     'providing built-in tool helpers, stateful response chaining, ' \
+                     'server-side compaction, containers API, background mode, batches, ' \
+                     'WebSocket transport, and MCP support.'
   spec.homepage = 'https://github.com/khasinski/ruby_llm-responses_api'
   spec.license = 'MIT'
   spec.required_ruby_version = '>= 3.1.0'

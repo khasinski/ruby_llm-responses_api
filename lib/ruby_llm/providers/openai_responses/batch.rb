@@ -10,7 +10,7 @@ module RubyLLM
       # behind a clean Ruby API that mirrors RubyLLM::Chat.
       #
       # @example
-      #   batch = RubyLLM.batch(model: 'gpt-4o', provider: :openai_responses)
+      #   batch = RubyLLM.batch(model: 'gpt-4o', provider: :openai)
       #   batch.add("What is Ruby?")
       #   batch.add("What is Python?", instructions: "Be brief")
       #   batch.create!
@@ -20,9 +20,10 @@ module RubyLLM
         attr_reader :id, :requests
 
         # @param model [String] Model ID (e.g. 'gpt-4o')
-        # @param provider [Symbol, RubyLLM::Providers::OpenAIResponses] Provider slug or instance
+        # @param provider [Symbol, RubyLLM::Providers::OpenAIResponses, RubyLLM::Providers::OpenAI]
+        #   Provider slug or instance
         # @param id [String, nil] Existing batch ID to resume
-        def initialize(model: nil, provider: :openai_responses, id: nil)
+        def initialize(model: nil, provider: :openai, id: nil)
           @model = model
           @provider = resolve_provider(provider)
           @requests = []
@@ -193,7 +194,7 @@ module RubyLLM
         def resolve_provider(provider)
           case provider
           when Symbol, String
-            slug = provider.to_sym
+            slug = provider.to_sym == :openai_responses ? :openai : provider.to_sym
             provider_class = RubyLLM::Provider.providers[slug]
             raise Error.new(nil, "Unknown provider: #{slug}") unless provider_class
 
