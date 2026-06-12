@@ -12,7 +12,7 @@ module RubyLLM
       # Requires the `websocket-client-simple` gem (soft dependency).
       #
       # Integrated usage (recommended):
-      #   chat = RubyLLM.chat(model: 'gpt-4o', provider: :openai_responses)
+      #   chat = RubyLLM.chat(model: 'gpt-4o', provider: :openai)
       #   chat.with_params(transport: :websocket)
       #   chat.ask("Hello!")
       #
@@ -262,7 +262,7 @@ module RubyLLM
             data = JSON.parse(raw)
             event_type = data['type']
 
-            chunk = Streaming.build_chunk(data)
+            chunk = build_chunk(data)
             accumulator.add(chunk)
             block&.call(chunk)
 
@@ -284,6 +284,14 @@ module RubyLLM
         def track_response_id(data)
           resp_id = data.dig('response', 'id')
           @mutex.synchronize { @last_response_id = resp_id } if resp_id
+        end
+
+        def build_chunk(data)
+          if defined?(RubyLLM::Protocols::Responses::Streaming)
+            RubyLLM::Protocols::Responses::Streaming.build_chunk(data)
+          else
+            Streaming.build_chunk(data)
+          end
         end
 
         def ensure_connected!

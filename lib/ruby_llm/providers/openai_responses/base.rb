@@ -2,12 +2,10 @@
 
 module RubyLLM
   module Providers
-    # OpenAI Responses API provider for RubyLLM.
-    # Implements the new Responses API which provides built-in tools,
-    # stateful conversations, background mode, and MCP support.
+    # Namespace for Responses API extension helpers.
     #
-    # This base file defines the class structure before modules are loaded
-    # to avoid "superclass mismatch" errors.
+    # On RubyLLM versions without the native Responses protocol this class is
+    # also used as the legacy standalone provider.
     class OpenAIResponses < Provider
     end
   end

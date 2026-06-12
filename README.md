@@ -1,6 +1,10 @@
 # RubyLLM Responses API
 
-A [RubyLLM](https://github.com/crmne/ruby_llm) provider for OpenAI's [Responses API](https://platform.openai.com/docs/api-reference/responses).
+Extensions for [RubyLLM](https://github.com/crmne/ruby_llm)'s native OpenAI [Responses API](https://platform.openai.com/docs/api-reference/responses) support.
+
+On RubyLLM versions with native Responses protocol support, this gem extends the built-in `:openai` provider with stateful response chaining, built-in tool helpers, background/response lifecycle helpers, containers, server-side compaction, batches, and WebSocket transport. Older RubyLLM versions still load the legacy `:openai_responses` provider as a fallback.
+
+RubyLLM 1.17 users should use the native OpenAI provider flow documented in [RubyLLM_1_17.md](RubyLLM_1_17.md).
 
 ## Installation
 
@@ -17,7 +21,7 @@ RubyLLM.configure do |config|
   config.openai_api_key = ENV['OPENAI_API_KEY']
 end
 
-chat = RubyLLM.chat(model: 'gpt-5.5', provider: :openai_responses)
+chat = RubyLLM.chat(model: 'gpt-5.5', provider: :openai)
 response = chat.ask("Hello!")
 puts response.content
 ```
@@ -29,7 +33,7 @@ All standard RubyLLM features work as expected (streaming, tools, vision, struct
 Conversations automatically chain via `previous_response_id`:
 
 ```ruby
-chat = RubyLLM.chat(model: 'gpt-5.5', provider: :openai_responses)
+chat = RubyLLM.chat(model: 'gpt-5.5', provider: :openai)
 chat.ask("My name is Alice.")
 chat.ask("What's my name?")  # => "Your name is Alice."
 ```
@@ -50,7 +54,7 @@ Then use normally:
 
 ```ruby
 # Day 1
-chat = Chat.create!(model_id: 'gpt-5.5', provider: :openai_responses)
+chat = Chat.create!(model_id: 'gpt-5.5', provider: :openai)
 chat.ask("My name is Alice.")
 
 # Day 2 (after restart)
@@ -100,7 +104,7 @@ Execute commands in hosted containers or local terminal environments. Requires G
 
 ```ruby
 # Auto-provisioned container (default)
-chat = RubyLLM.chat(model: 'gpt-5.5', provider: :openai_responses)
+chat = RubyLLM.chat(model: 'gpt-5.5', provider: :openai)
 chat.with_params(tools: [{ type: 'shell', environment: { type: 'container_auto' } }])
 chat.ask("List all Python files in the project")
 
@@ -134,7 +138,7 @@ tool = RubyLLM::ResponsesAPI::BuiltInTools.shell(environment_type: 'local')
 Structured diff-based file editing. Requires GPT-5 family models.
 
 ```ruby
-chat = RubyLLM.chat(model: 'gpt-5.5', provider: :openai_responses)
+chat = RubyLLM.chat(model: 'gpt-5.5', provider: :openai)
 chat.with_params(tools: [{ type: 'apply_patch' }])
 chat.ask("Add error handling to the User#save method")
 
@@ -177,7 +181,7 @@ chat.ask("Research the latest sorting algorithms and benchmark them")
 For multi-hour agent runs, enable server-side compaction to automatically compress conversation context when it exceeds a token threshold:
 
 ```ruby
-chat = RubyLLM.chat(model: 'gpt-4o', provider: :openai_responses)
+chat = RubyLLM.chat(model: 'gpt-4o', provider: :openai)
 
 # Pass directly
 chat.with_params(
@@ -220,7 +224,7 @@ puts tokens['input_tokens']
 Manage persistent execution environments for the shell tool and code interpreter:
 
 ```ruby
-chat = RubyLLM.chat(model: 'gpt-5.5', provider: :openai_responses)
+chat = RubyLLM.chat(model: 'gpt-5.5', provider: :openai)
 provider = chat.instance_variable_get(:@provider)
 
 # Create a container
@@ -250,7 +254,7 @@ provider.delete_container(container['id'])
 For long-running tasks:
 
 ```ruby
-chat = RubyLLM.chat(model: 'gpt-4o', provider: :openai_responses)
+chat = RubyLLM.chat(model: 'gpt-4o', provider: :openai)
 chat.with_params(background: true)
 response = chat.ask("Analyze this large dataset...")
 
@@ -266,7 +270,7 @@ end
 Server-side built-in tools (web search, code interpreter, file search, shell, apply patch, image generation, MCP, computer use, local shell) fire through the same `on_tool_call` / `on_tool_result` callbacks as locally executed function tools:
 
 ```ruby
-chat = RubyLLM.chat(model: 'gpt-4o', provider: :openai_responses)
+chat = RubyLLM.chat(model: 'gpt-4o', provider: :openai)
 chat.with_params(tools: [{ type: 'web_search' }])
 
 chat.on_tool_call  { |tc| puts "#{tc.name} called (id=#{tc.id})" }
@@ -303,7 +307,7 @@ Process many requests asynchronously at 50% lower cost with a 24-hour completion
 
 ```ruby
 # Create a batch
-batch = RubyLLM.batch(model: 'gpt-4o', provider: :openai_responses)
+batch = RubyLLM.batch(model: 'gpt-4o', provider: :openai)
 
 # Add requests (auto-generates IDs or use your own)
 batch.add("What is Ruby?")
@@ -323,14 +327,14 @@ results["request_0"].content  # => "Ruby is a dynamic..."
 results["translate_1"].content  # => "Hola"
 
 # Resume from a previous session
-batch = RubyLLM.batch(id: "batch_abc123", provider: :openai_responses)
+batch = RubyLLM.batch(id: "batch_abc123", provider: :openai)
 batch.results
 
 # Cancel a running batch
 batch.cancel!
 
 # List existing batches
-RubyLLM.batches(provider: :openai_responses)
+RubyLLM.batches(provider: :openai)
 ```
 
 **Constraints**: No `web_search`/`code_interpreter` tools, no `previous_response_id` chaining, max 50k requests per batch, 200MB file limit.
@@ -350,7 +354,7 @@ gem 'websocket-client-simple'
 Just add `transport: :websocket` to your params -- the standard `chat.ask` API works as-is:
 
 ```ruby
-chat = RubyLLM.chat(model: 'gpt-4o', provider: :openai_responses)
+chat = RubyLLM.chat(model: 'gpt-4o', provider: :openai)
 chat.with_params(transport: :websocket)
 
 chat.ask("Hello!")
