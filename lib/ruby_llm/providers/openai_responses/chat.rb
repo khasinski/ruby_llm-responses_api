@@ -12,7 +12,7 @@ module RubyLLM
 
         module_function
 
-        # rubocop:disable Metrics/ParameterLists
+        # rubocop:disable-next Metrics/ParameterLists
         def render_payload(messages, tools:, temperature:, model:, stream: false,
                            schema: nil, thinking: nil, tool_prefs: nil) # rubocop:disable Lint/UnusedMethodArgument
           tool_prefs ||= {}
@@ -37,7 +37,6 @@ module RubyLLM
 
           payload
         end
-        # rubocop:enable Metrics/ParameterLists
 
         # Apply tools and tool preferences to the payload.
         def apply_tools(payload, tools, tool_prefs)
