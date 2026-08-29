@@ -34,7 +34,7 @@ module RubyLLM
         # @param project_id [String, nil] OpenAI project ID
         # @param client_class [#connect, nil] WebSocket client class (for testing)
         # @param response_timeout [Numeric] seconds to wait for a response event
-        # rubocop:disable Metrics/ParameterLists
+        # rubocop:disable-next Metrics/ParameterLists
         def initialize(api_key:, api_base: 'https://api.openai.com/v1', organization_id: nil, project_id: nil,
                        client_class: nil, response_timeout: 60)
           @api_key = api_key
@@ -51,7 +51,6 @@ module RubyLLM
           @last_response_id = nil
           @message_queue = nil
         end
-        # rubocop:enable Metrics/ParameterLists
 
         # Open the WebSocket connection. Blocks until the connection is established.
         # @param timeout [Numeric] seconds to wait for the connection (default: 10)
