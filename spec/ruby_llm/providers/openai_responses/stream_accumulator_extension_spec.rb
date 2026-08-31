@@ -19,6 +19,10 @@ RSpec.describe RubyLLM::Providers::OpenAIResponses::StreamAccumulatorExtension d
     RubyLLM::Chunk.new(role: :assistant, content: nil, built_in_tool_events: events)
   end
 
+  def completed_chunk(response_id)
+    RubyLLM::Chunk.new(role: :assistant, content: nil, response_id: response_id)
+  end
+
   it 'forwards built_in_tool_events from chunks to the assembled message' do
     accumulator.add(text_chunk('Hello'))
     accumulator.add(event_chunk([event]))
@@ -50,5 +54,22 @@ RSpec.describe RubyLLM::Providers::OpenAIResponses::StreamAccumulatorExtension d
     message = accumulator.to_message(nil)
 
     expect(message.built_in_tool_events.map { |e| e[:tool_call].name }).to eq(%w[web_search code_interpreter])
+  end
+
+  it 'forwards response_id from the completed chunk to the assembled message' do
+    accumulator.add(text_chunk('Hello'))
+    accumulator.add(completed_chunk('resp_123'))
+
+    message = accumulator.to_message(nil)
+
+    expect(message.response_id).to eq('resp_123')
+  end
+
+  it 'does not set response_id when no chunk carried one' do
+    accumulator.add(text_chunk('Hi'))
+
+    message = accumulator.to_message(nil)
+
+    expect(message.response_id).to be_nil
   end
 end
