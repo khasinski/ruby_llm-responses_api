@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Fixed
+
+- `StreamAccumulator` now forwards `response_id` from the completed chunk to the assembled message, matching the existing `built_in_tool_events` handling. Previously every streamed chat lost `response_id`, so `previous_response_id` chaining never engaged and each turn resent the full message history instead of just the new items.
+
 ## [0.6.1] - 2026-06-11
 
 ### Added
