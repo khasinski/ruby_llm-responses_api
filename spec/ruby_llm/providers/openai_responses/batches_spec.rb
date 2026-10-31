@@ -127,8 +127,8 @@ RSpec.describe RubyLLM::Providers::OpenAIResponses::Batches do
       expect(msg).to be_a(RubyLLM::Message)
       expect(msg.role).to eq(:assistant)
       expect(msg.content).to eq('Hello from batch!')
-      expect(msg.input_tokens).to eq(10)
-      expect(msg.output_tokens).to eq(5)
+      expect(msg.tokens.input).to eq(10)
+      expect(msg.tokens.output).to eq(5)
     end
 
     it 'handles tool call results' do

@@ -77,62 +77,6 @@ RSpec.describe RubyLLM::Providers::OpenAIResponses do
     end
   end
 
-  describe '#complete with transport: :websocket' do
-    let(:mock_ws) { instance_double(RubyLLM::Providers::OpenAIResponses::WebSocket) }
-    let(:model) { double('Model', id: 'gpt-4o') }
-    let(:messages) { [RubyLLM::Message.new(role: :user, content: 'Hello')] }
-    let(:response_message) { RubyLLM::Message.new(role: :assistant, content: 'Hi there', response_id: 'resp_123') }
-
-    before do
-      allow(RubyLLM::Providers::OpenAIResponses::WebSocket).to receive(:new).and_return(mock_ws)
-      allow(mock_ws).to receive(:connected?).and_return(false, true)
-      allow(mock_ws).to receive(:connect).and_return(mock_ws)
-      allow(mock_ws).to receive(:call).and_return(response_message)
-    end
-
-    it 'routes through WebSocket when transport: :websocket' do
-      result = provider.complete(
-        messages,
-        tools: {},
-        temperature: nil,
-        model: model,
-        params: { transport: :websocket }
-      )
-
-      expect(mock_ws).to have_received(:connect)
-      expect(mock_ws).to have_received(:call)
-      expect(result.content).to eq('Hi there')
-    end
-
-    it 'does not pass transport key to the WebSocket payload' do
-      provider.complete(
-        messages,
-        tools: {},
-        temperature: nil,
-        model: model,
-        params: { transport: :websocket }
-      )
-
-      expect(mock_ws).to have_received(:call) do |payload|
-        expect(payload).not_to have_key(:transport)
-      end
-    end
-
-    it 'falls through to HTTP when transport is not websocket' do
-      allow(provider).to receive(:sync_response).and_return(response_message)
-
-      provider.complete(
-        messages,
-        tools: {},
-        temperature: nil,
-        model: model,
-        params: {}
-      )
-
-      expect(mock_ws).not_to have_received(:call)
-    end
-  end
-
   describe '#compact_response' do
     it 'posts to the Responses compaction endpoint' do
       response = mock_response({ 'object' => 'response.compaction', 'output' => [] })
@@ -158,7 +102,7 @@ RSpec.describe RubyLLM::Providers::OpenAIResponses do
 
   describe '#count_input_tokens' do
     it 'posts to the Responses input token endpoint' do
-      response = mock_response({ 'object' => 'response.input_tokens', 'input_tokens' => 11 })
+      response = mock_response({ 'object' => 'response.tokens.input', 'input_tokens' => 11 })
       allow(provider.connection).to receive(:post).and_return(response)
 
       result = provider.count_input_tokens(model: 'gpt-5.5', input: 'Tell me a joke.', instructions: 'Be brief.')
@@ -174,41 +118,28 @@ RSpec.describe RubyLLM::Providers::OpenAIResponses do
       expect(result['input_tokens']).to eq(11)
     end
   end
-
-  describe '#delete_response' do
-    it 'instruments manual DELETE requests' do
+  describe 'native lifecycle transport' do
+    it 'authenticates and instruments deletes without bypassing native error handling' do
       config.instrumenter = instrumenter
-      response = mock_response({ 'deleted' => true }, status: 200)
-
-      allow(provider.connection.connection).to receive(:delete).and_return(response)
-
-      result = provider.delete_response('resp_123')
-
-      expect(result).to eq({ 'deleted' => true })
-      expect(provider.connection.connection).to have_received(:delete).with('responses/resp_123')
+      stub_request(:delete, 'https://api.openai.com/v1/responses/resp_123')
+        .with(headers: { 'Authorization' => 'Bearer test-api-key' })
+        .to_return(status: 200, body: '{"deleted":true}', headers: { 'Content-Type' => 'application/json' })
+      expect(provider.delete_response('resp_123')).to eq('deleted' => true)
       expect(instrumenter.events).to include(
-        [
-          'request.ruby_llm',
-          {
-            provider: 'openai_responses',
-            method: :delete,
-            url: 'responses/resp_123',
-            status: 200
-          }
-        ]
+        ['request.ruby_llm', hash_including(provider: 'openai_responses', method: :delete, status: 200)]
       )
     end
 
-    it 'works without RubyLLM instrumentation support' do
-      response = mock_response({ 'deleted' => true }, status: 200)
-
-      allow(provider.connection.connection).to receive(:delete).and_return(response)
-      allow(RubyLLM).to receive(:respond_to?).with(:instrument).and_return(false)
-
-      result = provider.delete_response('resp_123')
-
-      expect(result).to eq({ 'deleted' => true })
-      expect(provider.connection.connection).to have_received(:delete).with('responses/resp_123')
+    it 'polls stored background responses and uses the native error classes' do
+      stub_request(:get, 'https://api.openai.com/v1/responses/resp_123').to_return(
+        { status: 200, body: '{"status":"in_progress"}', headers: { 'Content-Type' => 'application/json' } },
+        { status: 200, body: '{"status":"completed"}', headers: { 'Content-Type' => 'application/json' } }
+      )
+      expect(provider.poll_response('resp_123', interval: 0)).to eq('status' => 'completed')
+      stub_request(:delete, 'https://api.openai.com/v1/responses/resp_123')
+        .to_return(status: 401, body: '{"error":{"message":"Not found"}}',
+                   headers: { 'Content-Type' => 'application/json' })
+      expect { provider.delete_response('resp_123') }.to raise_error(RubyLLM::UnauthorizedError)
     end
   end
 end

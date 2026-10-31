@@ -25,9 +25,9 @@ def test_basic_chat
   response = chat.ask('What is 2 + 2? Reply with just the number.')
 
   puts "Response: #{response.content}"
-  puts "Model: #{response.model_id}"
-  puts "Input tokens: #{response.input_tokens}"
-  puts "Output tokens: #{response.output_tokens}"
+  puts "Model: #{response.model}"
+  puts "Input tokens: #{response.tokens.input}"
+  puts "Output tokens: #{response.tokens.output}"
   puts "Response ID: #{response.response_id}" if response.respond_to?(:response_id)
 
   response.content.include?('4') ? puts('✓ PASSED') : puts('✗ FAILED')
@@ -78,7 +78,7 @@ end
 
 class GetWeatherTool < RubyLLM::Tool
   description 'Get the current weather for a location'
-  param :location, type: 'string', desc: 'The city name'
+  parameter :location, type: 'string', description: 'The city name'
 
   def execute(location:)
     "The weather in #{location} is sunny, 72°F"
@@ -89,7 +89,7 @@ def test_function_calling
   separator('Test 4: Function Calling')
 
   chat = RubyLLM.chat(model: 'gpt-4o-mini', provider: :openai_responses)
-  chat.with_tool(GetWeatherTool)
+  chat.with_tools(GetWeatherTool)
 
   response = chat.ask("What's the weather in Tokyo?")
 
@@ -129,7 +129,7 @@ def test_web_search
   separator('Test 6: Web Search (Built-in Tool)')
 
   chat = RubyLLM.chat(model: 'gpt-4o-mini', provider: :openai_responses)
-  chat.with_params(tools: [{ type: 'web_search_preview' }])
+  chat.with_provider_options(tools: [{ type: 'web_search_preview' }])
 
   response = chat.ask('What is the current price of Bitcoin? Just give me a rough number.')
 
@@ -164,8 +164,8 @@ def test_structured_output
   puts "Response: #{response.content.inspect}"
 
   # Content should be parsed as Hash
-  if response.content.is_a?(Hash)
-    if response.content['name'] && response.content['age'] && response.content['city']
+  if response.parsed.is_a?(Hash)
+    if response.parsed['name'] && response.parsed['age'] && response.parsed['city']
       puts '✓ PASSED'
     else
       puts '✗ FAILED (missing fields)'
@@ -186,12 +186,7 @@ def test_vision
   # Use a reliable test image
   image_url = 'https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png'
 
-  content = RubyLLM::Content.new(
-    'What do you see in this image? Be brief.',
-    images: [image_url]
-  )
-
-  response = chat.ask(content)
+  response = chat.ask('What do you see in this image? Be brief.', with: [image_url])
 
   puts "Response: #{response.content}"
   response.content.length > 10 ? puts('✓ PASSED') : puts('✗ FAILED')

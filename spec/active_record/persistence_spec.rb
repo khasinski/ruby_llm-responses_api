@@ -3,190 +3,150 @@
 require 'spec_helper'
 require 'active_record'
 
-# Set up in-memory SQLite database
-ActiveRecord::Base.establish_connection(
-  adapter: 'sqlite3',
-  database: ':memory:'
-)
-
-# Suppress schema migration output
+ActiveRecord::Base.establish_connection(adapter: 'sqlite3', database: ':memory:')
 ActiveRecord::Schema.verbose = false
-
-# Create minimal test schema
 ActiveRecord::Schema.define do
+  create_table :persistence_test_chats, force: true do |t|
+    t.boolean :cancelled, default: false
+    t.string :claim_token
+    t.datetime :claimed_until
+    t.integer :ruby_llm_model_id
+    t.timestamps
+  end
   create_table :persistence_test_messages, force: true do |t|
-    t.string :role, null: false
+    t.integer :chat_id
+    t.string :role
     t.text :content
-    t.integer :input_tokens
-    t.integer :output_tokens
     t.string :response_id
+    t.string :finish_reason
+    t.text :thinking_text
+    t.text :thinking_signature
+    t.json :citations
+    t.json :server_tool_calls
+    t.json :raw_content
+    t.json :raw_reasoning
+    t.timestamps
+  end
+  create_table :ruby_llm_models, force: true do |t|
+    %i[model_id provider name family].each { |column| t.string column }
+    t.datetime :model_created_at
+    t.datetime :unlisted_at
+    t.date :knowledge_cutoff
+    t.integer :context_window
+    t.integer :max_output_tokens
+    %i[modalities pricing metadata].each { |column| t.json column, default: {} }
+    t.json :capabilities, default: []
+    t.timestamps
+  end
+  create_table :ruby_llm_usages, force: true do |t|
+    %i[chat message owner].each { |name| t.references name, polymorphic: true }
+    %i[operation provider model status].each { |column| t.string column }
+    %i[input output cache_read cache_write thinking].each { |name| t.integer "#{name}_tokens" }
+    %i[input output cache_read cache_write thinking total].each { |name| t.decimal "#{name}_cost" }
+    t.json :server_tool_use
+    t.timestamps
+  end
+  create_table :ruby_llm_tool_calls, force: true do |t|
+    t.references :message, polymorphic: true
+    t.references :result, polymorphic: true
+    %i[tool_call_id name approval thought_signature].each { |column| t.string column }
+    t.boolean :remote, default: false
+    %i[arguments mcp_state mcp_result].each { |column| t.json column }
     t.timestamps
   end
 end
 
-# Load RubyLLM ActiveRecord modules
-require 'ruby_llm/active_record/message_methods'
-require 'ruby_llm/active_record/chat_methods'
-
-# Apply the OpenAI Responses ActiveRecord extensions BEFORE defining the model
+%w[record model usage tool_call batch acts_as].each { |name| require "ruby_llm/active_record/#{name}" }
+registry_store = RubyLLM.config.model_registry_store
+batch_store = RubyLLM.config.batch_store
+ActiveRecord::Base.include(RubyLLM::ActiveRecord::ActsAs)
+RubyLLM.config.model_registry_store = registry_store
+RubyLLM.config.batch_store = batch_store
 RubyLLM::Providers::OpenAIResponses.apply_active_record_extensions!
 
-# Simple test model that includes MessageMethods directly
-class PersistenceTestMessage < ActiveRecord::Base
-  include RubyLLM::ActiveRecord::MessageMethods
-
-  # Minimal implementations for MessageMethods dependencies
-  def model_association
-    nil
-  end
-
-  def extract_content
-    content
-  end
-
-  def extract_tool_calls
-    nil
-  end
-
-  def extract_tool_call_id
-    nil
-  end
+class PersistenceTestChat < ActiveRecord::Base
+  acts_as_chat message_class: 'PersistenceTestMessage', messages_foreign_key: :chat_id
 end
 
-RSpec.describe 'ActiveRecord Persistence' do
-  before(:each) do
+class PersistenceTestMessage < ActiveRecord::Base
+  acts_as_message chat_class: 'PersistenceTestChat', chat_foreign_key: :chat_id
+end
+
+RSpec.describe 'ActiveRecord persistence on RubyLLM 2.1' do
+  before do
     PersistenceTestMessage.delete_all
+    PersistenceTestChat.delete_all
+    RubyLLM::ActiveRecord::Usage.delete_all
+    RubyLLM::ActiveRecord::ToolCall.delete_all
   end
 
-  describe 'response_id persistence' do
-    it 'saves response_id when message is persisted' do
-      message = PersistenceTestMessage.create!(
-        role: 'assistant',
-        content: 'Hello!',
-        response_id: 'resp_abc123'
-      )
-
-      expect(message.reload.response_id).to eq('resp_abc123')
-    end
-
-    it 'includes response_id when converting to RubyLLM::Message via to_llm' do
-      message = PersistenceTestMessage.create!(
-        role: 'assistant',
-        content: 'Hello!',
-        response_id: 'resp_xyz789'
-      )
-
-      llm_message = message.to_llm
-
-      expect(llm_message).to be_a(RubyLLM::Message)
-      expect(llm_message.response_id).to eq('resp_xyz789')
-    end
-
-    it 'preserves response_id after save and reload' do
-      # Create message with response_id
-      message = PersistenceTestMessage.create!(
-        role: 'assistant',
-        content: 'First response',
-        response_id: 'resp_first123'
-      )
-
-      # Simulate app restart by reloading from database
-      message_id = message.id
-      reloaded_message = PersistenceTestMessage.find(message_id)
-
-      expect(reloaded_message.response_id).to eq('resp_first123')
-      expect(reloaded_message.to_llm.response_id).to eq('resp_first123')
-    end
-
-    it 'handles nil response_id gracefully' do
-      message = PersistenceTestMessage.create!(
-        role: 'user',
-        content: 'Hello'
-        # No response_id - user messages don't have one
-      )
-
-      llm_message = message.to_llm
-
-      expect(llm_message.response_id).to be_nil
-    end
-
-    it 'handles missing response_id column gracefully' do
-      # Test that to_llm doesn't crash when response_id column doesn't exist
-      # The extension checks has_attribute? before accessing
-      message = PersistenceTestMessage.create!(
-        role: 'assistant',
-        content: 'Test'
-      )
-
-      # This should not raise even if response_id is nil
-      llm_message = message.to_llm
-      expect(llm_message).to be_a(RubyLLM::Message)
-    end
+  def stub_reply(id)
+    stub_request(:post, 'https://api.openai.com/v1/responses').to_return(
+      status: 200, body: JSON.generate(sample_completion_response.merge('id' => id)),
+      headers: { 'Content-Type' => 'application/json' }
+    )
   end
 
-  describe 'conversation history with response_id' do
-    it 'extracts last response_id from multiple messages' do
-      # Simulate a multi-turn conversation
-      PersistenceTestMessage.create!(role: 'user', content: 'Hi')
-      PersistenceTestMessage.create!(role: 'assistant', content: 'Hello!', response_id: 'resp_1')
-      PersistenceTestMessage.create!(role: 'user', content: 'How are you?')
-      PersistenceTestMessage.create!(role: 'assistant', content: 'Great!', response_id: 'resp_2')
-
-      # Get all messages and convert to LLM format
-      messages = PersistenceTestMessage.order(:created_at)
-      llm_messages = messages.map(&:to_llm)
-
-      # Find the last response_id
-      last_response_id = llm_messages.reverse.find(&:response_id)&.response_id
-      expect(last_response_id).to eq('resp_2')
-    end
-
-    it 'correctly converts all message roles' do
-      PersistenceTestMessage.create!(role: 'user', content: 'Question')
-      PersistenceTestMessage.create!(role: 'assistant', content: 'Answer', response_id: 'resp_1')
-      PersistenceTestMessage.create!(role: 'system', content: 'Instructions')
-
-      messages = PersistenceTestMessage.order(:created_at).map(&:to_llm)
-
-      expect(messages[0].role).to eq(:user)
-      expect(messages[1].role).to eq(:assistant)
-      expect(messages[2].role).to eq(:system)
-    end
+  it 'persists an answer with its response_id and resumes after a fresh database load' do
+    stub_reply('resp_first')
+    chat = PersistenceTestChat.create!(model: 'gpt-4o', provider: :openai_responses)
+    chat.ask('First')
+    expect(chat.messages.last.response_id).to eq('resp_first')
+    expect(chat.messages.last.to_llm.tokens.input).to eq(10)
+    expect(chat.messages.last.to_llm.content).to include('Hello')
+    stub_reply('resp_second')
+    PersistenceTestChat.find(chat.id).ask('Second')
+    expect(a_request(:post, 'https://api.openai.com/v1/responses').with do |request|
+      body = JSON.parse(request.body)
+      body['previous_response_id'] == 'resp_first' && body['input'] == [{ 'role' => 'user', 'content' => 'Second' }]
+    end).to have_been_made.once
   end
 
-  describe 'MessageMethodsExtension' do
-    it 'is prepended to MessageMethods' do
-      ancestors = RubyLLM::ActiveRecord::MessageMethods.ancestors
-      extension = RubyLLM::Providers::OpenAIResponses::MessageMethodsExtension
-
-      expect(ancestors).to include(extension)
-    end
-
-    it 'overrides to_llm to include response_id' do
-      message = PersistenceTestMessage.create!(
-        role: 'assistant',
-        content: 'Test',
-        input_tokens: 10,
-        output_tokens: 5,
-        response_id: 'resp_test'
-      )
-
-      llm_message = message.to_llm
-
-      expect(llm_message.role).to eq(:assistant)
-      expect(llm_message.content).to eq('Test')
-      expect(llm_message.input_tokens).to eq(10)
-      expect(llm_message.output_tokens).to eq(5)
-      expect(llm_message.response_id).to eq('resp_test')
-    end
+  it 'saves a streamed response ID before resuming the persisted chat' do
+    events = [
+      { 'type' => 'response.output_text.delta', 'delta' => 'Hello' },
+      { 'type' => 'response.completed', 'response' => sample_completion_response }
+    ]
+    stub_request(:post, 'https://api.openai.com/v1/responses').to_return(
+      status: 200, body: build_sse_body(events), headers: { 'Content-Type' => 'text/event-stream' }
+    )
+    chat = PersistenceTestChat.create!(model: 'gpt-4o', provider: :openai_responses)
+    chat.ask('First') { |_chunk| }
+    expect(chat.messages.last.reload.response_id).to eq('resp_123')
+    expect(chat.messages.last.to_llm.tokens.input).to eq(10)
+    stub_reply('resp_second')
+    PersistenceTestChat.find(chat.id).ask('Second')
+    expect(a_request(:post, 'https://api.openai.com/v1/responses').with do |request|
+      body = JSON.parse(request.body)
+      body['previous_response_id'] == 'resp_123' && body['input'] == [{ 'role' => 'user', 'content' => 'Second' }]
+    end).to have_been_made.once
   end
 
-  describe 'ChatMethodsExtension' do
-    it 'is prepended to ChatMethods' do
-      ancestors = RubyLLM::ActiveRecord::ChatMethods.ancestors
-      extension = RubyLLM::Providers::OpenAIResponses::ChatMethodsExtension
+  it 'preserves native reasoning, citations, tool records, and raw content when restoring response_id' do
+    chat = PersistenceTestChat.create!(model: 'gpt-4o', provider: :openai_responses)
+    record = chat.messages.create!(role: 'assistant', content: 'Answer', response_id: 'resp_saved',
+                                   thinking_text: 'Reason', thinking_signature: 'encrypted',
+                                   raw_content: [{ type: 'shell_call', id: 'shell_1' }],
+                                   server_tool_calls: [{ type: 'shell_call', id: 'shell_1',
+                                                         raw: { status: 'completed' } }],
+                                   citations: [{ type: 'url', url: 'https://example.com', title: 'Source' }])
+    record.ruby_llm_tool_calls.create!(tool_call_id: 'call_1', name: 'weather', arguments: { city: 'Warsaw' })
+    message = record.reload.to_llm
+    expect(message.response_id).to eq('resp_saved')
+    expect(message.thinking.signature).to eq('encrypted')
+    expect(message.citations.first.url).to eq('https://example.com')
+    expect(message.server_tool_calls.first.id).to eq('shell_1')
+    expect(message.raw_content.first['type']).to eq('shell_call')
+    expect(message.tool_calls['call_1'].arguments).to eq('city' => 'Warsaw')
+  end
 
-      expect(ancestors).to include(extension)
-    end
+  it 'can persist and restore messages without a response_id column' do
+    PersistenceTestMessage.ignored_columns = ['response_id']
+    stub_reply('resp_not_saved')
+    chat = PersistenceTestChat.create!(model: 'gpt-4o', provider: :openai_responses)
+    chat.ask('Hello')
+    expect(chat.messages.last.reload.to_llm.response_id).to be_nil
+  ensure
+    PersistenceTestMessage.ignored_columns = []
   end
 end

@@ -10,7 +10,7 @@ RSpec.describe 'New Features Integration', :vcr do
   describe 'Shell Tool' do
     it 'executes commands in a hosted container', vcr: { cassette_name: 'shell_container_auto' } do
       chat = RubyLLM.chat(model: shell_model, provider: :openai_responses)
-      chat.with_params(
+      chat.with_provider_options(
         tools: [{ type: 'shell', environment: { type: 'container_auto' } }]
       )
 
@@ -23,7 +23,7 @@ RSpec.describe 'New Features Integration', :vcr do
     it 'executes commands using helper method', vcr: { cassette_name: 'shell_helper' } do
       chat = RubyLLM.chat(model: shell_model, provider: :openai_responses)
       tool = RubyLLM::ResponsesAPI::BuiltInTools.shell
-      chat.with_params(tools: [tool])
+      chat.with_provider_options(tools: [tool])
 
       response = chat.ask('Run: pwd')
 
@@ -35,7 +35,7 @@ RSpec.describe 'New Features Integration', :vcr do
   describe 'Server-Side Compaction' do
     it 'accepts compaction params without error', vcr: { cassette_name: 'compaction_basic' } do
       chat = RubyLLM.chat(model: model, provider: :openai_responses)
-      chat.with_params(
+      chat.with_provider_options(
         **RubyLLM::ResponsesAPI::Compaction.compaction_params(compact_threshold: 200_000)
       )
 
@@ -47,7 +47,7 @@ RSpec.describe 'New Features Integration', :vcr do
 
     it 'accepts context_management directly', vcr: { cassette_name: 'compaction_direct' } do
       chat = RubyLLM.chat(model: model, provider: :openai_responses)
-      chat.with_params(
+      chat.with_provider_options(
         context_management: [{ type: 'compaction', compact_threshold: 100_000 }]
       )
 

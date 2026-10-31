@@ -10,7 +10,7 @@ module RubyLLM
 
         # Build context_management parameter for compaction
         # @param compact_threshold [Integer] Token count threshold to trigger compaction (minimum 1000)
-        # @return [Hash] Parameters to merge into request payload via with_params
+        # @return [Hash] Parameters to merge into request payload via with_provider_options
         def compaction_params(compact_threshold: 200_000)
           {
             context_management: [

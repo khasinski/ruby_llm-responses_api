@@ -96,7 +96,7 @@ module RubyLLM
         end
 
         # Parse JSONL output into a Hash of { custom_id => Message }.
-        # Reuses Chat.extract_output_text and Chat.extract_tool_calls to avoid duplication.
+        # Uses the native Responses parser, including reasoning and server tools.
         def parse_results_to_messages(jsonl_string)
           results = parse_results(jsonl_string)
           results.each_with_object({}) do |result, hash|
@@ -104,19 +104,11 @@ module RubyLLM
             response_body = result.dig('response', 'body')
             next unless response_body
 
-            output = response_body['output'] || []
-            content = Chat.extract_output_text(output)
-            tool_calls = Chat.extract_tool_calls(output)
-            usage = response_body['usage'] || {}
+            next if result.dig('response', 'status_code').to_i >= 400
 
-            hash[custom_id] = Message.new(
-              role: :assistant,
-              content: content,
-              tool_calls: tool_calls,
-              input_tokens: usage['input_tokens'],
-              output_tokens: usage['output_tokens'],
-              model_id: response_body['model']
-            )
+            raw = Faraday::Response.new(status: result.dig('response', 'status_code') || 200, body: response_body)
+            provider = OpenAIResponses.new(RubyLLM.config)
+            hash[custom_id] = Protocol.new(provider).parse_completion_body(response_body, raw: raw)
           end
         end
 

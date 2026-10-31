@@ -4,8 +4,9 @@ require 'spec_helper'
 
 # Define test tools outside RSpec context for consistent naming
 class TestWeatherTool < RubyLLM::Tool
+  provider_options strict: true
   description 'Get the current weather for a location'
-  param :location, type: 'string', desc: 'The city name'
+  parameter :location, type: 'string', description: 'The city name'
 
   def execute(location:)
     "The weather in #{location} is sunny, 72°F"
@@ -13,8 +14,9 @@ class TestWeatherTool < RubyLLM::Tool
 end
 
 class TestCalculatorTool < RubyLLM::Tool
+  provider_options strict: true
   description 'Perform basic math calculations'
-  param :expression, type: 'string', desc: 'Math expression to evaluate'
+  parameter :expression, type: 'string', description: 'Math expression to evaluate'
 
   def execute(expression:)
     eval(expression).to_s # rubocop:disable Security/Eval
@@ -34,9 +36,9 @@ RSpec.describe 'OpenAI Responses API Integration', :vcr do
       expect(response).to be_a(RubyLLM::Message)
       expect(response.content).to include('4')
       expect(response.role).to eq(:assistant)
-      expect(response.input_tokens).to be_a(Integer)
-      expect(response.output_tokens).to be_a(Integer)
-      expect(response.model_id).to include('gpt-4o-mini')
+      expect(response.tokens.input).to be_a(Integer)
+      expect(response.tokens.output).to be_a(Integer)
+      expect(response.model).to include('gpt-4o-mini')
     end
 
     it 'handles empty user message', vcr: { cassette_name: 'empty_message' } do
@@ -93,8 +95,8 @@ RSpec.describe 'OpenAI Responses API Integration', :vcr do
 
       response = chat.ask('Say hi') { |_chunk| }
 
-      expect(response.input_tokens).to be_a(Integer)
-      expect(response.output_tokens).to be_a(Integer)
+      expect(response.tokens.input).to be_a(Integer)
+      expect(response.tokens.output).to be_a(Integer)
     end
   end
 
@@ -149,7 +151,7 @@ RSpec.describe 'OpenAI Responses API Integration', :vcr do
   describe 'Function Calling' do
     it 'calls a single tool', vcr: { cassette_name: 'function_calling_single' } do
       chat = RubyLLM.chat(model: model, provider: :openai_responses)
-      chat.with_tool(TestWeatherTool)
+      chat.with_tools(TestWeatherTool)
 
       response = chat.ask("What's the weather in Tokyo?")
 
@@ -159,8 +161,8 @@ RSpec.describe 'OpenAI Responses API Integration', :vcr do
 
     it 'calls multiple tools', vcr: { cassette_name: 'function_calling_multiple' } do
       chat = RubyLLM.chat(model: model, provider: :openai_responses)
-      chat.with_tool(TestWeatherTool)
-      chat.with_tool(TestCalculatorTool)
+      chat.with_tools(TestWeatherTool)
+      chat.with_tools(TestCalculatorTool)
 
       response = chat.ask("What's the weather in Paris and what is 15 * 7?")
 
@@ -171,7 +173,7 @@ RSpec.describe 'OpenAI Responses API Integration', :vcr do
 
     it 'handles tool with complex arguments', vcr: { cassette_name: 'function_calling_complex_args' } do
       chat = RubyLLM.chat(model: model, provider: :openai_responses)
-      chat.with_tool(TestCalculatorTool)
+      chat.with_tools(TestCalculatorTool)
 
       response = chat.ask('Calculate (100 + 50) / 3')
 
@@ -183,12 +185,11 @@ RSpec.describe 'OpenAI Responses API Integration', :vcr do
     it 'analyzes an image from URL', vcr: { cassette_name: 'vision_url' } do
       chat = RubyLLM.chat(model: model, provider: :openai_responses)
 
-      content = RubyLLM::Content.new(
+      content = RubyLLM::Message.new(role: :user, content:
         'What do you see in this image? Be very brief.',
-        images: ['https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png']
-      )
+                                     attachments: ['https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png'])
 
-      response = chat.ask(content)
+      response = chat.ask(content.content, with: content.attachments)
 
       expect(response.content.downcase).to include('google').or include('logo')
     end
@@ -196,15 +197,14 @@ RSpec.describe 'OpenAI Responses API Integration', :vcr do
     it 'handles multiple images', vcr: { cassette_name: 'vision_multiple_images' } do
       chat = RubyLLM.chat(model: model, provider: :openai_responses)
 
-      content = RubyLLM::Content.new(
+      content = RubyLLM::Message.new(role: :user, content:
         'Describe what you see. Be brief.',
-        images: [
-          'https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png',
-          'https://www.python.org/static/community_logos/python-logo-master-v3-TM.png'
-        ]
-      )
+                                     attachments: [
+                                       'https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png',
+                                       'https://www.python.org/static/community_logos/python-logo-master-v3-TM.png'
+                                     ])
 
-      response = chat.ask(content)
+      response = chat.ask(content.content, with: content.attachments)
 
       expect(response).to be_a(RubyLLM::Message)
       expect(response.content.length).to be > 10
@@ -229,11 +229,11 @@ RSpec.describe 'OpenAI Responses API Integration', :vcr do
       chat.with_schema(schema)
       response = chat.ask('Generate a fictional person with name, age, and city.')
 
-      expect(response.content).to be_a(Hash)
-      expect(response.content).to have_key('name')
-      expect(response.content).to have_key('age')
-      expect(response.content).to have_key('city')
-      expect(response.content['age']).to be_a(Integer)
+      expect(response.parsed).to be_a(Hash)
+      expect(response.parsed).to have_key('name')
+      expect(response.parsed).to have_key('age')
+      expect(response.parsed).to have_key('city')
+      expect(response.parsed['age']).to be_a(Integer)
     end
 
     it 'handles nested schema', vcr: { cassette_name: 'structured_output_nested' } do
@@ -267,8 +267,8 @@ RSpec.describe 'OpenAI Responses API Integration', :vcr do
       chat.with_schema(schema)
       response = chat.ask('Generate a person with nested address.')
 
-      expect(response.content).to be_a(Hash)
-      expect(response.content.dig('person', 'address', 'city')).to be_a(String)
+      expect(response.parsed).to be_a(Hash)
+      expect(response.parsed.dig('person', 'address', 'city')).to be_a(String)
     end
 
     it 'handles array in schema', vcr: { cassette_name: 'structured_output_array' } do
@@ -289,16 +289,16 @@ RSpec.describe 'OpenAI Responses API Integration', :vcr do
       chat.with_schema(schema)
       response = chat.ask('List 3 primary colors.')
 
-      expect(response.content).to be_a(Hash)
-      expect(response.content['colors']).to be_an(Array)
-      expect(response.content['colors'].length).to be >= 3
+      expect(response.parsed).to be_a(Hash)
+      expect(response.parsed['colors']).to be_an(Array)
+      expect(response.parsed['colors'].length).to be >= 3
     end
   end
 
   describe 'Web Search (Built-in Tool)' do
     it 'performs web search', vcr: { cassette_name: 'web_search' } do
       chat = RubyLLM.chat(model: model, provider: :openai_responses)
-      chat.with_params(tools: [{ type: 'web_search_preview' }])
+      chat.with_provider_options(tools: [{ type: 'web_search_preview' }])
 
       response = chat.ask('What is the current population of Tokyo? Just give a rough number.')
 
@@ -406,151 +406,6 @@ RSpec.describe 'OpenAI Responses API Error Handling' do
 
     it 'handles server error class existence' do
       expect(defined?(RubyLLM::ServerError)).to be_truthy
-    end
-  end
-end
-
-RSpec.describe 'Chat Module Unit Tests' do
-  describe RubyLLM::Providers::OpenAIResponses::Chat do
-    describe '.extract_text_content' do
-      it 'extracts text from string' do
-        result = described_class.extract_text_content('hello')
-        expect(result).to eq('hello')
-      end
-
-      it 'extracts text from RubyLLM::Content' do
-        content = RubyLLM::Content.new('hello world')
-        result = described_class.extract_text_content(content)
-        expect(result).to eq('hello world')
-      end
-
-      it 'extracts text from hash with symbol key' do
-        result = described_class.extract_text_content({ text: 'hello' })
-        expect(result).to eq('hello')
-      end
-
-      it 'extracts text from hash with string key' do
-        result = described_class.extract_text_content({ 'text' => 'hello' })
-        expect(result).to eq('hello')
-      end
-
-      it 'converts other types to string' do
-        result = described_class.extract_text_content(123)
-        expect(result).to eq('123')
-      end
-
-      it 'handles nil' do
-        result = described_class.extract_text_content(nil)
-        expect(result).to eq('')
-      end
-    end
-
-    describe '.format_role' do
-      it 'converts :system to developer' do
-        expect(described_class.format_role(:system)).to eq('developer')
-      end
-
-      it 'keeps :assistant as assistant' do
-        expect(described_class.format_role(:assistant)).to eq('assistant')
-      end
-
-      it 'converts :tool to user' do
-        expect(described_class.format_role(:tool)).to eq('user')
-      end
-
-      it 'converts :user to user' do
-        expect(described_class.format_role(:user)).to eq('user')
-      end
-    end
-
-    describe '.extract_output_text' do
-      it 'extracts text from message output' do
-        output = [
-          {
-            'type' => 'message',
-            'content' => [
-              { 'type' => 'output_text', 'text' => 'Hello ' },
-              { 'type' => 'output_text', 'text' => 'world!' }
-            ]
-          }
-        ]
-        result = described_class.extract_output_text(output)
-        expect(result).to eq('Hello world!')
-      end
-
-      it 'returns empty string for no text content' do
-        output = [{ 'type' => 'function_call', 'name' => 'test' }]
-        result = described_class.extract_output_text(output)
-        expect(result).to eq('')
-      end
-
-      it 'handles empty output array' do
-        result = described_class.extract_output_text([])
-        expect(result).to eq('')
-      end
-    end
-
-    describe '.extract_tool_calls' do
-      it 'extracts function calls from output' do
-        output = [
-          {
-            'type' => 'function_call',
-            'call_id' => 'call_123',
-            'name' => 'get_weather',
-            'arguments' => '{"location": "NYC"}'
-          }
-        ]
-        result = described_class.extract_tool_calls(output)
-
-        expect(result).to be_a(Hash)
-        expect(result['call_123']).to be_a(RubyLLM::ToolCall)
-        expect(result['call_123'].name).to eq('get_weather')
-        expect(result['call_123'].arguments).to eq({ 'location' => 'NYC' })
-      end
-
-      it 'returns nil for no function calls' do
-        output = [{ 'type' => 'message', 'content' => [] }]
-        result = described_class.extract_tool_calls(output)
-        expect(result).to be_nil
-      end
-
-      it 'handles multiple function calls' do
-        output = [
-          { 'type' => 'function_call', 'call_id' => 'call_1', 'name' => 'fn1', 'arguments' => '{}' },
-          { 'type' => 'function_call', 'call_id' => 'call_2', 'name' => 'fn2', 'arguments' => '{}' }
-        ]
-        result = described_class.extract_tool_calls(output)
-
-        expect(result.keys).to contain_exactly('call_1', 'call_2')
-      end
-    end
-
-    describe '.parse_arguments' do
-      it 'parses valid JSON string' do
-        result = described_class.parse_arguments('{"key": "value"}')
-        expect(result).to eq({ 'key' => 'value' })
-      end
-
-      it 'returns hash as-is' do
-        input = { 'key' => 'value' }
-        result = described_class.parse_arguments(input)
-        expect(result).to eq(input)
-      end
-
-      it 'returns empty hash for nil' do
-        result = described_class.parse_arguments(nil)
-        expect(result).to eq({})
-      end
-
-      it 'returns empty hash for empty string' do
-        result = described_class.parse_arguments('')
-        expect(result).to eq({})
-      end
-
-      it 'wraps invalid JSON in raw key' do
-        result = described_class.parse_arguments('not valid json')
-        expect(result).to eq({ raw: 'not valid json' })
-      end
     end
   end
 end

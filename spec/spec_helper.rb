@@ -5,6 +5,8 @@ require 'rubyllm_responses_api'
 require 'webmock/rspec'
 require 'vcr'
 
+require_relative 'legacy_request_matcher'
+
 # VCR Configuration
 VCR.configure do |config|
   config.cassette_library_dir = 'spec/cassettes'
@@ -24,7 +26,7 @@ VCR.configure do |config|
   # Default cassette options
   config.default_cassette_options = {
     record: :once,
-    match_requests_on: %i[method uri body],
+    match_requests_on: %i[method uri legacy_responses_body],
     decode_compressed_response: true
   }
 
