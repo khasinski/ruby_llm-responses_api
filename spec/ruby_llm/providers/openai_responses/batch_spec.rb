@@ -5,7 +5,7 @@ require 'spec_helper'
 RSpec.describe RubyLLM::Providers::OpenAIResponses::Batch do
   include ResponseHelpers
 
-  let(:connection) { instance_double(RubyLLM::Connection) }
+  let(:connection) { instance_double(RubyLLM::Transport::Connection) }
   let(:faraday_connection) { instance_double(Faraday::Connection) }
   let(:provider) do
     instance_double(

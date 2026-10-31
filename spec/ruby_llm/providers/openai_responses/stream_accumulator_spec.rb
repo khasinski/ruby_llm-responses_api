@@ -2,8 +2,8 @@
 
 require 'spec_helper'
 
-RSpec.describe RubyLLM::Providers::OpenAIResponses::StreamAccumulatorExtension do
-  let(:accumulator) { RubyLLM::StreamAccumulator.new }
+RSpec.describe RubyLLM::Providers::OpenAIResponses::StreamAccumulator do
+  let(:accumulator) { RubyLLM::Providers::OpenAIResponses::StreamAccumulator.new }
   let(:event) do
     {
       tool_call: RubyLLM::ToolCall.new(id: 'ws_1', name: 'web_search', arguments: {}),

@@ -11,7 +11,11 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        ruby-version: ['3.2', '3.3', '3.4']
+        ruby-version: ['4.0']
+        ruby-llm-version: ['2.1.1']
+
+    env:
+      RUBY_LLM_VERSION: ${{ matrix.ruby-llm-version }}
 
     steps:
       - uses: actions/checkout@v4
@@ -21,6 +25,9 @@ jobs:
         with:
           ruby-version: ${{ matrix.ruby-version }}
           bundler-cache: true
+
+      - name: Build gem
+        run: gem build ruby_llm-responses_api.gemspec
 
       - name: Run tests
         env:
@@ -35,7 +42,7 @@ jobs:
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: '3.3'
+          ruby-version: '4.0'
           bundler-cache: true
 
       - name: Run RuboCop

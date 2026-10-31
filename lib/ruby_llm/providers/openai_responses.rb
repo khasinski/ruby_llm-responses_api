@@ -5,36 +5,12 @@ module RubyLLM
     # OpenAI Responses API provider for RubyLLM.
     # Implements the new Responses API which provides built-in tools,
     # stateful conversations, background mode, and MCP support.
-    class OpenAIResponses # rubocop:disable Metrics/ClassLength
-      include OpenAIResponses::Chat
-      include OpenAIResponses::Streaming
-      include OpenAIResponses::Tools
-      include OpenAIResponses::Models
-      include OpenAIResponses::Media
+    class OpenAIResponses
+      protocol :responses, OpenAIResponses::Protocol, batches: Protocols::Responses::Batches
+      protocol :files, Protocols::OpenAI::Files
 
-      def api_base
-        @config.openai_api_base || 'https://api.openai.com/v1'
-      end
-
-      # Override to support WebSocket transport via with_params(transport: :websocket).
-      # rubocop:disable-next Metrics/ParameterLists
-      def complete(messages, tools:, temperature:, model:, params: {}, headers: {},
-                   schema: nil, thinking: nil, tool_prefs: nil, &block)
-        if params[:transport]&.to_sym == :websocket
-          ws_complete(messages, tools: tools, temperature: temperature, model: model,
-                                params: params.except(:transport), schema: schema,
-                                thinking: thinking, &block)
-        else
-          super
-        end
-      end
-
-      def headers
-        {
-          'Authorization' => "Bearer #{@config.openai_api_key}",
-          'OpenAI-Organization' => @config.openai_organization_id,
-          'OpenAI-Project' => @config.openai_project_id
-        }.compact
+      def protocol_for(_model, **)
+        protocols.fetch(:responses)
       end
 
       # Retrieve a stored response by ID
@@ -184,62 +160,29 @@ module RubyLLM
         response.body
       end
 
+      # Headers are part of the handshake, so a changed set uses a new connection.
+      def responses_websocket(additional_headers = {})
+        if @ws_connection && @ws_headers != additional_headers
+          @ws_connection.disconnect
+          @ws_connection = nil
+        end
+        @ws_headers = additional_headers.dup
+        @ws_connection ||= WebSocket.new(
+          api_key: @config.openai_api_key, api_base: api_base,
+          organization_id: @config.openai_organization_id, project_id: @config.openai_project_id,
+          headers: additional_headers
+        )
+        @ws_connection.connect unless @ws_connection.connected?
+        @ws_connection
+      end
+
       private
 
-      def ws_complete(messages, tools:, temperature:, model:, params:, schema:, thinking:, &block) # rubocop:disable Metrics/ParameterLists
-        normalized_temperature = maybe_normalize_temperature(temperature, model)
-
-        payload = Utils.deep_merge(
-          render_payload(
-            messages,
-            tools: tools,
-            temperature: normalized_temperature,
-            model: model,
-            stream: true,
-            schema: schema,
-            thinking: thinking
-          ),
-          params
-        )
-
-        ws_connection.connect unless ws_connection.connected?
-        ws_connection.call(payload, &block)
-      end
-
-      def ws_connection
-        @ws_connection ||= WebSocket.new(
-          api_key: @config.openai_api_key,
-          api_base: api_base,
-          organization_id: @config.openai_organization_id,
-          project_id: @config.openai_project_id
-        )
-      end
-
-      # DELETE request via the underlying Faraday connection
-      # RubyLLM::Connection only exposes get/post, so we use Faraday directly
       def delete_request(url)
-        payload = { provider: slug, method: :delete, url: url }
-
-        instrument_request(payload) do
-          response = @connection.connection.delete(url) do |req|
-            req.headers.merge!(headers)
-          end
-          payload[:status] = response.status if response.respond_to?(:status)
-          response
-        end
-      end
-
-      def instrument_request(payload, &)
-        return yield unless RubyLLM.respond_to?(:instrument)
-
-        RubyLLM.instrument('request.ruby_llm', payload, config: @config, &)
+        @connection.delete(url)
       end
 
       class << self
-        def capabilities
-          OpenAIResponses::Capabilities
-        end
-
         def configuration_options
           %i[
             openai_api_key
@@ -253,8 +196,9 @@ module RubyLLM
           %i[openai_api_key]
         end
 
-        def slug
-          'openai_responses'
+        def models_dev_alias(model_id, models, provider_model = nil)
+          source = models["openai:#{model_id}"] || super
+          source && RubyLLM::Model.new(source.to_h.merge(provider: 'openai_responses'))
         end
       end
     end

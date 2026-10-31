@@ -3,26 +3,26 @@
 require 'spec_helper'
 
 RSpec.describe RubyLLM::Providers::OpenAIResponses::ModelRegistry do
-  describe 'registered models' do
-    it 'includes GPT-5.5 with current Responses API capabilities' do
-      model = RubyLLM::Models.instance.all.find do |m|
-        m.id == 'gpt-5.5' && m.provider == 'openai_responses'
-      end
+  it 'reuses current OpenAI capabilities, limits and pricing' do
+    source = RubyLLM.models.find('gpt-4o', provider: :openai)
+    model = RubyLLM.models.find('gpt-4o', provider: :openai_responses)
+    expect(model.to_h).to eq(source.to_h.merge(provider: 'openai_responses'))
+  end
 
-      expect(model).not_to be_nil
-      expect(model.context_window).to eq(1_050_000)
-      expect(model.max_output_tokens).to eq(128_000)
-      expect(model.capabilities).to include(
-        'reasoning',
-        'web_search',
-        'file_search',
-        'image_generation',
-        'code_interpreter',
-        'shell',
-        'apply_patch',
-        'computer_use',
-        'mcp'
-      )
-    end
+  it 'can filter and find the provider catalog without a separate model snapshot' do
+    catalog = RubyLLM.models.by_provider(:openai_responses)
+    native = RubyLLM.models.by_provider(:openai)
+    expect(catalog.map(&:id)).to include(*native.map(&:id))
+    expect(catalog.find('gpt-4o').provider).to eq('openai_responses')
+    expect(catalog.map(&:provider).uniq).to eq(['openai_responses'])
+  end
+
+  it 'does not change native provider selection' do
+    expect(RubyLLM.models.find('gpt-4o').provider).to eq('openai')
+  end
+
+  it 'does not hide unknown models' do
+    expect { RubyLLM.models.find('unknown-model', provider: :openai_responses) }
+      .to raise_error(RubyLLM::ModelNotFoundError)
   end
 end

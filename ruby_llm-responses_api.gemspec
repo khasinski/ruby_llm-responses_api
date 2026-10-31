@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |spec|
   spec.name = 'ruby_llm-responses_api'
-  spec.version = '0.6.1'
+  spec.version = '1.0.0'
   spec.authors = ['Chris Hasinski']
   spec.email = ['krzysztof.hasinski@gmail.com']
 
@@ -13,17 +13,17 @@ Gem::Specification.new do |spec|
                      'server-side compaction, containers API, background mode, and MCP support.'
   spec.homepage = 'https://github.com/khasinski/ruby_llm-responses_api'
   spec.license = 'MIT'
-  spec.required_ruby_version = '>= 3.1.0'
+  spec.required_ruby_version = '>= 4.0', '< 5.0'
 
   spec.metadata['homepage_uri'] = spec.homepage
   spec.metadata['source_code_uri'] = spec.homepage
   spec.metadata['changelog_uri'] = "#{spec.homepage}/blob/main/CHANGELOG.md"
   spec.metadata['rubygems_mfa_required'] = 'true'
 
-  spec.files = Dir.glob('{lib}/**/*') + %w[README.md LICENSE.txt CHANGELOG.md]
+  spec.files = Dir.glob('{lib}/**/*') + %w[README.md MIGRATION.md LICENSE.txt CHANGELOG.md]
   spec.require_paths = ['lib']
 
-  spec.add_dependency 'ruby_llm', '>= 1.13'
+  spec.add_dependency 'ruby_llm', '~> 2.1.1'
 
   spec.add_development_dependency 'activerecord', '~> 7.0'
   spec.add_development_dependency 'rake', '~> 13.0'

@@ -213,7 +213,7 @@ module RubyLLM
 
         # Build a list of {tool_call:, result:} events from the response output.
         # Used to surface server-side built-in tool activity through the standard
-        # on_tool_call / on_tool_result callbacks (issue #1).
+        # before_tool_call / after_tool_result callbacks (issue #1).
         def extract_events(output)
           return [] unless output.is_a?(Array)
 

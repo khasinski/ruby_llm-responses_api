@@ -10,7 +10,7 @@ module RubyLLM
       # behind a clean Ruby API that mirrors RubyLLM::Chat.
       #
       # @example
-      #   batch = RubyLLM.batch(model: 'gpt-4o', provider: :openai_responses)
+      #   batch = RubyLLM::ResponsesAPI.batch(model: 'gpt-4o', provider: :openai_responses)
       #   batch.add("What is Ruby?")
       #   batch.add("What is Python?", instructions: "Be brief")
       #   batch.create!
@@ -60,8 +60,8 @@ module RubyLLM
         # @param metadata [Hash, nil] Optional metadata for the batch
         # @return [self]
         def create!(metadata: nil)
-          raise Error.new(nil, 'No requests added') if @requests.empty?
-          raise Error.new(nil, 'Batch already created') if @id
+          raise Error, 'No requests added' if @requests.empty?
+          raise Error, 'Batch already created' if @id
 
           jsonl = Batches.build_jsonl(@requests)
           file_id = upload_file(jsonl)
@@ -82,7 +82,7 @@ module RubyLLM
         # Fetch the latest batch status from the API.
         # @return [self]
         def refresh!
-          raise Error.new(nil, 'Batch not yet created') unless @id
+          raise Error, 'Batch not yet created' unless @id
 
           response = @provider.instance_variable_get(:@connection).get(Batches.batch_url(@id))
           @data = response.body
@@ -149,7 +149,7 @@ module RubyLLM
             break if Batches.terminal?(status)
 
             if timeout && (Time.now - start_time) > timeout
-              raise Error.new(nil, "Batch polling timeout after #{timeout} seconds")
+              raise Error, "Batch polling timeout after #{timeout} seconds"
             end
 
             sleep interval
@@ -162,7 +162,7 @@ module RubyLLM
         # @return [Hash<String, Message>] Results keyed by custom_id
         def results
           output_file_id = @data['output_file_id']
-          raise Error.new(nil, 'No output file available yet') unless output_file_id
+          raise Error, 'No output file available yet' unless output_file_id
 
           jsonl = fetch_file_content(output_file_id)
           Batches.parse_results_to_messages(jsonl)
@@ -181,7 +181,7 @@ module RubyLLM
         # Cancel the batch.
         # @return [self]
         def cancel!
-          raise Error.new(nil, 'Batch not yet created') unless @id
+          raise Error, 'Batch not yet created' unless @id
 
           response = @provider.instance_variable_get(:@connection).post(Batches.cancel_batch_url(@id), {})
           @data = response.body
@@ -195,7 +195,7 @@ module RubyLLM
           when Symbol, String
             slug = provider.to_sym
             provider_class = RubyLLM::Provider.providers[slug]
-            raise Error.new(nil, "Unknown provider: #{slug}") unless provider_class
+            raise Error, "Unknown provider: #{slug}" unless provider_class
 
             provider_class.new(RubyLLM.config)
           else

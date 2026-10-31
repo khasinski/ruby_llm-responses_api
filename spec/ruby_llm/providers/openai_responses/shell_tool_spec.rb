@@ -3,46 +3,6 @@
 require 'spec_helper'
 
 RSpec.describe 'Shell tool support' do
-  describe RubyLLM::Providers::OpenAIResponses::Tools do
-    let(:tools_module) { RubyLLM::Providers::OpenAIResponses::Tools }
-
-    describe '.shell_tool' do
-      it 'creates default shell configuration with container_auto' do
-        tool = tools_module.shell_tool
-        expect(tool[:type]).to eq('shell')
-        expect(tool[:environment][:type]).to eq('container_auto')
-      end
-
-      it 'creates shell with container_reference and container_id' do
-        tool = tools_module.shell_tool(container_id: 'cntr_abc123')
-        expect(tool[:environment][:type]).to eq('container_reference')
-        expect(tool[:environment][:container_id]).to eq('cntr_abc123')
-      end
-
-      it 'creates shell with local environment' do
-        tool = tools_module.shell_tool(environment_type: 'local')
-        expect(tool[:environment][:type]).to eq('local')
-      end
-
-      it 'includes network_policy when provided' do
-        policy = { type: 'allowlist', allowed_domains: ['example.com'] }
-        tool = tools_module.shell_tool(network_policy: policy)
-        expect(tool[:environment][:network_policy]).to eq(policy)
-      end
-
-      it 'includes memory_limit when provided' do
-        tool = tools_module.shell_tool(memory_limit: '4g')
-        expect(tool[:environment][:memory_limit]).to eq('4g')
-      end
-
-      it 'passes through as built-in tool via tool_for' do
-        tool = { type: 'shell', environment: { type: 'container_auto' } }
-        result = tools_module.tool_for(tool)
-        expect(result).to eq(tool)
-      end
-    end
-  end
-
   describe RubyLLM::Providers::OpenAIResponses::BuiltInTools do
     let(:built_in) { RubyLLM::Providers::OpenAIResponses::BuiltInTools }
 

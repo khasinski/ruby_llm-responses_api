@@ -13,7 +13,7 @@ module RubyLLM
       #
       # Integrated usage (recommended):
       #   chat = RubyLLM.chat(model: 'gpt-4o', provider: :openai_responses)
-      #   chat.with_params(transport: :websocket)
+      #   chat.with_provider_options(transport: :websocket)
       #   chat.ask("Hello!")
       #
       # Standalone usage (advanced):
@@ -36,13 +36,14 @@ module RubyLLM
         # @param response_timeout [Numeric] seconds to wait for a response event
         # rubocop:disable-next Metrics/ParameterLists
         def initialize(api_key:, api_base: 'https://api.openai.com/v1', organization_id: nil, project_id: nil,
-                       client_class: nil, response_timeout: 60)
+                       client_class: nil, response_timeout: 60, headers: {})
           @api_key = api_key
           @api_base = api_base
           @organization_id = organization_id
           @project_id = project_id
           @client_class = client_class
           @response_timeout = response_timeout
+          @headers = headers
 
           @ws = nil
           @mutex = Mutex.new
@@ -95,19 +96,43 @@ module RubyLLM
         # @param payload [Hash] Responses API payload (model, input, tools, etc.)
         # @yield [RubyLLM::Chunk] each streamed chunk
         # @return [RubyLLM::Message] the assembled final message
-        def call(payload, &)
+        def call(payload)
+          config = RubyLLM.config.dup
+          config.openai_api_key = @api_key
+          provider = OpenAIResponses.new(config)
+          protocol = Protocol.new(provider)
+          accumulator = StreamAccumulator.new
+          stream_events(payload) do |data|
+            chunk = protocol.parse_event(data)
+            chunk.response_id = nil if payload[:store] == false
+            accumulator.add(chunk)
+            yield chunk if block_given?
+          end
+          accumulator.to_message(nil)
+        end
+
+        # Shared by the standalone client and the native RubyLLM protocol.
+        def stream_events(payload)
           ensure_connected!
           acquire_flight!
-
+          acquired = true
           queue = Queue.new
           @mutex.synchronize { @message_queue = queue }
+          send_json({ type: 'response.create' }.merge(payload.except(:stream)))
 
-          envelope = { type: 'response.create' }.merge(payload.except(:stream))
-          send_json(envelope)
-          accumulate_response(queue, &)
+          loop do
+            data = next_event(queue)
+            yield data
+            next unless %w[response.completed response.incomplete].include?(data['type'])
+
+            @last_response_id = payload[:store] == false ? nil : data.dig('response', 'id')
+            return nil
+          end
         ensure
-          @mutex.synchronize { @message_queue = nil }
-          release_flight!
+          if acquired
+            @mutex.synchronize { @message_queue = nil }
+            release_flight!
+          end
         end
 
         # Send a response.create request using raw Responses API format.
@@ -121,14 +146,14 @@ module RubyLLM
         # @param extra [Hash] additional fields forwarded to the API
         # @yield [RubyLLM::Chunk] each streamed chunk
         # @return [RubyLLM::Message] the assembled final message
-        def create_response(model:, input:, tools: nil, previous_response_id: nil, instructions: nil, **extra, &block) # rubocop:disable Metrics/ParameterLists
+        def create_response(model:, input:, tools: nil, previous_response_id: nil, instructions: nil, **extra, &) # rubocop:disable Metrics/ParameterLists
           payload = build_standalone_payload(
             model: model, input: input, tools: tools,
             previous_response_id: previous_response_id,
             instructions: instructions, **extra
           )
 
-          call(payload, &block)
+          call(payload, &)
         end
 
         # Warm up the connection by sending a response.create with generate: false.
@@ -137,33 +162,7 @@ module RubyLLM
         # @param extra [Hash] additional fields
         # @return [void]
         def warmup(model:, **extra)
-          ensure_connected!
-          acquire_flight!
-
-          queue = Queue.new
-          @mutex.synchronize { @message_queue = queue }
-
-          payload = { type: 'response.create', model: model, generate: false }.merge(extra)
-
-          send_json(payload)
-
-          loop do
-            data = queue.pop
-            break if data.nil?
-
-            parsed = JSON.parse(data)
-            event_type = parsed['type']
-
-            if event_type == 'error'
-              error_msg = parsed.dig('error', 'message') || 'Warmup error'
-              raise ResponseError, error_msg
-            end
-
-            break if event_type == 'response.completed'
-          end
-        ensure
-          @mutex.synchronize { @message_queue = nil }
-          release_flight!
+          stream_events({ model: model, generate: false }.merge(extra)) { |_event| nil }
         end
 
         # Disconnect the WebSocket.
@@ -225,13 +224,13 @@ module RubyLLM
           }
           headers['OpenAI-Organization'] = @organization_id if @organization_id
           headers['OpenAI-Project'] = @project_id if @project_id
-          headers
+          headers.merge(@headers)
         end
 
         def build_standalone_payload(model:, input:, tools: nil, previous_response_id: nil, instructions: nil, **extra) # rubocop:disable Metrics/ParameterLists
-          prev_id = previous_response_id || @last_response_id
+          prev_id = previous_response_id || (@last_response_id unless extra[:store] == false)
           response = { model: model, input: input }
-          response[:tools] = tools.map { |t| Tools.tool_for(t) } if tools&.any?
+          response[:tools] = tools if tools&.any?
           response[:previous_response_id] = prev_id if prev_id
           response[:instructions] = instructions if instructions
 
@@ -246,43 +245,19 @@ module RubyLLM
           @ws.send(JSON.generate(payload))
         end
 
-        def accumulate_response(queue, &block)
-          accumulator = StreamAccumulator.new
-          built_in_events = []
-
-          loop do
-            raw = pop_response_event(queue)
-            if raw == RESPONSE_TIMEOUT
-              raise ConnectionError, "Timed out waiting for WebSocket response after #{@response_timeout} seconds"
-            end
-
-            break if raw.nil?
-
-            data = JSON.parse(raw)
-            event_type = data['type']
-
-            chunk = Streaming.build_chunk(data)
-            accumulator.add(chunk)
-            block&.call(chunk)
-
-            next unless event_type == 'response.completed'
-
-            track_response_id(data)
-            built_in_events.concat(BuiltInTools.extract_events(data.dig('response', 'output') || []))
-            break
+        def next_event(queue)
+          raw = pop_response_event(queue)
+          if raw == RESPONSE_TIMEOUT
+            raise ConnectionError, "Timed out waiting for WebSocket response after #{@response_timeout} seconds"
           end
+          raise ConnectionError, 'WebSocket closed before the response completed' if raw.nil?
 
-          message = accumulator.to_message(nil)
-          message.response_id = @last_response_id
-          if message.respond_to?(:built_in_tool_events=) && built_in_events.any?
-            message.built_in_tool_events = built_in_events
+          data = JSON.parse(raw)
+          if %w[error response.failed].include?(data['type'])
+            error = data['error'] || data.dig('response', 'error') || data
+            raise RubyLLM::Error, error['message'] || 'WebSocket response failed'
           end
-          message
-        end
-
-        def track_response_id(data)
-          resp_id = data.dig('response', 'id')
-          @mutex.synchronize { @last_response_id = resp_id } if resp_id
+          data
         end
 
         def ensure_connected!

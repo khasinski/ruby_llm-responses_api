@@ -5,9 +5,28 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [1.0.0] - 2026-10-31
+
+### Changed
+
+- Migrate to RubyLLM 2.1.1's native provider/protocol architecture; require Ruby 4.x and RubyLLM 2.1.x.
+- Keep `:openai_responses` as an opt-in OpenAI provider with a scoped native Responses protocol. Native `:openai` and other providers are unchanged.
+- Delegate message rendering, attachments, function tools, reasoning, citations, server tool records, batches and usage accounting to RubyLLM; reuse its OpenAI model catalog instead of maintaining snapshots.
+- Move raw-input batch factories to `RubyLLM::ResponsesAPI.batch` / `.batches`, preserving native `RubyLLM.batch(chats)`.
+- Use RubyLLM 2.x's `with_provider_options`, `before_tool_call`, `after_tool_result`, `Message#tokens` and `Message#model` APIs. See MIGRATION.md.
+- Extend native ActiveRecord serialization and message attributes without replacing persistence of usage, tool records, reasoning or attachments.
+
+### Added
+
+- Completed streams expose the final Responses object at `message.raw.body`, including built-in tool output, matching sync calls (issue #4).
+- Explicit stateless mode with `store: false`, without automatic chaining or discarded local history.
+- Native server tool records and usage accounting for WebSocket chat requests.
 
 ### Fixed
+
+- Fail on a WebSocket disconnect before completion instead of returning a partial answer as a successful response.
+- Preserve an existing in-flight WebSocket request when a concurrent call is rejected.
+- Use native instrumented DELETE transport for response and container lifecycle operations.
 
 - `StreamAccumulator` now forwards `response_id` from the completed chunk to the assembled message, matching the existing `built_in_tool_events` handling. Previously every streamed chat lost `response_id`, so `previous_response_id` chaining never engaged and each turn resent the full message history instead of just the new items.
 

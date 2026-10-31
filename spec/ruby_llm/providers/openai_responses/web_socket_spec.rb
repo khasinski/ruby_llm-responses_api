@@ -30,10 +30,10 @@ RSpec.describe RubyLLM::Providers::OpenAIResponses::WebSocket do
 
     def close; end
 
-    def emit(event, *args)
+    def emit(event, *)
       # Mirror websocket-client-simple, which uses instance_exec so that
       # handlers run with `self` set to the underlying client.
-      @handlers[event].each { |h| instance_exec(*args, &h) }
+      @handlers[event].each { |h| instance_exec(*, &h) }
     end
 
     def has_handler?(event)
@@ -258,10 +258,14 @@ RSpec.describe RubyLLM::Providers::OpenAIResponses::WebSocket do
 
     it 'rejects concurrent create_response calls' do
       ws.instance_variable_set(:@in_flight, true)
+      existing_queue = Queue.new
+      ws.instance_variable_set(:@message_queue, existing_queue)
 
       expect do
         ws.create_response(model: 'gpt-4o', input: [])
       end.to raise_error(described_class::ConcurrencyError)
+      expect(ws.instance_variable_get(:@in_flight)).to be(true)
+      expect(ws.instance_variable_get(:@message_queue)).to equal(existing_queue)
     end
 
     it 'applies state params (store, metadata)' do
@@ -380,20 +384,14 @@ RSpec.describe RubyLLM::Providers::OpenAIResponses::WebSocket do
   describe 'connection drop during response' do
     before { connect_ws! }
 
-    it 'returns partial result when connection closes mid-stream' do
-      result = nil
-      thread = Thread.new do
-        result = ws.create_response(model: 'gpt-4o', input: [])
+    it 'raises when the connection closes before the response completes' do
+      events = [{ 'type' => 'response.output_text.delta', 'delta' => 'partial' }]
+      allow(mock_ws_client).to receive(:send) do
+        push_events(*events)
+        mock_ws_client.emit(:close)
       end
-
-      # Wait until the queue is installed (meaning create_response is listening)
-      Thread.pass until ws.instance_variable_get(:@message_queue)
-
-      push_events({ 'type' => 'response.output_text.delta', 'delta' => 'partial' })
-      mock_ws_client.emit(:close)
-
-      thread.join(5)
-      expect(result.content).to eq('partial')
+      expect { ws.create_response(model: 'gpt-4o', input: []) }
+        .to raise_error(described_class::ConnectionError, /closed before/)
     end
   end
 

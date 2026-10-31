@@ -15,8 +15,8 @@ RSpec.describe RubyLLM::Providers::OpenAIResponses::ChatExtension do
     it 'fires on_tool_call and on_tool_result when an assistant message carries built_in_tool_events' do
       seen_calls = []
       seen_results = []
-      chat.on_tool_call { |tc| seen_calls << tc }
-      chat.on_tool_result { |r| seen_results << r }
+      chat.before_tool_call { |tc| seen_calls << tc }
+      chat.after_tool_result { |r| seen_results << r }
 
       message = RubyLLM::Message.new(
         role: :assistant,
@@ -32,7 +32,7 @@ RSpec.describe RubyLLM::Providers::OpenAIResponses::ChatExtension do
 
     it 'does nothing when no built-in events are present' do
       called = false
-      chat.on_tool_call { called = true }
+      chat.before_tool_call { called = true }
 
       chat.add_message(RubyLLM::Message.new(role: :assistant, content: 'plain'))
 
